@@ -1,0 +1,589 @@
+---
+output:
+  word_document:
+    fig_caption: true
+    fig_height: 10
+    fig_width: 10
+    reference_docx: bootstrap/basic_files/summaryTemplate.docx
+    toc: false
+    keep_md: false
+params:
+  summary_title: ""
+  strata: NULL
+---
+
+
+```{r introduction, include = FALSE}
+
+# INTRODUCTION ################################################################
+
+# This markdown documents and integrated scripts analyse biological
+# maturity stagings.
+# The output is a .docx template that includes
+# the results of the analysis and should be used as a standard for
+# reporting of maturity staging comparisons.
+
+```
+
+```{r chunk_setup, include=FALSE}
+# CHUNK SETUPS #################################################################
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE,
+                      message=FALSE, results = 'asis', dpi=400)
+
+```
+
+
+```{r pander_settings, include = FALSE}
+# PANDER OPTIONS ##############################################################
+
+panderOptions('table.split.table', Inf)
+panderOptions('keep.trailing.zeros', TRUE)
+panderOptions('table.alignment.default', "center")
+panderOptions('knitr.auto.asis', FALSE)
+
+group <- "ex"
+
+# from extrafont
+# font_import(pattern=c("Cali"))
+# loadfonts(device="win")
+```
+
+---
+title: `r config$summary_title`
+---
+
+# Executive summary
+
+Text?
+
+
+# Overview of samples and advanced stagers
+
+Text?
+
+
+
+\br
+
+```{r sample_overview}
+
+# Table caption
+set.caption(paste('**Table X:** Overview of the number of samples (num) by length category used for the exchange event number ', event_number, ". The range of maturity stages (mat_stages), modal maturity stages (modal_mat_stages), sex categories (sex_cat) and modal sex categories (modal_sex_cat) for those individuals within the length range are also presented.", sep=""))
+
+# Output table
+pander(style_table0(sample_data_overview), style = "simple")
+
+```
+
+\br
+
+```{r participants_overview}
+
+# PARTICIPATANTS OVERVIEW #####################################################
+
+# Table caption
+set.caption('**Table X:** Overview of maturity stagers.')
+
+# Output table
+pander(style_table0(filter(stager_data, Expertise!="Basic")))
+```
+
+
+<!-- ## Advanced stagers -->
+
+<!-- **All samples included**  -->
+
+# Results overview
+
+**Multimodal cases**
+
+If there were available histological samples for all the fish individuals in the exchange event, no multiple modes are expected, however, if there were no hitology samples for some of them, multiple maturity stage modes could be found. In the next table this information is presented for the sex category determination. 
+
+<!-- Total number of samples (NSample), number (CountMM) and percentage of multimodal cases (PercMM) text -->
+```{r summary_multiple_modes_sex}
+
+histN=ad_long_all %>% subset(TypeAnnotation=="eventOrganizer") %>% select(FishID) %>% unique() %>% dim()
+allN=ad_long_all %>% select(FishID) %>% unique() %>% dim()
+perc_not_Hist=100-round(100*histN[1]/allN[1], 0)
+
+summary_multiple_modes_sex_all <-
+  c(NSample  = length(unique(ad_long_all$FishID)),
+    Nhist=histN[1],
+    Perc_not_Hist=perc_not_Hist,
+    PercMM_traditional=unique(ifelse(multimode_cases_tab_traditional_Sex_all$NModes_trad=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_traditional_Sex_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
+    PercMM_linear_weight=unique(ifelse(multimode_cases_tab_linear_Sex_all$NModes_linear=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_linear_Sex_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
+    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Sex_all$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexpweight_Sex_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
+    PercMM_multistage=unique(ifelse(multimode_cases_tab_multistage_Sex_all$NModes_multistage=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_multistage_Sex_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))))
+
+# Table caption
+set.caption('**Table X:** Summary of statistics for sex staging; Total number of fish individuals studied (NSample), number of fish individuals with histological samples (Nhist), percentage of fish individuals without histology (Perc_not_Hist). The percentage of cases (fish samples) with multiple modes depending on the approach to weight the experience of the stager which will be considered when defining the fish sex stage mode. PercMM_traditional shows the percentage of the total samples for which multiple modes are obtained when all the stagers are equally weighted. PercMM_linear_weight shows the percentage of the total samples for which multiple modes are obtained when the weight assigned to the different stagers decreases linearly with the experience, while in the PercMM_negexp the weight applied decreases with a negative exponential shape with the experience. The PercMM_multistage shows the percentage of multiple mode cases when a combination of the different methodologies is used, as explained in the material and methods section')
+
+# Output table
+pander(style_table0(summary_multiple_modes_sex_all), missing="")
+
+
+```
+
+
+If there were available histological samples for all the fish individuals in the exchange event, no multiple modes are expected, however, if there were no hitology samples for some of them, multiple maturity stage modes could be found. In the next table this information is presented for the maturity staging. 
+
+<!-- Total number of samples (NSample), number (CountMM) and percentage of multimodal cases (PercMM) text -->
+```{r summary_multiple_modes_maturity}
+
+if(!isTRUE(config$maturity_hist)){
+
+histN=ad_long_all %>% subset(TypeAnnotation=="eventOrganizer") %>% select(FishID) %>% unique() %>% dim()
+allN=ad_long_all %>% select(FishID) %>% unique() %>% dim()
+perc_not_Hist=100-round(100*histN[1]/allN[1], 0)
+
+summary_multiple_modes_maturity_all <-
+  c(NSample  = length(unique(ad_long_all$FishID)),
+    Nhist=histN[1],
+    Perc_not_Hist=perc_not_Hist,
+    PercMM_traditional=unique(ifelse(multimode_cases_tab_traditional_Maturity_all$NModes_trad=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_traditional_Maturity_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
+    PercMM_linear_weight=unique(ifelse(multimode_cases_tab_linear_Maturity_all$NModes_linear=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_linear_Maturity_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
+    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Maturity_all$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexpweight_Maturity_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
+    PercMM_multistage=unique(ifelse(multimode_cases_tab_multistage_Maturity_all$NModes_multistage=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_multistage_Maturity_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))))
+
+# Table caption
+set.caption('**Table X:** Summary of statistics for maturity staging; Total number of fish individuals studied (NSample), number of fish individuals with histological samples (Nhist), percentage of fish individuals without histology (Perc_not_Hist). The percentage of cases (fish samples) with multiple modes depending on the approach to weight the experience of the stager which will be considered when defining the fish maturity stage mode. PercMM_traditional shows the percentage of the total samples for which multiple modes are obtained when all the stagers are equally weighted. PercMM_linear_weight shows the percentage of the total samples for which multiple modes are obtained when the weight assigned to the different stagers decreases linearly with the experience, while in the PercMM_negexp the weight applied decreases with a negative exponential shape with the experience. The PercMM_multistage shows the percentage of multiple mode cases when a combination of the different methodologies is used, as explained in the material and methods section')
+
+# Output table
+pander(style_table0(summary_multiple_modes_maturity_all), missing="")
+
+}
+
+```
+
+
+**Sex categorization table**
+
+```{r num_read_sex_ex}
+
+# Sex categorization TABLE - Advanced stagers #################################################
+
+# Table caption
+set.caption('**Table X:** Sex categorization table: presents the
+             number of categorizations made per expert for each modal sex category.')
+
+# Output table
+pander(style_table0(sex_composition_tab_ex), missing = "-", style = "simple")
+
+```
+
+
+**Maturity staging table**
+
+```{r num_read_maturity_ex}
+
+# maturity stagings TABLE - Advanced stagers #################################################
+
+# Table caption
+set.caption('**Table X:** Maturity staging table: presents the
+             number of stagings made per expert stager for each modal maturity stage.')
+
+# Output table
+pander(style_table0(maturity_composition_tab_ex), missing = "-", style = "simple")
+
+```
+
+
+**Coefficient of Unalikeability (CU) table by modal sex category**
+
+```{r cv_sex_ex}
+
+# CU TABLE by modal sex category - Advanced stagers #################################################
+
+# Table caption
+set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal sex category: presents the
+             CU per modal sex category and advanced stager, the CU of all advanced
+             stagers combined per sex category stage and a weighted mean of the CU
+             per stager.')
+
+# Output table
+pander(style_table1(cu_tab_sex_ex), missing = "-")
+
+```
+
+
+**Coefficient of Unalikeability (CU) table by modal maturity stage**
+
+```{r cv_maturity_ex}
+
+# CU TABLE by modal maturity stage - Advanced stagers #################################################
+
+# Table caption
+set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage: presents the
+             CU per modal maturity and advanced stager, the CU of all advanced
+             stagers combined per modal maturity stage and a weighted mean of the CU
+             per stager.')
+
+# Output table
+pander(style_table1(cu_tab_maturity_ex), missing = "-")
+
+```
+
+
+**PA table by modal sex category**
+
+```{r percentage_agreement_sex_ex}
+
+# PERCENTAGE AGREEMENT TABLE by modal sex category - Advanced stagers ###############################
+
+# Table caption
+set.caption('**Table X:** Percentage agreement (PA) table by modal sex category: presents the PA per
+             modal sex category and stager, of all advanced stagers
+             combined and a weighted mean of the PA per stager.')
+
+# Output table
+pander(style_table1(pa_tab_sex_ex), missing = "-")
+
+```
+
+
+**PA table by modal maturity stage**
+
+```{r percentage_agreement_maturity_ex}
+
+# PERCENTAGE AGREEMENT TABLE by modal maturity stage - Advanced stagers ###############################
+
+# Table caption
+set.caption('**Table X:** Percentage agreement (PA) table: presents the PA per
+             modal maturity and stager, of all advanced stagers
+             combined and a weighted mean of the PA per stager.')
+
+# Output table
+pander(style_table1(pa_tab_maturity_ex), missing = "-")
+
+```
+
+
+
+**General frequency bias table by modal sex category **
+
+```{r rb_sex_ex,results='asis'}
+
+# Frequency bias table by modal sex category - Advanced stagers ######################################
+
+# Table caption
+set.caption('**Table X:** Frequency bias table by modal sex category: presents the frequency of the different sex categories per
+             modal maturity for all the advanced stager together.')
+
+# Output table
+pander(style_table0(general_bias_freq_tab_sex_ex), missing = "-")
+
+```
+
+
+**General frequency bias table by modal maturity stage**
+
+```{r rb_maturity_ex,results='asis'}
+
+# Frequency bias table by modal maturity stage - Advanced stagers ######################################
+
+# Table caption
+set.caption('**Table X:** Frequency bias table by modal maturity stage: presents the frequency of the different maturity stages per
+             modal maturity stage for all the advanced stager together.')
+
+# Output table
+pander(style_table0(general_bias_freq_tab_maturity_ex), missing = "-")
+
+```
+
+
+**General Frequency Bias plot by modal sex category**
+
+```{r bias_plots_sex_exp, fig.width = 5, fig.height = 4, fig.cap = cap_in}
+
+# BIAS PLOT by modal sex category - Advanced stagers ################################################
+
+# Table caption
+cap_in <- '**Figure X:** Sex categorization bias plot by modal sex category for advanced stagers: presents the frequency per
+             modal  sex category and sex category for all the advanced stager together.  '
+
+# Output figure
+plot_general_freq_sex(ad_long_ex, strata=NULL)
+
+
+```
+
+
+**General Frequency Bias plot by modal maturity stage**
+
+```{r bias_plots_maturity_exp, fig.width = 5, fig.height = 4, fig.cap = cap_in}
+
+# BIAS PLOT by modal maturity stage - Advanced stagers ################################################
+
+# Table caption
+cap_in <- '**Figure X:** Maturity staging bias plot by modal maturity stage for advanced stagers:  presents the frequency per
+             modal maturity and maturity stage for all the advanced stager together.  '
+
+# Output figure
+plot_general_freq_matur(ad_long_ex, strata=NULL)
+
+```
+
+
+
+```{r set_strata}
+# initialise strata loop
+istrata <- 0
+print_strata <- function() length(config$strata) >= istrata
+```
+
+<!-- first strata -->
+
+```{r strata_plus_one}
+# second strata
+istrata <- istrata + 1
+```
+
+```{r strata_title, eval = print_strata()}
+stratum <- config$strata[istrata]
+# Section title
+asis_output(paste("# Results by", stratum))
+```
+
+
+```{r ar_sex_title, eval = print_strata()}
+#  title
+asis_output(paste0("**Sex categorization by ", stratum, "**"))
+```
+
+```{r ar_sex_by, eval = print_strata()}
+# NUMBER OF SEX CATEGORIZATION PER STOCK - Advanced stagers #########################
+
+# Table caption
+set.caption(paste0('**Table X:** Number of sex categorization per ', stratum, ' for advanced stagers.'))
+
+# Output table
+pander(style_table1(get(vsname("num_read_tab_modal_sex_by"))), missing = "-")
+```
+
+
+```{r ar_matur_title, eval = print_strata()}
+#  title
+asis_output(paste0("**Maturity staging by ", stratum, "**"))
+```
+
+```{r ar_matur_by, eval = print_strata()}
+# NUMBER OF MATURITY STAGING PER STOCK - Advanced stagers #########################
+
+# Table caption
+set.caption(paste0('**Table X:** Number of maturity stagings per ', stratum, ' for advanced stagers.'))
+
+# Output table
+pander(style_table1(get(vsname("num_read_tab_modal_matur_by"))), missing = "-")
+```
+
+
+
+```{r cu_sex_title, eval = print_strata()}
+#  title
+asis_output(paste0("**Coefficient of Unalikeability by modal sex category ", stratum, "**"))
+```
+
+
+```{r cu_sex_by, eval = print_strata()}
+
+# Table caption
+set.caption(paste0('**Table X:** CU by modal sex category per ', stratum, '.'))
+
+# Output table
+pander(style_table2(get(vsname("cu_tab_sex_by"))), missing = "-")
+
+```
+
+
+
+```{r cu_matur_title, eval = print_strata()}
+#  title
+asis_output(paste0("**Coefficient of Unalikeability by modal maturity stage ", stratum, "**"))
+```
+
+
+```{r cu_matur_by, eval = print_strata()}
+
+# Table caption
+set.caption(paste0('**Table X:** CU by modal maturity stage per ', stratum, '.'))
+
+# Output table
+pander(style_table2(get(vsname("cu_tab_maturity_by"))), missing = "-")
+
+```
+
+
+```{r pa_sex_title, eval = print_strata()}
+#  title
+asis_output(paste0("**Percentage Agreement by sex category per ", stratum, "**"))
+```
+
+```{r pa_sex_by, eval = print_strata()}
+# Section title
+#asis_("## PA  by sex category - Advanced stagers")  #    #  #############################################
+
+# Table caption
+set.caption(paste0('**Table X:** Percentage Agreement  by sex category per ', stratum, '.'))
+
+# Output table
+pander(style_table2(get(vsname("pa_tab_sex_by"))), missing = "-")
+
+```
+
+
+
+```{r pa_matur_title, eval = print_strata()}
+#  title
+asis_output(paste0("**Percentage Agreement by maturation stage per ", stratum, "**"))
+```
+
+```{r pa_matur_by, eval = print_strata()}
+# Section title
+#asis_("## PA by maturation stage - Advanced stagers")  #    #  #############################################
+
+# Table caption
+set.caption(paste0('**Table X:** Percentage Agreement by maturation stage per ', stratum, '.'))
+
+# Output table
+pander(style_table2(get(vsname("pa_tab_maturity_by"))), missing = "-")
+
+```
+
+
+<!-- second strata -->
+
+```{r ref.label='strata_plus_one'}
+```
+
+```{r ref.label='strata_title', eval = print_strata()}
+```
+
+```{r ref.label='ar_sex_title', eval = print_strata()}
+```
+
+```{r ref.label='ar_sex_by', eval = print_strata()}
+```
+
+```{r ref.label='ar_matur_title', eval = print_strata()}
+```
+
+```{r ref.label='ar_matur_by', eval = print_strata()}
+```
+
+```{r ref.label='cu_sex_title', eval = print_strata()}
+```
+
+```{r ref.label='cu_sex_by', eval = print_strata()}
+```
+
+```{r ref.label='cu_matur_title', eval = print_strata()}
+```
+
+```{r ref.label='cu_matur_by', eval = print_strata()}
+```
+
+```{r ref.label='pa_sex_title', eval = print_strata()}
+```
+
+```{r ref.label='pa_sex_by', eval = print_strata()}
+```
+
+```{r ref.label='pa_matur_title', eval = print_strata()}
+```
+
+```{r ref.label='pa_matur_by', eval = print_strata()}
+```
+
+
+<!-- third strata -->
+
+```{r ref.label='strata_plus_one'}
+```
+
+```{r ref.label='strata_title', eval = print_strata()}
+```
+
+```{r ref.label='ar_sex_title', eval = print_strata()}
+```
+
+```{r ref.label='ar_sex_by', eval = print_strata()}
+```
+
+```{r ref.label='ar_matur_title', eval = print_strata()}
+```
+
+```{r ref.label='ar_matur_by', eval = print_strata()}
+```
+
+```{r ref.label='cu_sex_title', eval = print_strata()}
+```
+
+```{r ref.label='cu_sex_by', eval = print_strata()}
+```
+
+```{r ref.label='cu_matur_title', eval = print_strata()}
+```
+
+```{r ref.label='cu_matur_by', eval = print_strata()}
+```
+
+```{r ref.label='pa_sex_title', eval = print_strata()}
+```
+
+```{r ref.label='pa_sex_by', eval = print_strata()}
+```
+
+```{r ref.label='pa_matur_title', eval = print_strata()}
+```
+
+```{r ref.label='pa_matur_by', eval = print_strata()}
+```
+
+
+<!-- fourth strata -->
+
+```{r ref.label='strata_plus_one'}
+```
+
+```{r ref.label='strata_title', eval = print_strata()}
+```
+
+```{r ref.label='ar_sex_title', eval = print_strata()}
+```
+
+```{r ref.label='ar_sex_by', eval = print_strata()}
+```
+
+```{r ref.label='ar_matur_title', eval = print_strata()}
+```
+
+```{r ref.label='ar_matur_by', eval = print_strata()}
+```
+
+```{r ref.label='cu_sex_title', eval = print_strata()}
+```
+
+```{r ref.label='cu_sex_by', eval = print_strata()}
+```
+
+```{r ref.label='cu_matur_title', eval = print_strata()}
+```
+
+```{r ref.label='cu_matur_by', eval = print_strata()}
+```
+
+```{r ref.label='pa_sex_title', eval = print_strata()}
+```
+
+```{r ref.label='pa_sex_by', eval = print_strata()}
+```
+
+```{r ref.label='pa_matur_title', eval = print_strata()}
+```
+
+```{r ref.label='pa_matur_by', eval = print_strata()}
+```
+
+
+# Conclusion
