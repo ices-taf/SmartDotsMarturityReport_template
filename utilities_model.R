@@ -353,21 +353,16 @@ general_freq_table <- function(ad_long, varmod, by=NULL) {
 
 data_overview_table <- function(dat, varmod, report_token) {
 
-  if(any(dat$TypeAnnotation=="eventOrganizer")){
+  if (any(dat$TypeAnnotation == "eventOrganizer")) {
     hist <-
-      dat[dat$TypeAnnotation=="eventOrganizer",]  %>%
-      ddply(.(SampleID), summarise, Histology=rep("yes",1)) %>%
+      dat[dat$TypeAnnotation == "eventOrganizer", ] %>%
+      ddply(.(SampleID), summarise, Histology = "yes") %>%
       select(., c("SampleID", "Histology"))
-
-    dat=merge(dat, hist, by.x="SampleID", by.y="SampleID", all.x=T)
-    dat$Histology[is.na(dat$Histology)]="no"
-
+    dat <- merge(dat, hist, by.x = "SampleID", by.y = "SampleID", all.x = TRUE)
+    dat$Histology[is.na(dat$Histology)] <- "no"
   } else {
-
-    dat$Histology="no"
-
+    dat$Histology <- "no"
   }
-
 
   # Select only columns of maturity staging
   ad_wide <-
@@ -379,21 +374,17 @@ data_overview_table <- function(dat, varmod, report_token) {
   readings <-
     ad_wide %>%
     select(matches("R[0-9][0-9]*"))
-
-  ad_wide$Mode <-
-    apply(
-      readings, 1,
-      function(x) {
-        out <- Mode_II(x)
-        if (is.null(out)) NA else out
-      }
-    )
   
-  ad_wide$`PA %` <- round(rowMeans(readings == ad_wide$`Mode`, na.rm = TRUE)*100)
-  ad_wide$`CU %` <- round(apply(readings, 1, cu_II),3)
+  complete <- complete.cases(readings)
+
+  ad_wide[c("Mode", "PA %", "CU %")] <- NA
+
+  ad_wide$Mode[complete] <- apply(readings[complete,], 1, Mode_II)
+  ad_wide$`PA %`[complete] <- round(rowMeans(readings[complete, ] == ad_wide$Mode[complete], na.rm = TRUE) * 100)
+  ad_wide$`CU %`[complete] <- round(apply(readings[complete,], 1, cu_II), 3)
   ad_wide$`CU %`[is.nan(ad_wide$`CU %`)] <- NA
   ad_wide <- dplyr::rename(ad_wide, `ICES area` = ices_area)
-  ad_wide[is.na(ad_wide)]="-"
+  ad_wide[is.na(ad_wide)] <- "-"
 
   # add hyper link for tables
   if(is.null(dat$SampleID)) {

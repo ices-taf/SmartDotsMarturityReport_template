@@ -205,14 +205,12 @@ for (group in c("all", "ex")) {
 
   #################
   # data overview
-  if (FALSE) {
-    # fails if a fish has no readings
-    assign(
-      vname("data_overview_tab_maturity"),
-      data_overview_table(ad_long, "Maturity", config$report_tokens)
-    )
-    write.taf(vname("data_overview_tab_maturity"), dir = "model")
-  }
+  assign(
+    vname("data_overview_tab_maturity"),
+    data_overview_table(ad_long, "Maturity", config$report_tokens)
+  )
+  write.taf(vname("data_overview_tab_maturity"), dir = "model")
+
 
   assign(
     vname("data_overview_tab_sex"),
