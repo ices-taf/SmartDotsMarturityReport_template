@@ -35,6 +35,12 @@ unlink(zipfile)
 # drop comments feild
 ad <- ad[,names(ad) != "Comment"]
 
+# set experise of event organiser to 1
+if (all(is.na(ad$expertise[ad$TypeAnnotation == "eventOrganizer"]))) {
+  message("setting eventOrganiser expertise to 'expert' as none was provided.")
+  ad$expertise[ad$TypeAnnotation == "eventOrganizer"] <- 1
+}
+
 # Change the Strata variable in the ad database if needed
 #if(unique(!select_strata == "strata")) {
 #  for(i in 1:length(select_strata))
