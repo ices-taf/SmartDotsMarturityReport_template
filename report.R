@@ -4,17 +4,17 @@
 ## After:
 
 # # load libraries
-# library(icesTAF)
-# library(rmarkdown)
-# library(jsonlite)
-# library(knitr)
+library(icesTAF)
+library(rmarkdown)
+library(jsonlite)
+library(knitr)
 # 
-# library(pander)
-# library(ggplot2)
-# library(scales)
-# unloadNamespace("plyr")
-# library(dplyr)
-# require(Hmisc)
+library(pander)
+library(ggplot2)
+library(scales)
+unloadNamespace("plyr")
+library(dplyr)
+library(Hmisc)
 
 # make report directory
 mkdir("report")
@@ -24,7 +24,7 @@ source("utilities.R")
 source("utilities_report.R")
 
 # load configuration data
-# config <- read_json("bootstrap/basic_files/config.json", simplifyVector = TRUE)
+config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
 
 # load data for report
 ad_long_all <- read.taf("data/ad_long.csv")
@@ -99,6 +99,3 @@ if(is.null(config$strata)) {
          encoding = "UTF-8")
 }
 cp(report_filename, "report", move = TRUE)
-
-
-

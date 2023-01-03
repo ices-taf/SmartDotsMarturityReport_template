@@ -4,7 +4,7 @@ output:
     fig_caption: true
     fig_height: 10
     fig_width: 10
-    reference_docx: bootstrap/basic_files/reportTemplate.docx
+    reference_docx: bootstrap/data/reportTemplate.docx
     toc: true
     keep_md: false
 params:
@@ -127,7 +127,14 @@ the stock assessment in that specific area.
 ```{r sample_overview}
 
 # Table caption
-set.caption(paste('**Table X:** Overview of samples used for the exchange event number ', event_number, '. The number of samples (num) are shown by year, ices area, season (qtr). The range of maturity stages (mat_stages) and sex (sex_cat) assigned by the group or stagers participating in the event is also shown, as well as the range of modal maturity stages (modal_mat_stages) and modal sex (modal_sex_cat) decided for all samples.', sep=""))
+set.caption(
+  paste(
+    '**Table X:** Overview of samples used for the exchange event number ', 
+    config$event_id, 
+    '. The number of samples (num) are shown by year, ices area, season (qtr). The range of maturity stages (mat_stages) and sex (sex_cat) assigned by the group or stagers participating in the event is also shown, as well as the range of modal maturity stages (modal_mat_stages) and modal sex (modal_sex_cat) decided for all samples.', 
+    sep=""
+  )
+)
 
 # Output table
 pander(style_table0(sample_data_overview), style = "simple")
@@ -181,7 +188,7 @@ summary_multiple_modes_sex_all <-
     Perc_not_Hist=perc_not_Hist,
     PercMM_traditional=unique(ifelse(multimode_cases_tab_traditional_Sex_all$NModes_trad=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_traditional_Sex_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
     PercMM_linear_weight=unique(ifelse(multimode_cases_tab_linear_Sex_all$NModes_linear=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_linear_Sex_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
-    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Sex_all$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexpweight_Sex_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
+    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Sex_all$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexp_Sex_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
     PercMM_multistage=unique(ifelse(multimode_cases_tab_multistage_Sex_all$NModes_multistage=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_multistage_Sex_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))))
 
 # Table caption
@@ -209,7 +216,7 @@ summary_multiple_modes_maturity_all <-
     Perc_not_Hist=perc_not_Hist,
     PercMM_traditional=unique(ifelse(multimode_cases_tab_traditional_Maturity_all$NModes_trad=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_traditional_Maturity_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
     PercMM_linear_weight=unique(ifelse(multimode_cases_tab_linear_Maturity_all$NModes_linear=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_linear_Maturity_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
-    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Maturity_all$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexpweight_Maturity_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
+    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Maturity_all$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexp_Maturity_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))),
     PercMM_multistage=unique(ifelse(multimode_cases_tab_multistage_Maturity_all$NModes_multistage=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_multistage_Maturity_all)/length(unique(ad_long_all$SampleID)))*100, digits=0),"%"))))
 
 # Table caption
@@ -254,7 +261,7 @@ basicols=ncols-nstagers
 
 z=8
 nfig=round((dim(data)[2]-basicols)/z)
-N=min(Z,ncols)
+N=min(z,ncols)
 for(i in 1:nfig)
 {
   if(i==1){
@@ -319,7 +326,7 @@ basicols=ncols-nstagers
 
 z=8
 nfig=round((dim(data)[2]-basicols)/z)
-N=min(Z,ncols)
+N=min(z,ncols)
 for(i in 1:nfig)
 {
   if(i==1){
@@ -380,7 +387,7 @@ basicols=ncols-nstagers
 
 z=8
 nfig=round((dim(data)[2]-basicols)/z)
-N=min(Z,ncols)
+N=min(z,ncols)
 for(i in 1:nfig)
 {
   if(i==1){
@@ -441,7 +448,7 @@ basicols=ncols-nstagers
 
 z=8
 nfig=round((dim(data)[2]-basicols)/z)
-N=min(Z,ncols)
+N=min(z,ncols)
 for(i in 1:nfig)
 {
   if(i==1){
@@ -499,7 +506,7 @@ basicols=ncols-nstagers
 
 z=8
 nfig=round((dim(data)[2]-basicols)/z)
-N=min(Z,ncols)
+N=min(z,ncols)
 for(i in 1:nfig)
 {
   if(i==1){
@@ -553,7 +560,7 @@ basicols=ncols-nstagers
 
 z=8
 nfig=round((dim(data)[2]-basicols)/z)
-N=min(Z,ncols)
+N=min(z,ncols)
 for(i in 1:nfig)
 {
   if(i==1){
@@ -680,7 +687,7 @@ basicols=ncols-nstagers
 
 z=8
 nfig=round((dim(data)[2]-basicols)/z)
-N=min(Z,ncols)
+N=min(z,ncols)
 for(i in 1:nfig)
 {
   if(i==1){
@@ -739,7 +746,7 @@ basicols=ncols-nstagers
 
 z=8
 nfig=round((dim(data)[2]-basicols)/z)
-N=min(Z,ncols)
+N=min(z,ncols)
 for(i in 1:nfig)
 {
   if(i==1){
@@ -1073,7 +1080,7 @@ summary_multiple_modes_sex_ex <-
     Perc_not_Hist=perc_not_Hist,
     PercMM_traditional=unique(ifelse(multimode_cases_tab_traditional_Sex_ex$NModes_trad=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_traditional_Sex_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
     PercMM_linear_weight=unique(ifelse(multimode_cases_tab_linear_Sex_ex$NModes_linear=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_linear_Sex_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
-    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Sex_ex$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexpweight_Sex_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
+    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Sex_ex$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexp_Sex_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
     PercMM_multistage=unique(ifelse(multimode_cases_tab_multistage_Sex_ex$NModes_multistage=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_multistage_Sex_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))))
 
 # Table caption
@@ -1100,7 +1107,7 @@ summary_multiple_modes_maturity_ex <-
     Perc_not_Hist=perc_not_Hist,
     PercMM_traditional=unique(ifelse(multimode_cases_tab_traditional_Maturity_ex$NModes_trad=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_traditional_Maturity_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
     PercMM_linear_weight=unique(ifelse(multimode_cases_tab_linear_Maturity_ex$NModes_linear=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_linear_Maturity_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
-    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Maturity_ex$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexpweight_Maturity_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
+    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Maturity_ex$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexp_Maturity_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
     PercMM_multistage=unique(ifelse(multimode_cases_tab_multistage_Maturity_ex$NModes_multistage=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_multistage_Maturity_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))))
 
 # Table caption
@@ -2114,5 +2121,3 @@ pander(style_table0(datos), missing="-", style = "simple")
 
 
 # Annex 7. Report specific annexes
-
-
