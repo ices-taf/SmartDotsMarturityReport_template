@@ -235,54 +235,59 @@ pa_table <- function(ad_long, varmod, by = "reader") {
 
 reader_freq_table <- function(ad_long, varmod, by=NULL) {
 
-  if(is.null(by)){
-    reader_freq_tab=
+  if(is.null(by)) {
+    reader_freq_tab <- 
       ad_long %>%
       ddply(.(eval(parse(text=paste0("modal_", tolower(varmod)))), get(all_of(varmod)), reader), summarise, count=length(get(all_of(varmod))))
-    colnames(reader_freq_tab)=c(paste0("modal_", tolower(varmod)), tolower(varmod), "reader","count")
+    colnames(reader_freq_tab) <- c(paste0("modal_", tolower(varmod)), tolower(varmod), "reader","count")
 
-    temp=
+    temp <-
       ad_long %>%
       ddply(.(eval(parse(text=paste0("modal_", tolower(varmod)))), reader), summarise, count=length(get(all_of(varmod))))
     colnames(temp)=c(paste0("modal_", tolower(varmod)), "reader","count")
 
-    reader_freq_tab=merge(reader_freq_tab, temp, by.x=c(paste0("modal_", tolower(varmod)), "reader"), by.y=c(paste0("modal_", tolower(varmod)), "reader"))
+    reader_freq_tab <- merge(reader_freq_tab, temp, by.x=c(paste0("modal_", tolower(varmod)), "reader"), by.y=c(paste0("modal_", tolower(varmod)), "reader"))
 
-    reader_freq_tab$freqrelat=round(reader_freq_tab$count.x/reader_freq_tab$count.y, digits=3)
+    reader_freq_tab$freqrelat <- round(reader_freq_tab$count.x/reader_freq_tab$count.y, digits=3)
 
-    reader_freq_tab=reader_freq_tab[,-c(4, 5)]
+    reader_freq_tab <- reader_freq_tab %>% select(-count.x, -count.y)
 
-    reader_freq_tab=
+    reader_freq_tab <- 
       reader_freq_tab %>%
       spread(key=reader, value=freqrelat)
 
-    temp=data.frame(expand.grid(unique(eval(parse(text=paste0("ad_long$modal_", tolower(all_of(varmod)))))), unique(eval(parse(text=paste0("ad_long$", all_of(varmod)))))))
-    colnames(temp)=c(paste0("modal_", tolower(all_of(varmod))), tolower(all_of(varmod)))
+    #temp <-
+    #  expand.grid(
+    #    unique(ad_long[, paste0("modal_", tolower(varmod))]), 
+    #    unique(ad_long[, varmod])
+    #  )
+    temp <- data.frame(expand.grid(unique(eval(parse(text=paste0("ad_long$modal_", tolower(all_of(varmod)))))), unique(eval(parse(text=paste0("ad_long$", all_of(varmod)))))))
+    colnames(temp) <- c(paste0("modal_", tolower(all_of(varmod))), tolower(all_of(varmod)))
 
-    reader_freq_tab=merge(reader_freq_tab, temp, by.x=c(paste0("modal_", tolower(all_of(varmod))), tolower(all_of(varmod))),  by.y=c(paste0("modal_", tolower(all_of(varmod))), tolower(all_of(varmod))), all.y=T)
+    reader_freq_tab <- merge(reader_freq_tab, temp, by.x=c(paste0("modal_", tolower(all_of(varmod))), tolower(all_of(varmod))),  by.y=c(paste0("modal_", tolower(all_of(varmod))), tolower(all_of(varmod))), all.y=TRUE)
 
-    reader_freq_tab[,1]=as.character(reader_freq_tab[,1])
+    reader_freq_tab[,1] <- as.character(reader_freq_tab[,1])
 
-    reader_freq_tab=rbind(reader_freq_tab, c("all", "all", as.numeric(colMeans(reader_freq_tab[,3:dim(reader_freq_tab)[2]], na.rm=TRUE))))
+    reader_freq_tab <- rbind(reader_freq_tab, c("all", "all", as.numeric(colMeans(reader_freq_tab[,3:dim(reader_freq_tab)[2]], na.rm=TRUE))))
 
-    reader_freq_tab[is.na(reader_freq_tab)]=0
+    reader_freq_tab[is.na(reader_freq_tab)] <- 0
 
-    reader_freq_tab$Total=round(rowMeans(as.data.frame(lapply(reader_freq_tab[,3:dim(reader_freq_tab)[2]],as.numeric)), na.rm=TRUE), digits=3)
+    reader_freq_tab$Total <- round(rowMeans(as.data.frame(lapply(reader_freq_tab[,3:dim(reader_freq_tab)[2]],as.numeric)), na.rm=TRUE), digits=3)
 
-    reader_freq_tab[is.na(reader_freq_tab)]="-"
+    reader_freq_tab[is.na(reader_freq_tab)] <- "-"
   } else {
 
-    reader_freq_tab=
+    reader_freq_tab <-
       ad_long %>%
-      ddply(.(eval(parse(text=paste0("modal_", tolower(varmod)))), get(all_of(varmod)), reader, get(all_of(by))), summarise, count=length(get(all_of(varmod))))
-    colnames(reader_freq_tab)=c(paste0("modal_", tolower(varmod)), tolower(varmod), "reader", by, "count")
+      ddply(.(eval(parse(text=paste0("modal_", tolower(varmod)))), get(varmod), reader, get(by)), summarise, count=length(get(all_of(varmod))))
+    colnames(reader_freq_tab) <- c(paste0("modal_", tolower(varmod)), tolower(varmod), "reader", by, "count")
 
-    temp=
+    temp <-
       ad_long %>%
       ddply(.(eval(parse(text=paste0("modal_", tolower(varmod)))), reader, get(all_of(by))), summarise, count=length(get(all_of(varmod))))
-    colnames(temp)=c(paste0("modal_", tolower(varmod)), "reader", by, "count")
+    colnames(temp) <- c(paste0("modal_", tolower(varmod)), "reader", by, "count")
 
-    reader_freq_tab=merge(reader_freq_tab, temp, by.x=c(paste0("modal_", tolower(varmod)), "reader", by), by.y=c(paste0("modal_", tolower(varmod)), "reader", by))
+    reader_freq_tab <- merge(reader_freq_tab, temp, by.x=c(paste0("modal_", tolower(varmod)), "reader", by), by.y=c(paste0("modal_", tolower(varmod)), "reader", by))
 
     reader_freq_tab$freqrelat=round(reader_freq_tab$count.x/reader_freq_tab$count.y, digits=3)
 
