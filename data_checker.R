@@ -28,7 +28,8 @@ check_ad <- function(ad, what = "ad") {
       c("samples with missing stock: ", sum(is.na(ad$stock) | ad$stock == "")),
       c("samples with missing prep_method: ", sum(is.na(ad$prep_method) | ad$prep_method == "")),
       c("prep_method names: ", frmt_vector(table(ad$prep_method))),
-      c("Advanced reader annotations: ", sum(ad$expertise))
+      c("Advanced reader annotations: ", sum(ad$expertise)),
+      c("Samples with missing strata: ", sum(is.na(ad$strata)))
     )
 
   check_text <- paste(sapply(checks, paste, collapse = ""), collapse = "\n * ")
