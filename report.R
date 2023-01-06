@@ -64,38 +64,3 @@ render("report_full.Rmd",
        encoding = "UTF-8")
 
 cp(report_filename, "report", move = TRUE)
-
-
-# # render summary and copy to report folder
-# summary_filename <- paste0(config$summary_name, ".docx")
-# if(is.null(config$strata)) {
-#   render("report_summary.Rmd",
-#          params = list(summary_title = config$summary_title,
-#                        warn_AEM=config$warn_AEM),
-#          output_file = summary_filename,
-#          encoding = "UTF-8")
-# } else {
-#   render("report_summary.Rmd",
-#          params = list(summary_title = config$summary_title,
-#                        strata = unique(ad_long_all$strata),
-#                        warn_AEM=config$warn_AEM),
-#          output_file = summary_filename,
-#          encoding = "UTF-8")
-# }
-# cp(summary_filename, "report", move = TRUE)
-# 
-# render report and copy to report folder
-report_filename <- paste0(config$report_name, ".docx")
-if(is.null(config$strata)) {
-  render("report_full.Rmd",
-         params = list(report_title = config$report_title),
-         output_file = report_filename,
-         encoding = "UTF-8")
-} else {
-  render("report_full.Rmd",
-         params = list(report_title = config$report_title,
-                       strata = unique(ad_long_all$strata)),
-         output_file = report_filename,
-         encoding = "UTF-8")
-}
-cp(report_filename, "report", move = TRUE)
