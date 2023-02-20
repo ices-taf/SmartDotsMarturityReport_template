@@ -1,13 +1,13 @@
-
 # Determine modal maturity and CV ##################################################
 
 # For each sample the cv and modal maturity are calculated.
 # If one maturity is more frequent than others, that maturity is chosen as modal maturity.
-# If no maturity is more frequent, then the average of all ages are chosen or
-# if two (or more) ages are equally frequent then the age read by the most
-# expericed reader will be chosen as modal age.
+# If no maturity is more frequent, then the average of all maturities are chosen or
+# if two (or more) maturities are equally frequent then the maturity by the most
+# EventOrganizer will be chosen as modal maturity.
 # WHich method to use is set in the ma_method variable.
-# If the modal age is 0 the CV is set to 0 as well.
+# If the modal maturity is 0 the CV is set to 0 as well.
+
 
 add_modal_trad <- function(ad, varmod, ma_method) {
   
@@ -156,7 +156,8 @@ add_modal_negexpweight <- function(ad, varmod, ma_method) {
 
 select_mode=function(ad, ma_method, mode_definition){
 
-  dat1=ad[ad$TypeAnnotation=="eventOrganizer",] %>%
+  #dat1=ad[ad$TypeAnnotation=="eventOrganizer",] %>%
+  dat1=ad[ad$TypeAnnotation=="eventOrganizer" & ad$DoesSampleHaveHistologyImage=="Yes",] %>%
     mutate(modal_maturity=Maturity, modal_sex=Sex) %>%
     select(FishID, SampleID, modal_maturity, modal_sex) %>%
     distinct()
