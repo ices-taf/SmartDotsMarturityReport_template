@@ -4,7 +4,7 @@ output:
     fig_caption: true
     fig_height: 10
     fig_width: 10
-    reference_docx: bootstrap/data/reportTemplate.docx
+    reference_docx: bootstrap/initial/data/reportTemplate.docx
     toc: true
     keep_md: false
 params:
@@ -62,7 +62,7 @@ and what to expect to read about in the report.
 
 # Methods
 
-This report contains statistical analyses and comparisons of sex categorization and maturity stagings
+This report contains statistical analyses and comparisons of sex categorization and maturity staging’s
 in the form of tables and graphical plots.
 
 First, an overview of participating maturity stagers and the samples are presented.
@@ -76,12 +76,12 @@ be moved to the body of the report this is also possible. Only the plots
 cannot be changed.
 
 In the first part of analysis some of the tables and plots from the
-Guus Eltink Excel sheet 'Age Reading Comparisons' **(Eltink, A.T.G.W. 2000)** are presented, that can be used for "maturity staging comparisons". Since the sex categories and maturity stages are categorical in comparison to ages that are quantitative, some of the statistics presented in the report of the age exchange events cannot be calculated here, like the average percentage error or the coefficient of variation. The later is being replaced by the coefficient of unlikeability (see bellow).
+Guus Eltink Excel sheet 'Age Reading Comparisons' **(Eltink, A.T.G.W. 2000)** are presented, that can be used for "maturity staging comparisons". Since the sex categories and maturity stages are categorical in comparison to ages that are quantitative, some of the statistics presented in the report of the age exchange events cannot be calculated here, like the average percentage error or the coefficient of variation. The latter is being replaced by the coefficient of unlikeability (see below).
 
 
 **Pecentage Agreement**
 
-The percentage agreement tells how large is the part of sex categorizations/maturity stagings that are equal to the modal sex/maturity. The percentage agreement is estimated by modal sex or maturity and stager as the proportion (as percentage) of times that the lectures of that stager agreed with the resulting modal sex or maturity.This percentage is estimated as the number of times that a stager agreed with the modal sex or maturity divided by the total number of gonads analyzed by a stager for that modal maturity stage.
+The percentage agreement tells how large is the part of sex categorizations/maturity staging’s that are equal to the modal sex/maturity. The percentage agreement is estimated by modal sex or maturity and stager as the proportion (as percentage) of times that the lectures of that stager agreed with the resulting modal sex or maturity. This percentage is estimated as the number of times that a stager agreed with the modal sex or maturity divided by the total number of gonads analyzed by a stager for that modal maturity stage.
 
 $$PA = { \frac{ {number \,of \,readings \,that \,agree \,with \,modal \,maturity}} {total \,number \,of \,readings \,by \,modal \,maturity} } \cdot {100 \%} $$
 
@@ -148,7 +148,7 @@ pander(style_table0(sample_data_overview), style = "simple")
 # PARTICIPATANTS OVERVIEW #####################################################
 
 # Table caption
-set.caption('**Table X:** Overview of stagers participating in the event, with their overal expertise (Expertise), and their ranking position based in their experience (only valid if the experience weighting protocol has been applied).')
+set.caption('**Table X:** Overview of stagers participating in the event, with their overall expertise (Expertise), and their ranking position based in their experience (only valid if the experience weighting protocol has been applied).')
 
 # Output table
 pander(style_table0(filter(stager_data)))
@@ -178,7 +178,11 @@ If there were available histological samples for all the fish individuals in the
 <!-- Total number of samples (NSample), number (CountMM) and percentage of multimodal cases (PercMM) text -->
 ```{r summary_multiple_modes_sex_all}
 
-histN=ad_long_all %>% subset(TypeAnnotation=="eventOrganizer") %>% select(FishID) %>% unique() %>% dim()
+#histN=ad_long_all %>% subset(TypeAnnotation=="eventOrganizer") %>% select(FishID) %>% unique() %>% dim()
+#allN=ad_long_all %>% select(FishID) %>% unique() %>% dim()
+#perc_not_Hist=100-round(100*histN[1]/allN[1], 0)
+
+histN=ad %>% subset(DoesSampleHaveHistologyImage=="Yes") %>% select(FishID) %>% unique() %>% dim()
 allN=ad_long_all %>% select(FishID) %>% unique() %>% dim()
 perc_not_Hist=100-round(100*histN[1]/allN[1], 0)
 
@@ -206,7 +210,7 @@ If there were available histological samples for all the fish individuals in the
 <!-- Total number of samples (NSample), number (CountMM) and percentage of multimodal cases (PercMM) text -->
 ```{r summary_multiple_modes_maturity_all}
 
-histN=ad_long_all %>% subset(TypeAnnotation=="eventOrganizer") %>% select(FishID) %>% unique() %>% dim()
+histN=ad %>% subset(DoesSampleHaveHistologyImage=="Yes") %>% select(FishID) %>% unique() %>% dim()
 allN=ad_long_all %>% select(FishID) %>% unique() %>% dim()
 perc_not_Hist=100-round(100*histN[1]/allN[1], 0)
 
@@ -250,11 +254,10 @@ The average percentage agreement by modal sex category for all stagers was `r su
 
 Text?
 
-```{r num_read_sex_all}
+```{r sex_composition_tab_all}
 
 # Sex categorization TABLE - All stagers #################################################
-data=num_read_tab_modal_sex_by_reader_all
-#data=sex_composition_tab_all
+data=sex_composition_tab_all
 nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
@@ -272,7 +275,7 @@ for(i in 1:nfig)
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
       pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
@@ -280,30 +283,6 @@ for(i in 1:nfig)
   }
 }
 
-# #data=num_read_tab_modal_sex_by_reader_all
-# data=sex_composition_tab_all
-# nstagers=length(unique(stager_data$'Reader code'))
-# ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
-# basicols=ncols-nstagers
-# 
-# nfig=round((dim(data)[2]-basicols)/10, digits=0)
-# for(i in 1:nfig)
-# {
-#   if(i==1){
-#     # Table caption
-#     set.caption('**Table X:** Sex categorization table: presents the
-#              number of categorizations made per expert for each modal sex category.')
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#   } else { if(i<nfig){
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     } else {
-#       selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):dim(data)[2])]
-#       pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     }
-#   }
-# }
 
 ```
 
@@ -316,7 +295,7 @@ Text?
 
 ```{r num_read_maturity_all}
 
-# maturity stagings TABLE - All stagers #################################################
+# maturity staging’s TABLE - All stagers #################################################
 
 #data=num_read_tab_modal_matur_by_reader_all
 data=maturity_composition_tab_all
@@ -332,7 +311,7 @@ for(i in 1:nfig)
   if(i==1){
     # Table caption
     set.caption('**Table X:** Maturity staging table: presents the
-             number of stagings made per expert stager for each modal maturity stage.')
+             number of staging’s made per expert stager for each modal maturity stage.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
   } else { if(i<nfig){
@@ -344,26 +323,6 @@ for(i in 1:nfig)
     }
   }
 }
-
-
-# nfig=round((dim(data)[2]-basicols)/10, digits=0)
-# for(i in 1:nfig)
-# {
-#   if(i==1){
-#     # Table caption
-#     set.caption('**Table X:** Maturity staging table: presents the
-#              number of stagings made per expert stager for each modal maturity stage.')
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#   } else { if(i<nfig){
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     } else {
-#       selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):dim(data)[2])]
-#       pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     }
-#   }
-# }
 
 ```
 
@@ -402,30 +361,11 @@ for(i in 1:nfig)
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     }
   }
 }
 
-# nfig=round((dim(data)[2]-basicols)/10, digits=0)
-# for(i in 1:nfig)
-# {
-#   if(i==1){
-#     # Table caption
-#     set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal sex category: presents the
-#              CU per modal sex category and stager, the CU of all stagers combined per sex category stage and a weighted mean of the CU
-#              per stager.')
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple")  #changed here to not appear the last column in bolt
-#   } else { if(i<nfig){
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     } else {
-#       selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):dim(data)[2])]
-#       pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     }
-#   }
-# }
 
 ```
 
@@ -439,7 +379,7 @@ Text?
 
 ```{r cu_maturity_all_table}
 
-# CU TABLE by modal sex category - All stagers #################################################
+# CU TABLE by modal maturity stages - All stagers #################################################
 
 data=cu_tab_maturity_all
 nstagers=length(unique(stager_data$'Reader code'))
@@ -454,7 +394,7 @@ for(i in 1:nfig)
   if(i==1){
     # Table caption
     set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage: presents the
-             CU per modal maturity stage and stager, the CU of all stagers combined per maturity stage stage and a weighted mean of the CU
+             CU per modal maturity stage and stager, the CU of all stagers combined per maturity stage and a weighted mean of the CU
              per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
@@ -463,37 +403,79 @@ for(i in 1:nfig)
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     }
   }
 }
 
-# nfig=round((dim(data)[2]-basicols)/10, digits=0)
-# for(i in 1:nfig)
-# {
-#   if(i==1){
-#     set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage: presents the
-#              CU per modal maturity stage and stager, the CU of all stagers combined per maturity stage stage and a weighted mean of the CU
-#              per stager.')
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#   } else { if(i<nfig){
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     } else {
-#       selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):dim(data)[2])]
-#       pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     }
-#   }
-# }
 
 ```
 
+```{r cu_tab_maturity_females_all}
+# CU TABLE by modal maturity stages (Females) - All stagers #################################################
+
+data=cu_tab_maturity_females_all
+nstagers=length(unique(stager_data$'Reader code'))
+ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
+basicols=ncols-nstagers
+
+z=8
+nfig=round((dim(data)[2]-basicols)/z)
+N=min(z,ncols)
+for(i in 1:nfig)
+{
+  if(i==1){
+    # Table caption
+    set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage (only for females): presents the CU per modal maturity stage and stager, the CU of all stagers combined per maturity stage and a weighted mean of the CU per stager.')
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+  } else { if(i<nfig){
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    } else {
+      selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
+      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    }
+  }
+}
+
+
+```
+```{r cu_tab_maturity_males_all}
+# CU TABLE by modal maturity stages (Males) - All stagers #################################################
+
+data=cu_tab_maturity_females_all
+nstagers=length(unique(stager_data$'Reader code'))
+ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
+basicols=ncols-nstagers
+
+z=8
+nfig=round((dim(data)[2]-basicols)/z)
+N=min(z,ncols)
+for(i in 1:nfig)
+{
+  if(i==1){
+    # Table caption
+    set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage (only for males): presents the CU per modal maturity stage and stager, the CU of all stagers combined per maturity stage and a weighted mean of the CU per stager.')
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+  } else { if(i<nfig){
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    } else {
+      selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
+      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    }
+  }
+}
+
+
+```
 
 **PA table by modal sex category**
 
 <!-- PA text -->
-The percentage agreement per stager and modal maturity stage represent the proportion of the total number of stagings that are equal to the modal maturity stage. The weighted mean including at the bottom of the table is weighted according to number of maturity stagings.
+The percentage agreement per stager and modal maturity stage represent the proportion of the total number of staging’s that are equal to the modal maturity stage. The weighted mean including at the bottom of the table is weighted according to number of maturity staging’s.
 
 ```{r percentage_agreement_sex_all}
 
@@ -519,28 +501,11 @@ for(i in 1:nfig)
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     }
   }
 }
 
-# nfig=round((dim(data)[2]-basicols)/10, digits=0)
-# for(i in 1:nfig)
-# {
-#   if(i==1){
-#     # Table caption
-#     set.caption('**Table X:** Percentage agreement (PA) table: shows the PA per modal sex category and stager, the PA for all stagers combined and the weighted mean of the PA per stager.')
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#   } else { if(i<nfig){
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     } else {
-#       selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):dim(data)[2])]
-#       pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     }
-#   }
-# }
 
 ```
 
@@ -573,44 +538,94 @@ for(i in 1:nfig)
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     }
   }
 }
 
-# nfig=round((dim(data)[2]-basicols)/10, digits=0)
-# for(i in 1:nfig)
-# {
-#   if(i==1){
-#     # Table caption
-#     set.caption('**Table X:** Percentage agreement (PA) table: shows the PA per modal maturity and stager, the PA for all stagers combined and the weighted mean of the PA per stager.')
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#   } else { if(i<nfig){
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     } else {
-#       selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):dim(data)[2])]
-#       pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     }
-#   }
-# }
+
+
+```
+
+```{r percentage_agreement_maturity_females_all}
+
+# PERCENTAGE AGREEMENT TABLE by modal maturity stage (females) - All stagers ####################################
+
+data=pa_tab_maturity_females_all
+nstagers=length(unique(stager_data$'Reader code'))
+ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
+basicols=ncols-nstagers
+
+
+z=8
+nfig=round((dim(data)[2]-basicols)/z)
+N=min(z,ncols)
+for(i in 1:nfig)
+{
+  if(i==1){
+    # Table caption
+    set.caption('**Table X:** Percentage agreement (PA) table: shows the PA per modal maturity and stager (only females), the PA for all stagers combined and the weighted mean of the PA per stager.')
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+  } else { if(i<nfig){
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    } else {
+      selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
+      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    }
+  }
+}
+
+
+
+```
+
+```{r percentage_agreement_maturity_males_all}
+
+# PERCENTAGE AGREEMENT TABLE by modal maturity stage (males) - All stagers ####################################
+
+data=pa_tab_maturity_males_all
+nstagers=length(unique(stager_data$'Reader code'))
+ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
+basicols=ncols-nstagers
+
+
+z=8
+nfig=round((dim(data)[2]-basicols)/z)
+N=min(z,ncols)
+for(i in 1:nfig)
+{
+  if(i==1){
+    # Table caption
+    set.caption('**Table X:** Percentage agreement (PA) table: shows the PA per modal maturity and stager (only males), the PA for all stagers combined and the weighted mean of the PA per stager.')
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+  } else { if(i<nfig){
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    } else {
+      selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
+      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    }
+  }
+}
+
 
 
 ```
 
 
-
 **General frequency bias table by modal sex category**
 
-The frequency bias is shown by sex category for each modal sex category for all stagers together. This frequency distribution presented in the form of a table or a bubble plot may be used to explore the bias in the sex determination by the stagers participating in this event.
+The frequency bias is shown by sex category for each modal sex category for all stagers together. This frequency distribution presented in the form of a table or a bubble plot may be used to explore the bias in the sex determination by the stagers participating in this event. 
 
 ```{r general_freq_sex_all}
 
 # frequency bias TABLE by sex category ###########################################
 
 set.caption('**Table X:** General frequency bias table: represents the frequency per
-             modal sex category for all stagers combined.')
+             modal sex category for all stagers combined. V1 in case some readers have samples without sex categorization.')
 
 
 pander(style_table0(general_bias_freq_tab_sex_all), missing = "-", style = "simple") #changed here to not appear the last column in bolt
@@ -639,7 +654,7 @@ plot_general_freq_sex(ad_long_all, strata=NULL)
 
 **General frequency bias table by modal maturity stage**
 
-The frequency bias is shown by maturity stage for each modal maturity stage for all stagers together. This frequency distribution presented in the form of a table or a buble plot may be used to explore the bias in the sex determination by the stagers participating in this event.
+The frequency bias is shown by maturity stage for each modal maturity stage for all stagers together. This frequency distribution presented in the form of a table or a bubble plot may be used to explore the bias in the sex determination by the stagers participating in this event.
 
 ```{r general_freq_maturity_all}
 
@@ -674,7 +689,7 @@ plot_general_freq_matur(ad_long_all, strata=NULL)
 **Stager frequency bias table by modal sex category**
 
 <!-- Frequency bias text -->
-The frequency bias is shown by sex category for each modal sex category per stager. As for the previous tables, a combined frequency distribution for all stagers are calculated. This frequency distribution presented in the form of a table or a buble plot may be used to explore the bias in the sex determination by the stagers participating in this event.
+The frequency bias is shown by sex category for each modal sex category per stager. As for the previous tables, a combined frequency distribution for all stagers are calculated. This frequency distribution presented in the form of a table or a bubble plot may be used to explore the bias in the sex determination by the stagers participating in this event.
 
 ```{r freq_sex_all}
 
@@ -702,30 +717,12 @@ for(i in 1:nfig)
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     }
   }
 }
 
-# nfig=round((dim(data)[2]-basicols)/10, digits=0)
-# for(i in 1:nfig)
-# {
-#   if(i==1){
-#     # Table caption
-#     set.caption('**Table X:** Frequency bias table: represents the frequency per
-#              modal sex category per stager and the frequency distribution of all stagers combined
-#              per modal sex category.')
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#   } else { if(i<nfig){
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     } else {
-#       selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):dim(data)[2])]
-#       pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     }
-#   }
-# }
+
 
 ```
 
@@ -733,7 +730,7 @@ for(i in 1:nfig)
 **Stager frequency bias table by modal maturity stage**
 
 <!-- Frequency bias text -->
-The frequency bias is shown by maturity stages for each modal maturity stage per stager. As for the previous tables, a combined frequency distribution for all stagers are calculated. This frequency distribution presented in the form of a table or a buble plot may be used to explore the bias in the maturity determination by the stagers participating in this event.
+The frequency bias is shown by maturity stages for each modal maturity stage per stager. As for the previous tables, a combined frequency distribution for all stagers are calculated. This frequency distribution presented in the form of a table or a bubble plot may be used to explore the bias in the maturity determination by the stagers participating in this event.
 
 ```{r freq_maturity_all}
 
@@ -761,30 +758,11 @@ for(i in 1:nfig)
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     }
   }
 }
 
-# nfig=round((dim(data)[2]-basicols)/10, digits=0)
-# for(i in 1:nfig)
-# {
-#   if(i==1){
-#     # Table caption
-#     set.caption('**Table X:** Frequency bias table: represents the frequency per
-#              modal maturity stage per stager and the frequency distribution of all stagers combined
-#              per modal maturity stage.')
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#   } else { if(i<nfig){
-#     selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):((i+basicols+(9*(i-1)))+9))]
-#     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     } else {
-#       selec=data[,c(1:basicols, (i+basicols+(9*(i-1))):dim(data)[2])]
-#       pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
-#     }
-#   }
-# }
 
 ```
 
@@ -838,7 +816,7 @@ asis_output(paste0("**Maturity staging by ", stratum, "**"))
 # NUMBER OF MATURITY STAGING PER strata - Advanced stagers #########################
 
 # Table caption
-set.caption(paste0('**Table X:** Number of maturity stagings per ', stratum, ' for all the stagers.'))
+set.caption(paste0('**Table X:** Number of maturity staging’s per ', stratum, ' for all the stagers.'))
 
 # Output table
 pander(style_table1(get(vsname("num_read_tab_modal_matur_by"))), missing = "-")
@@ -1064,57 +1042,56 @@ Those writing the report put TEXT here describing the results.
 
 Those writing the report put TEXT here describing the results.
 
-If there were available histological samples for all the fish individuals in the exchange event, no multiple modes are expected, however, if there were no hitology samples for some of them, multiple maturity stage modes could be found. In the next table this information is presented for the sex category determination. 
+If there were available histological samples for all the fish individuals in the exchange event, no multiple modes are expected, however, if there were no histology samples for some of them, multiple maturity stage modes could be found. In the next table this information is presented for the sex category determination. 
 
 
 <!-- Total number of samples (NSample), number (CountMM) and percentage of multimodal cases (PercMM) text -->
-```{r summary_multiple_modes_sex_ex}
-
-histN=ad_long_ex %>% subset(TypeAnnotation=="eventOrganizer") %>% select(FishID) %>% unique() %>% dim()
-allN=ad_long_ex %>% select(FishID) %>% unique() %>% dim()
+```{r summary_multiple_modes_sex_adv}
+histN=ad %>% subset(DoesSampleHaveHistologyImage=="Yes") %>% select(FishID) %>% unique() %>% dim()
+allN=ad_long_all %>% select(FishID) %>% unique() %>% dim()
 perc_not_Hist=100-round(100*histN[1]/allN[1], 0)
 
-summary_multiple_modes_sex_ex <-
-  c(NSample  = length(unique(ad_long_ex$FishID)),
+summary_multiple_modes_sex_adv <-
+  c(NSample  = length(unique(ad_long_adv$FishID)),
     Nhist=histN[1],
     Perc_not_Hist=perc_not_Hist,
-    PercMM_traditional=unique(ifelse(multimode_cases_tab_traditional_Sex_ex$NModes_trad=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_traditional_Sex_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
-    PercMM_linear_weight=unique(ifelse(multimode_cases_tab_linear_Sex_ex$NModes_linear=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_linear_Sex_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
-    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Sex_ex$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexp_Sex_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
-    PercMM_multistage=unique(ifelse(multimode_cases_tab_multistage_Sex_ex$NModes_multistage=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_multistage_Sex_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))))
+    PercMM_traditional=unique(ifelse(multimode_cases_tab_traditional_Sex_adv$NModes_trad=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_traditional_Sex_adv)/length(unique(ad_long_adv$SampleID)))*100, digits=0),"%"))),
+    PercMM_linear_weight=unique(ifelse(multimode_cases_tab_linear_Sex_adv$NModes_linear=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_linear_Sex_adv)/length(unique(ad_long_adv$SampleID)))*100, digits=0),"%"))),
+    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Sex_adv$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexp_Sex_adv)/length(unique(ad_long_adv$SampleID)))*100, digits=0),"%"))),
+    PercMM_multistage=unique(ifelse(multimode_cases_tab_multistage_Sex_adv$NModes_multistage=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_multistage_Sex_adv)/length(unique(ad_long_adv$SampleID)))*100, digits=0),"%"))))
 
 # Table caption
 set.caption('**Table X:** Summary of statistics for sex staging; Total number of fish individuals studied (NSample), number of fish individuals with histological samples (Nhist), percentage of fish individuals without histology (Perc_not_Hist). The percentage of cases (fish samples) with multiple modes depending on the approach to weight the experience of the stager which will be considered when defining the fish sex stage mode. PercMM_traditional shows the percentage of the total samples for which multiple modes are obtained when all the stagers are equally weighted. PercMM_linear_weight shows the percentage of the total samples for which multiple modes are obtained when the weight assigned to the different stagers decreases linearly with the experience, while in the PercMM_negexp the weight applied decreases with a negative exponential shape with the experience. The PercMM_multistage shows the percentage of multiple mode cases when a combination of the different methodologies is used, as explained in the material and methods section')
 
 # Output table
-pander(style_table0(summary_multiple_modes_sex_ex), missing="")
+pander(style_table0(summary_multiple_modes_sex_adv), missing="")
 
 ```
 
 
-If there were available histological samples for all the fish individuals in the exchange event, no multiple modes are expected, however, if there were no hitology samples for some of them, multiple maturity stage modes could be found. In the next table this information is presented for the maturity staging. 
+If there were available histological samples for all the fish individuals in the exchange event, no multiple modes are expected, however, if there were no histology samples for some of them, multiple maturity stage modes could be found. In the next table this information is presented for the maturity staging. 
 
 <!-- Total number of samples (NSample), number (CountMM) and percentage of multimodal cases (PercMM) text -->
-```{r summary_multiple_modes_maturity_ex}
+```{r summary_multiple_modes_maturity_adv}
 
-histN=ad_long_ex %>% subset(TypeAnnotation=="eventOrganizer") %>% select(FishID) %>% unique() %>% dim()
-allN=ad_long_ex %>% select(FishID) %>% unique() %>% dim()
+histN=ad %>% subset(DoesSampleHaveHistologyImage=="Yes") %>% select(FishID) %>% unique() %>% dim()
+allN=ad_long_all %>% select(FishID) %>% unique() %>% dim()
 perc_not_Hist=100-round(100*histN[1]/allN[1], 0)
 
-summary_multiple_modes_maturity_ex <-
-  c(NSample  = length(unique(ad_long_ex$FishID)),
+summary_multiple_modes_maturity_adv <-
+  c(NSample  = length(unique(ad_long_adv$FishID)),
     Nhist=histN[1],
     Perc_not_Hist=perc_not_Hist,
-    PercMM_traditional=unique(ifelse(multimode_cases_tab_traditional_Maturity_ex$NModes_trad=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_traditional_Maturity_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
-    PercMM_linear_weight=unique(ifelse(multimode_cases_tab_linear_Maturity_ex$NModes_linear=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_linear_Maturity_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
-    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Maturity_ex$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexp_Maturity_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))),
-    PercMM_multistage=unique(ifelse(multimode_cases_tab_multistage_Maturity_ex$NModes_multistage=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_multistage_Maturity_ex)/length(unique(ad_long_ex$SampleID)))*100, digits=0),"%"))))
+    PercMM_traditional=unique(ifelse(multimode_cases_tab_traditional_Maturity_adv$NModes_trad=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_traditional_Maturity_adv)/length(unique(ad_long_adv$SampleID)))*100, digits=0),"%"))),
+    PercMM_linear_weight=unique(ifelse(multimode_cases_tab_linear_Maturity_adv$NModes_linear=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_linear_Maturity_adv)/length(unique(ad_long_adv$SampleID)))*100, digits=0),"%"))),
+    PercMM_negexp_weight=unique(ifelse(multimode_cases_tab_negexp_Maturity_adv$NModes_negexp=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_negexp_Maturity_adv)/length(unique(ad_long_adv$SampleID)))*100, digits=0),"%"))),
+    PercMM_multistage=unique(ifelse(multimode_cases_tab_multistage_Maturity_adv$NModes_multistage=="zero", paste(0,"%"), paste(round((nrow(multimode_cases_tab_multistage_Maturity_adv)/length(unique(ad_long_adv$SampleID)))*100, digits=0),"%"))))
 
 # Table caption
 set.caption('**Table X:** Summary of statistics for maturity staging; Total number of fish individuals studied (NSample), number of fish individuals with histological samples (Nhist), percentage of fish individuals without histology (Perc_not_Hist). The percentage of cases (fish samples) with multiple modes depending on the approach to weight the experience of the stager which will be considered when defining the fish maturity stage mode. PercMM_traditional shows the percentage of the total samples for which multiple modes are obtained when all the stagers are equally weighted. PercMM_linear_weight shows the percentage of the total samples for which multiple modes are obtained when the weight assigned to the different stagers decreases linearly with the experience, while in the PercMM_negexp the weight applied decreases with a negative exponential shape with the experience. The PercMM_multistage shows the percentage of multiple mode cases when a combination of the different methodologies is used, as explained in the material and methods section')
 
 # Output table
-pander(style_table0(summary_multiple_modes_maturity_ex), missing="")
+pander(style_table0(summary_multiple_modes_maturity_adv), missing="")
 
 
 
@@ -1122,35 +1099,35 @@ pander(style_table0(summary_multiple_modes_maturity_ex), missing="")
 
 
 <!-- PA and CU text -->
-```{r summary_statistics_sex_ex}
-summary_statistics_sex_ex <-
-  c(NSample  = length(unique(ad_long_ex$SampleID)),
-    CU  = cu_tab_sex_ex[nrow(cu_tab_sex_ex), "Total"],
-    PA  = pa_tab_sex_ex[nrow(pa_tab_sex_ex), "Total"])
+```{r summary_statistics_sex_adv}
+summary_statistics_sex_adv <-
+  c(NSample  = length(unique(ad_long_adv$SampleID)),
+    CU  = cu_tab_sex_adv[nrow(cu_tab_sex_adv), "Total"],
+    PA  = pa_tab_sex_adv[nrow(pa_tab_sex_adv), "Total"])
 
-summary_statistics_maturity_ex <-
-  c(NSample  = length(unique(ad_long_ex$SampleID)),
-    CU  = cu_tab_maturity_ex[nrow(cu_tab_maturity_ex), "Total"],
-    PA  = pa_tab_maturity_ex[nrow(pa_tab_maturity_ex), "Total"])
+summary_statistics_maturity_adv <-
+  c(NSample  = length(unique(ad_long_adv$SampleID)),
+    CU  = cu_tab_maturity_adv[nrow(cu_tab_maturity_adv), "Total"],
+    PA  = pa_tab_maturity_adv[nrow(pa_tab_maturity_adv), "Total"])
 ```
 
-The average percentage agreement by modal sex category for all stagers was `r summary_statistics_sex_ex[3]`, with a weighted average CU of `r summary_statistics_sex_ex[2]`. Regarding the maturation staging, the percentage agreement by modal maturation stage was `r summary_statistics_maturity_ex[3]`, and the weight average CU was `r summary_statistics_maturity_ex[2]`  
+The average percentage agreement by modal sex category for all stagers was `r summary_statistics_sex_adv[3]`, with a weighted average CU of `r summary_statistics_sex_adv[2]`. Regarding the maturation staging, the percentage agreement by modal maturation stage was `r summary_statistics_maturity_adv[3]`, and the weight average CU was `r summary_statistics_maturity_adv[2]`  
 
 
 ***Sex categorization table***
 
-```{r num_read_sex_ex}
+```{r sex_composition_tab_adv}
 
-# Sex categorization TABLE - Expert stagers #################################################
+# Sex categorization TABLE - Advanced stagers #################################################
 
-data=num_read_tab_modal_sex_by_reader_ex
-#data=sex_composition_tab_ex
+data=sex_composition_tab_adv
 stagers=stager_data[stager_data$Expertise=="Advanced",]
 nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+#z=8
+z=ncol(data)-2
 nfig=ceiling((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 if(nfig==0){
@@ -1174,11 +1151,10 @@ if(nfig==0){
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     }
   }
-}
-
+ }
 }
 
 ```
@@ -1186,12 +1162,12 @@ if(nfig==0){
 
 ***Maturity staging table***
 
-```{r num_read_maturity_ex}
+```{r num_read_maturity_adv}
 
-# maturity stagings TABLE - Expert stagers #################################################
+# maturity staging’s TABLE - Advanced stagers #################################################
 
 #data=num_read_tab_modal_matur_by_reader_ex
-data=maturity_composition_tab_ex
+data=maturity_composition_tab_adv
 stagers=stager_data[stager_data$Expertise=="Advanced",]
 nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
@@ -1204,7 +1180,7 @@ N=min(z,ncols)
 if(nfig==0){
     # Table caption
     set.caption('**Table X:** Maturity staging table: presents the
-             number of stagings made per expert stager for each modal maturity stage.')
+             number of staging’s made per expert stager for each modal maturity stage.')
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
       pander(style_table0(selec), missing = "-")
 } else {
@@ -1214,7 +1190,7 @@ for(i in 1:nfig)
   if(i==1){
     # Table caption
     set.caption('**Table X:** Maturity staging table: presents the
-             number of stagings made per expert stager for each modal maturity stage.')
+             number of staging’s made per expert stager for each modal maturity stage.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
     pander(style_table0(selec), missing = "-")
   } else { if(i<nfig){
@@ -1235,11 +1211,11 @@ for(i in 1:nfig)
 
 ***Coefficient of Unalikeability (CU) table by modal sex category***
 
-```{r cu_sex_ex_table}
+```{r cu_sex_adv_table}
 
-# CU TABLE by modal sex category - Expert stagers #################################################
+# CU TABLE by modal sex category - Advanced stagers #################################################
 
-data=cu_tab_sex_ex
+data=cu_tab_sex_adv
 stagers=stager_data[stager_data$Expertise=="Advanced",]
 nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
@@ -1285,11 +1261,11 @@ for(i in 1:nfig)
 
 ***Coefficient of Unalikeability (CU) table by modal maturity stage***
 
-```{r cu_maturity_ex_table}
+```{r cu_maturity_adv_table}
 
 # CU TABLE by modal sex category - Expert stagers #################################################
 
-data=cu_tab_maturity_ex
+data=cu_tab_maturity_adv
 stagers=stager_data[stager_data$Expertise=="Advanced",]
 nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
@@ -1304,7 +1280,7 @@ if(nfig==0){
     # Table caption
     set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage: presents the
              CU per modal maturity stage and advanced stager, the CU of all advanced
-             stagers combined per maturity stage stage and a weighted mean of the CU
+             stagers combined per maturity stage and a weighted mean of the CU
              per stager.')
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
       pander(style_table1(selec), missing = "-")
@@ -1316,7 +1292,102 @@ for(i in 1:nfig)
     # Table caption
     set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage: presents the
              CU per modal maturity stage and advanced stager, the CU of all advanced
-             stagers combined per maturity stage stage and a weighted mean of the CU
+             stagers combined per maturity stage and a weighted mean of the CU
+             per stager.')
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table1(selec), missing = "-")
+  } else { if(i<nfig){
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table1(selec), missing = "-")
+    } else {
+      selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
+      pander(style_table1(selec), missing = "-")
+    }
+  }
+ }
+}
+```
+
+
+
+```{r cu_maturity_adv_females_table}
+# CU TABLE by modal maturity stages (Females) - Advanced stagers #################################################
+
+data=cu_tab_maturity_females_adv
+stagers=stager_data[stager_data$Expertise=="Advanced",]
+nstagers=length(unique(stagers$'Reader code'))
+ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
+basicols=ncols-nstagers
+
+z=8
+nfig=round((dim(data)[2]-basicols)/z, digits=0)
+N=min(z,ncols)
+
+if(nfig==0){
+    # Table caption
+    # Table caption
+    set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage (only females): presents the
+             CU per modal maturity stage and advanced stager, the CU of all advanced
+             stagers combined per maturity stage and a weighted mean of the CU
+             per stager.')
+      selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
+      pander(style_table1(selec), missing = "-")
+} else {
+
+for(i in 1:nfig)
+{
+  if(i==1){
+    # Table caption
+    set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage (only females): presents the
+             CU per modal maturity stage and advanced stager, the CU of all advanced
+             stagers combined per maturity stage and a weighted mean of the CU
+             per stager.')
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table1(selec), missing = "-")
+  } else { if(i<nfig){
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table1(selec), missing = "-")
+    } else {
+      selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
+      pander(style_table1(selec), missing = "-")
+    }
+  }
+ }
+}
+```
+
+
+```{r cu_maturity_adv_males_table}
+# CU TABLE by modal maturity stages (Males) - Advanced stagers #################################################
+
+data=cu_tab_maturity_males_adv
+stagers=stager_data[stager_data$Expertise=="Advanced",]
+nstagers=length(unique(stagers$'Reader code'))
+ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
+basicols=ncols-nstagers
+
+z=8
+nfig=round((dim(data)[2]-basicols)/z, digits=0)
+N=min(z,ncols)
+
+if(nfig==0){
+    # Table caption
+    # Table caption
+    set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage (only males): presents the
+             CU per modal maturity stage and advanced stager, the CU of all advanced
+             stagers combined per maturity stage and a weighted mean of the CU
+             per stager.')
+      selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
+      pander(style_table1(selec), missing = "-")
+} else {
+
+for(i in 1:nfig)
+{
+  if(i==1){
+    # Table caption
+    set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage (only males): presents the
+             CU per modal maturity stage and advanced stager, the CU of all advanced
+             stagers combined per maturity stage and a weighted mean of the CU
              per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
     pander(style_table1(selec), missing = "-")
@@ -1336,13 +1407,13 @@ for(i in 1:nfig)
 ***PA table by modal sex category***
 
 <!-- PA text -->
-The percentage agreement per stager and modal maturity stage represent the proportion of the total number of stagings that are equal to the modal maturity stage. The weighted mean including at the bottom of the table is weighted according to number of maturity stagings.
+The percentage agreement per stager and modal maturity stage represent the proportion of the total number of staging’s that are equal to the modal maturity stage. The weighted mean including at the bottom of the table is weighted according to number of maturity staging’s.
 
-```{r percentage_agreement_sex_ex}
+```{r percentage_agreement_sex_adv}
 
-# PERCENTAGE AGREEMENT TABLE by modal sex category - Expert stagers ####################################
+# PERCENTAGE AGREEMENT TABLE by modal sex category - Advanced stagers ####################################
 
-data=pa_tab_sex_ex
+data=pa_tab_sex_adv
 stagers=stager_data[stager_data$Expertise=="Advanced",]
 nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
@@ -1383,11 +1454,11 @@ for(i in 1:nfig)
 
 ***PA table by modal maturity stage***
 
-```{r percentage_agreement_maturity_ex}
+```{r percentage_agreement_maturity_adv}
 
 # PERCENTAGE AGREEMENT TABLE by modal maturity stage - Expert stagers ####################################
 
-data=pa_tab_maturity_ex
+data=pa_tab_maturity_adv
 stagers=stager_data[stager_data$Expertise=="Advanced",]
 nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
@@ -1424,23 +1495,104 @@ for(i in 1:nfig)
 ```
 
 
+```{r percentage_agreement_maturity_females_adv}
 
-***General frequency bias table by modal sex category***
+# PERCENTAGE AGREEMENT TABLE by modal maturity stage (females) - Advanced stagers ####################################
 
-<!-- Frequency bias text -->
-The frequency bias is shown by sex category for each modal sex category per stager. As for the previous tables, a combined frequency distribution for all stagers are calculated. This frequency distribution presented in the form of a table or a buble plot may be used to explore the bias in the sex determination by the stagers participating in this event.
-
-```{r freq_sex_ex}
-
-# frequency bias TABLE by sex category- Expert stagers ###########################################
-
-data=stager_bias_freq_tab_sex_ex
+data=pa_tab_maturity_females_adv
 stagers=stager_data[stager_data$Expertise=="Advanced",]
 nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=ncol(data)-2
+z=8
+nfig=round((dim(data)[2]-basicols)/z, digits=0)
+N=min(z,ncols)
+
+if(nfig==0){
+    # Table caption
+    set.caption('**Table X:** Percentage agreement (PA) table (only females): shows the PA per modal maturity and stager, the PA for all stagers combined and the weighted mean of the PA per stager.')
+      selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
+      pander(style_table1(selec), missing = "-")
+} else {
+
+for(i in 1:nfig)
+{
+  if(i==1){
+    # Table caption
+    set.caption('**Table X:** Percentage agreement (PA) table (only females): shows the PA per modal maturity and stager, the PA for all stagers combined and the weighted mean of the PA per stager.')
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table1(selec), missing = "-")
+  } else { if(i<nfig){
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table1(selec), missing = "-")
+    } else {
+      selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
+      pander(style_table1(selec), missing = "-")
+    }
+  }
+ }
+}
+```
+
+```{r percentage_agreement_maturity_males_adv}
+
+# PERCENTAGE AGREEMENT TABLE by modal maturity stage (males) - Advanced stagers ####################################
+
+data=pa_tab_maturity_males_adv
+stagers=stager_data[stager_data$Expertise=="Advanced",]
+nstagers=length(unique(stagers$'Reader code'))
+ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
+basicols=ncols-nstagers
+
+z=8
+nfig=round((dim(data)[2]-basicols)/z, digits=0)
+N=min(z,ncols)
+
+if(nfig==0){
+    # Table caption
+    set.caption('**Table X:** Percentage agreement (PA) table (only males): shows the PA per modal maturity and stager, the PA for all stagers combined and the weighted mean of the PA per stager.')
+      selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
+      pander(style_table1(selec), missing = "-")
+} else {
+
+for(i in 1:nfig)
+{
+  if(i==1){
+    # Table caption
+    set.caption('**Table X:** Percentage agreement (PA) table (only males): shows the PA per modal maturity and stager, the PA for all stagers combined and the weighted mean of the PA per stager.')
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table1(selec), missing = "-")
+  } else { if(i<nfig){
+    selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
+    pander(style_table1(selec), missing = "-")
+    } else {
+      selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
+      pander(style_table1(selec), missing = "-")
+    }
+  }
+ }
+}
+```
+
+
+***General frequency bias table by modal sex category***
+
+<!-- Frequency bias text -->
+The frequency bias is shown by sex category for each modal sex category per stager. As for the previous tables, a combined frequency distribution for all stagers are calculated. This frequency distribution presented in the form of a table or a bubble plot may be used to explore the bias in the sex determination by the stagers participating in this event.
+
+```{r freq_sex_adv}
+
+# frequency bias TABLE by sex category- Expert stagers ###########################################
+
+data=stager_bias_freq_tab_sex_adv
+stagers=stager_data[stager_data$Expertise=="Advanced",]
+nstagers=length(unique(stagers$'Reader code'))
+ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
+basicols=ncols-nstagers
+
+#z=ncol(data)-2
+z=8
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
 
@@ -1479,19 +1631,20 @@ for(i in 1:nfig)
 ***General frequency bias table by modal maturity stage***
 
 <!-- Frequency bias text -->
-The frequency bias is shown by maturity stages for each modal maturity stage per stager. As for the previous tables, a combined frequency distribution for all stagers are calculated. This frequency distribution presented in the form of a table or a buble plot may be used to explore the bias in the maturity determination by the stagers participating in this event.
+The frequency bias is shown by maturity stages for each modal maturity stage per stager. As for the previous tables, a combined frequency distribution for all stagers are calculated. This frequency distribution presented in the form of a table or a bubble plot may be used to explore the bias in the maturity determination by the stagers participating in this event.
 
-```{r freq_maturity_ex}
+```{r freq_maturity_adv}
 
 # frequency bias TABLE by maturity stage - Expert stagers ###########################################
 
-data=stager_bias_freq_tab_maturity_ex
+data=stager_bias_freq_tab_maturity_adv
 stagers=stager_data[stager_data$Expertise=="Advanced",]
 nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=ncol(data)-2
+#z=ncol(data)-2
+z=8
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
 
@@ -1531,8 +1684,8 @@ for(i in 1:nfig)
 **General frequency bias table by modal sex category**
 
 
-The frequency bias is shown by sex category for each modal sex category for all the advanced stagers together. This frequency distribution presented in the form of a table or a buble plot may be used to explore the bias in the sex determination by the advanced stagers participating in this event.
-```{r general_freq_sex_ex}
+The frequency bias is shown by sex category for each modal sex category for all the advanced stagers together. This frequency distribution presented in the form of a table or a bubble plot may be used to explore the bias in the sex determination by the advanced stagers participating in this event.
+```{r general_freq_sex_adv}
 
 # frequency bias TABLE by sex category ###########################################
 
@@ -1540,14 +1693,14 @@ set.caption('**Table X:** General frequency bias table: represents the frequency
              modal sex category for advanced stagers combined.')
 
 
-pander(style_table0(general_bias_freq_tab_sex_ex), missing = "-")
+pander(style_table0(general_bias_freq_tab_sex_adv), missing = "-")
 
 ```
 
 
 ***General Frequency Bias plot by modal sex category***
 
-```{r bias_plots_sex_ex, fig.width = 5, fig.height = 4, fig.cap = cap_in}
+```{r bias_plots_sex_adv, fig.width = 5, fig.height = 4, fig.cap = cap_in}
 
 # BIAS PLOT by modal sex category - Expert stagers ################################################
 
@@ -1556,7 +1709,7 @@ cap_in <- '**Figure X:** Sex categorization bias plot by modal sex category for 
              modal  sex category and sex category for all the advanced stager together.  '
 
 # Output figure
-plot_general_freq_sex(ad_long_ex, strata=NULL)
+plot_general_freq_sex(ad_long_adv, strata=NULL)
 
 
 ```
@@ -1565,8 +1718,8 @@ plot_general_freq_sex(ad_long_ex, strata=NULL)
 **General frequency bias table by modal maturity stage**
 
 
-The frequency bias is shown by sex category for each modal maturity stage for all the advanced stagers together. This frequency distribution presented in the form of a table or a buble plot may be used to explore the bias in the maturity staging by the advanced stagers participating in this event.
-```{r general_freq_maturity_ex}
+The frequency bias is shown by sex category for each modal maturity stage for all the advanced stagers together. This frequency distribution presented in the form of a table or a bubble plot may be used to explore the bias in the maturity staging by the advanced stagers participating in this event.
+```{r general_freq_maturity_adv}
 
 # frequency bias TABLE by sex category ###########################################
 
@@ -1574,14 +1727,14 @@ set.caption('**Table X:** General frequency bias table: represents the frequency
              modal maturity stage for advanced stagers combined.')
 
 
-pander(style_table0(general_bias_freq_tab_maturity_ex), missing = "-")
+pander(style_table0(general_bias_freq_tab_maturity_adv), missing = "-")
 
 ```
 
 
 ***General Frequency Bias plot by modal maturity stage***
 
-```{r bias_plots_maturity_ex, fig.width = 5, fig.height = 4, fig.cap = cap_in}
+```{r bias_plots_maturity_adv, fig.width = 5, fig.height = 4, fig.cap = cap_in}
 
 # BIAS PLOT by modal maturity stage - Expert stagers ################################################
 
@@ -1590,7 +1743,7 @@ cap_in <- '**Figure X:** Maturity staging bias plot by modal maturity stage for 
              modal maturity and maturity stage for all the advanced stager together.  '
 
 # Output figure
-plot_general_freq_matur(ad_long_ex, strata=NULL)
+plot_general_freq_matur(ad_long_adv, strata=NULL)
 
 ```
 
@@ -1599,16 +1752,16 @@ plot_general_freq_matur(ad_long_ex, strata=NULL)
 ***Sex Category Error Matrix (SSEM)***
 
 <!-- Sex category error matrix text -->
-The Sex Category Error Matrix is calculated per area, and only based on the maturity stagings of the advanced stagers.
+The Sex Category Error Matrix is calculated per area, and only based on the maturity staging’s of the advanced stagers.
 
 ```{r sex_category_error_matrix_ex, results='asis'}
 
 # SSEM - Advanced stagers #################################################
 
 # Loop through each area and output MSEM for that area
-for (i in seq_along(ssem_ex)) {
+for (i in seq_along(ssem_adv)) {
   # name
-  strata_name <- names(ssem_ex)[i]
+  strata_name <- names(ssem_adv)[i]
   
   # Table caption
   cap_i <- paste0("**Table X:** Sex Category Error Matrix (SSEM) for ", strata_name ,".
@@ -1618,7 +1771,7 @@ for (i in seq_along(ssem_ex)) {
                    some cases. Only advanced stagers are used for calculating the SSEM.")
 
   set.caption(cap_i)
-  pander(style_table3(ssem_ex[[i]]), missing = "-")
+  pander(style_table3(ssem_adv[[i]]), missing = "-")
 
 }
 ```
@@ -1627,26 +1780,26 @@ for (i in seq_along(ssem_ex)) {
 ***Maturity Stage Error Matrix (MSME)***
 
 <!-- Maturity stage error matrix text -->
-The Maturity Stage Error Matrix is calculated per area, and only based on the maturity stagings of the advanced stagers.
+The Maturity Stage Error Matrix is calculated per area, and only based on the maturity staging’s of the advanced stagers.
 
 ```{r maturity_stage_error_matrix_ex, results='asis'}
 
 # MSEM - Advanced stagers #################################################
 
 # Loop through each area and output MSEM for that area
-for (i in seq_along(msem_ex)) {
+for (i in seq_along(msem_adv)) {
   # name
-  strata_name <- names(msem_ex)[i]
+  strata_name <- names(msem_adv)[i]
   
   # Table caption
   cap_i <- paste0("**Table X:** Maturity stage error matrix (MSEM) for ", strata_name ,".
                    The MSEM shows the proportional distribution
-                   of maturity stagings for each modal maturity stage. Stage column should sum to
+                   of maturity staging’s for each modal maturity stage. Stage column should sum to
                    one but due to rounding there might be small deviations in
                    some cases. Only advanced stagers are used for calculating the MSEM.")
 
   set.caption(cap_i)
-  pander(style_table3(msem_ex[[i]]), missing = "-")
+  pander(style_table3(msem_adv[[i]]), missing = "-")
 
 }
 ```
@@ -1657,10 +1810,10 @@ for (i in seq_along(msem_ex)) {
 
 #### With samples split by strata
 
-```{r set_strata_ex}
+```{r set_strata_adv}
 # initialise strata loop
 istrata <- 0
-group <- "ex"
+group <- "adv"
 print_strata <- function() length(params$strata) >= istrata
 ```
 
@@ -1984,14 +2137,14 @@ plot_bias_sex(get(vname("ad_long")))
 # INDIVIDUAL Frequency PLOTS - All stagers #########################################
 
 # Figure caption
-cap_in <- '**Figure X:** Frequency plots per stager. The modal maturity stage is plotted against the different maturity stages. The frequency of stagings corresponging to each modal maturity/maturity combinations is represented together with the 1:1 equilibrium line (solid line).'
+cap_in <- '**Figure X:** Frequency plots per stager. The modal maturity stage is plotted against the different maturity stages. The frequency of staging’s corresponging to each modal maturity/maturity combinations is represented together with the 1:1 equilibrium line (solid line).'
 
 # Output figures
 plot_bias_matur(get(vname("ad_long")))
 ```
 
 
-***Plot with the CU AND PA statistichs for maturity stagings***
+***Plot with the CU AND PA statistichs for maturity staging’s***
 
 ```{r stat_plot_maturity, fig.width = 7, fig.height = 4, fig.cap = cap_in}
 # PLOT STATISTICS, CU AND PA - All stagers #############################
@@ -2026,8 +2179,8 @@ plot_stat_sex(get(vname("ad_long")))
 
 ## Results Advanced stagers
 
-```{r set_annex_ex}
-group <- "ex"
+```{r set_annex_adv}
+group <- "adv"
 ```
 
 **All samples included**
@@ -2050,14 +2203,14 @@ group <- "ex"
 ```{r ref.label='freq_bias_plots_maturity', fig.width = 5, fig.height = 4, fig.cap = cap_in}
 ```
 
-***Plot with the CU AND PA statistichs for maturity stagings***
+***Plot with the CU AND PA statistichs for maturity staging’s***
 
 ```{r ref.label='stat_plot_maturity'}
 ```
 
 ***Plot with the CU AND PA statistichs for sex categorizations***
 
-```{r ref.label='stat_plot_sex_ex'}
+```{r ref.label='stat_plot_sex_adv'}
 ```
 
 
@@ -2092,7 +2245,7 @@ pander(style_table0(datos), missing="-", style = "simple")
 ***Multiple mode in the maturity stage***
 
 ```{r multiple mode cases maturity advanced stagers}
-datos=ad_long_ex[ad_long_ex$NModes_trad_Maturity>1, c(1, 2, 4, 5, 8, 9, 10, 11, 12, 13, 16:26, 35, 36)]
+datos=ad_long_adv[ad_long_adv$NModes_trad_Maturity>1, c(1, 2, 4, 5, 8, 9, 10, 11, 12, 13, 16:26, 35, 36)]
 
 # Output table
 pander(style_table0(datos), missing="-", style = "simple")
@@ -2103,7 +2256,7 @@ pander(style_table0(datos), missing="-", style = "simple")
 ***Multiple mode in the sex category***
 
 ```{r multiple mode cases sex advanced stagers}
-datos=ad_long_ex[ad_long_ex$NModes_trad_Sex>1, c(1, 2, 4, 5, 8, 9, 10, 11, 12, 13, 16:26, 56, 57)]
+datos=ad_long_adv[ad_long_adv$NModes_trad_Sex>1, c(1, 2, 4, 5, 8, 9, 10, 11, 12, 13, 16:26, 56, 57)]
 
 # Output table
 pander(style_table0(datos), missing="-", style = "simple")
