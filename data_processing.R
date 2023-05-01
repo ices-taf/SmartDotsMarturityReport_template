@@ -48,10 +48,12 @@ ad <-
     month <- month(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
   })
 
-# if variables are missing add "missing"
-ad$ices_area[is.na(ad$ices_area) | ad$ices_area == ""] <- "missing"
-ad$stock[is.na(ad$stock) | ad$stock == ""] <- "missing"
-ad$prep_method[is.na(ad$prep_method) | ad$prep_method == ""] <- "missing"
+# if variables are missing add "-"
+ad$ices_area[is.na(ad$ices_area) | ad$ices_area == ""] <- "-"
+ad$stock[is.na(ad$stock) | ad$stock == ""] <- "-"
+ad$prep_method[is.na(ad$prep_method) | ad$prep_method == ""] <- "-"
+ad$Sex[is.na(ad$Sex) | ad$Sex==""]<-"NI"
+ad<-ad[ad$Sex!="NI",]
 
 # if no advanced readers! make them all advanced
 if (all(ad$expertise == 0)) {
@@ -96,8 +98,6 @@ ad4webgr <- ad
 # 
 # ad <- result
 ad$reader[ad$reader==""]<-"EventOrganizer" ## to add a name to the Reader column from the Event Organizer
-#ad$Sex[ad$Sex==""]<-"NI"
-
 
 # Calculate modal maturity stage and coefficient of unalikability of maturity stage
 ad_long <- ad %>%
