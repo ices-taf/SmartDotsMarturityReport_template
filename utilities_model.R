@@ -271,10 +271,10 @@ reader_freq_table <- function(ad_long, varmod, by=NULL) {
     reader_freq_tab <- rbind(reader_freq_tab, c("all", "all", as.numeric(colMeans(reader_freq_tab[,3:dim(reader_freq_tab)[2]], na.rm=TRUE))))
 
     reader_freq_tab[is.na(reader_freq_tab)] <- 0
-
     reader_freq_tab$Total <- round(rowMeans(as.data.frame(lapply(reader_freq_tab[,3:dim(reader_freq_tab)[2]],as.numeric)), na.rm=TRUE), digits=3)
-
     reader_freq_tab[is.na(reader_freq_tab)] <- "-"
+    reader_freq_tab2 <- slice(reader_freq_tab, 1:(n() - 1)) 
+    
   } else {
 
     reader_freq_tab <-
@@ -306,14 +306,15 @@ reader_freq_table <- function(ad_long, varmod, by=NULL) {
 
     reader_freq_tab=rbind(reader_freq_tab, c("all", "all", as.numeric(colMeans(reader_freq_tab[,4:dim(reader_freq_tab)[2]], na.rm=TRUE))))
 
-    reader_freq_tab[is.na(reader_freq_tab)]=0
+    reader_freq_tab[is.na(reader_freq_tab)]<-0
 
     reader_freq_tab$Total=round(rowMeans(as.data.frame(lapply(reader_freq_tab[,4:dim(reader_freq_tab)[2]],as.numeric)), na.rm=TRUE), digits=3)
-
-    reader_freq_tab[is.na(reader_freq_tab)]="-"
+    
+    reader_freq_tab[is.na(reader_freq_tab)]<-"-"
+    reader_freq_tab2 <- slice(reader_freq_tab, 1:(n() - 1)) 
 
     }
-  return(reader_freq_tab)
+  return(reader_freq_tab2)
 
 }
 
@@ -337,7 +338,8 @@ general_freq_table <- function(ad_long, varmod, by=NULL) {
     general_freq_tab$modes=as.character(general_freq_tab$modes)
 
     general_freq_tab=general_freq_tab[with(general_freq_tab, order(modes)),]
-    general_freq_tab[is.na(general_freq_tab)]="-"
+    general_freq_tab[is.na(general_freq_tab)]<-"-"
+    general_freq_tab2 <- slice(general_freq_tab, 1:(n() - 1)) 
 
     colnames(general_freq_tab)=c(paste0("modal_", tolower(varmod), "/", tolower(varmod), "_stages"), colnames(general_freq_tab)[-1])
   } else {
@@ -348,10 +350,11 @@ general_freq_table <- function(ad_long, varmod, by=NULL) {
     general_freq_tab <-
       general_freq_tab %>%
       spread(key=get(all_of(varmod)), value=frequency)
-    general_freq_tab=general_freq_tab[with(general_freq_tab, order(get(all_of(by)))),]
-    general_freq_tab[is.na(general_freq_tab)]="-"
+    general_freq_tab<-general_freq_tab[with(general_freq_tab, order(get(all_of(by)))),]
+    general_freq_tab[is.na(general_freq_tab)]<-"-"
+    general_freq_tab2 <- slice(general_freq_tab, 1:(n() - 1)) 
   }
-  return(general_freq_tab)
+  return(general_freq_tab2)
 }
 
 
