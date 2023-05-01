@@ -717,7 +717,7 @@ for(i in 1:nfig)
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     }
   }
 }
@@ -758,7 +758,7 @@ for(i in 1:nfig)
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
     }
   }
 }
@@ -1613,13 +1613,13 @@ for(i in 1:nfig)
              modal sex category per stager and the frequency distribution of all stagers combined
              per modal sex category.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table1(selec), missing = "-")
+    pander(style_table0(selec), missing = "-")
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table1(selec), missing = "-")
+    pander(style_table0(selec), missing = "-")
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-")
+      pander(style_table0(selec), missing = "-")
     }
   }
  }
@@ -1654,7 +1654,7 @@ if(nfig==0){
              modal maturity stage per stager and the frequency distribution of all stagers combined
              per modal maturity stage.')
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-")
+      pander(style_table0(selec), missing = "-")
 } else {
 
 for(i in 1:nfig)
@@ -1665,13 +1665,13 @@ for(i in 1:nfig)
              modal maturity stage per stager and the frequency distribution of all stagers combined
              per modal maturity stage.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table1(selec), missing = "-")
+    pander(style_table0(selec), missing = "-")
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table1(selec), missing = "-")
+    pander(style_table0(selec), missing = "-")
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-")
+      pander(style_table0(selec), missing = "-")
     }
   }
  }
