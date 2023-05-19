@@ -79,7 +79,7 @@ In the first part of analysis some of the tables and plots from the
 Guus Eltink Excel sheet 'Age Reading Comparisons' **(Eltink, A.T.G.W. 2000)** are presented, that can be used for "maturity staging comparisons". Since the sex categories and maturity stages are categorical in comparison to ages that are quantitative, some of the statistics presented in the report of the age exchange events cannot be calculated here, like the average percentage error or the coefficient of variation. The latter is being replaced by the coefficient of unlikeability (see below).
 
 
-**Pecentage Agreement**
+**Percentage Agreement**
 
 The percentage agreement tells how large is the part of sex categorizations/maturity staging’s that are equal to the modal sex/maturity. The percentage agreement is estimated by modal sex or maturity and stager as the proportion (as percentage) of times that the lectures of that stager agreed with the resulting modal sex or maturity. This percentage is estimated as the number of times that a stager agreed with the modal sex or maturity divided by the total number of gonads analyzed by a stager for that modal maturity stage.
 
@@ -113,6 +113,8 @@ is “advanced” then they are considered well trained and they provide maturit
 for stock assessment or similar purposes.  When the MSEM is compiled for
 assessment purposes it uses only those stagers who provide maturity data for
 the stock assessment in that specific area.
+In this report the MSEM presented represents is in the transpose format.
+The frequency bias table represents the MSEM in the format proposed by WKSABCAL (2014).
 
 
 
@@ -145,7 +147,7 @@ pander(style_table0(sample_data_overview), style = "simple")
 
 ```{r participants_overview}
 
-# PARTICIPATANTS OVERVIEW #####################################################
+# PARTICIPANTS OVERVIEW #####################################################
 
 # Table caption
 set.caption('**Table X:** Overview of stagers participating in the event, with their overall expertise (Expertise), and their ranking position based in their experience (only valid if the experience weighting protocol has been applied).')
@@ -625,7 +627,7 @@ The frequency bias is shown by sex category for each modal sex category for all 
 # frequency bias TABLE by sex category ###########################################
 
 set.caption('**Table X:** General frequency bias table: represents the frequency per
-             modal sex category for all stagers combined. V1 in case some readers have samples without sex categorization.')
+             modal sex category for all stagers combined.')
 
 
 pander(style_table0(general_bias_freq_tab_sex_all), missing = "-", style = "simple") #changed here to not appear the last column in bolt
