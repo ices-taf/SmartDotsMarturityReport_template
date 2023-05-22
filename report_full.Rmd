@@ -113,6 +113,8 @@ is “advanced” then they are considered well trained and they provide maturit
 for stock assessment or similar purposes.  When the MSEM is compiled for
 assessment purposes it uses only those stagers who provide maturity data for
 the stock assessment in that specific area.
+In this report the MSEM presented represents is in the transpose format.
+The frequency bias table represents the MSEM in the format proposed by WKSABCAL (2014).
 
 
 
