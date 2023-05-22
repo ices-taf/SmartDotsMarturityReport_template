@@ -12,10 +12,12 @@ library(lubridate)
 library(plyr)
 library(dplyr)
 library(tidyverse)
-taf.library(ragree)
+#taf.library(ragree)
+#devtools::install_github("raredd/ragree")
+library(ragree)
 
 # create data directory
-mkdir("data")
+#mkdir("data")
 
 # get utility functions
 source("utilities.R")
@@ -23,9 +25,12 @@ source("utilities_data.R")
 
 # load configuration
 config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
+#config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
+
 
 # get data from bootstrap folder  -------------------------------
 ad <- read.taf("bootstrap/data/smartdots_db/ad.csv")
+#ad <- read.taf("bootstrap/ad.csv")
 
 # prepare data -------------------------------
 
