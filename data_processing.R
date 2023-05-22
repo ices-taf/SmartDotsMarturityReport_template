@@ -88,6 +88,15 @@ for (i in 1:length(fishid))
 
 ad <- result
 
+ad$TypeAnnotation[ad$TypeAnnotation=="Delegate"]<-"eventOrganizer"
+ad$TypeAnnotation[ad$TypeAnnotation=="Organizer"]<-"eventOrganizer"
+ad$reader[ad$reader==""]<-"eventOrganizer" ## to add a name to the Reader column from the Event Organizer
+ad$Sex[is.na(ad$Sex) | ad$Sex==""]<-"NI"
+ad<-ad[ad$Sex!="NI",]
+ad$Maturity[is.na(ad$Maturity) | ad$Maturity==""]<-"NI"
+ad<-ad[ad$Maturity!="NI",]
+
+
 # Calculate modal maturity stage and coefficient of unalikability of maturity stage
 ad_long <- ad %>%
   add_modal_trad(varmod = "Maturity", config$ma_method) %>%
