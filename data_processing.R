@@ -47,13 +47,6 @@ ad <-
     month <- month(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
   })
 
-ad <-
-  within(ad, {
-    year <- year(parse_date_time(catch_date, "%d/%m/%Y %H:%M"))
-    qtr <- quarter(parse_date_time(catch_date, "%d/%m/%Y %H:%M"))
-    month <- month(parse_date_time(catch_date, "%d/%m/%Y %H:%M"))
-  })
-
 
 # if variables are missing add "missing"
 ad$ices_area[is.na(ad$ices_area) | ad$ices_area == ""] <- "missing"
