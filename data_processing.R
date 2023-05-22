@@ -30,7 +30,6 @@ config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
 
 # get data from bootstrap folder  -------------------------------
 #ad <- read.taf("bootstrap/data/smartdots_db/ad.csv")
-
 ad <- read.taf("bootstrap/ad.csv")
 
 # prepare data -------------------------------
@@ -48,12 +47,18 @@ ad <-
     month <- month(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
   })
 
-# if variables are missing add "-"
-ad$ices_area[is.na(ad$ices_area) | ad$ices_area == ""] <- "-"
-ad$stock[is.na(ad$stock) | ad$stock == ""] <- "-"
-ad$prep_method[is.na(ad$prep_method) | ad$prep_method == ""] <- "-"
-ad$Sex[is.na(ad$Sex) | ad$Sex==""]<-"NI"
-ad<-ad[ad$Sex!="NI",]
+ad <-
+  within(ad, {
+    year <- year(parse_date_time(catch_date, "%d/%m/%Y %H:%M"))
+    qtr <- quarter(parse_date_time(catch_date, "%d/%m/%Y %H:%M"))
+    month <- month(parse_date_time(catch_date, "%d/%m/%Y %H:%M"))
+  })
+
+
+# if variables are missing add "missing"
+ad$ices_area[is.na(ad$ices_area) | ad$ices_area == ""] <- "missing"
+ad$stock[is.na(ad$stock) | ad$stock == ""] <- "missing"
+ad$prep_method[is.na(ad$prep_method) | ad$prep_method == ""] <- "missing"
 
 # if no advanced readers! make them all advanced
 if (all(ad$expertise == 0)) {
@@ -74,30 +79,35 @@ ad <- merge(ad, reader, by.x = "reader_number", by.y = "reader_number", all.x = 
 ad4webgr <- ad
 
 # Before calculating the mode, give to the sampleID of readings by eventOrganizer (histological sample) the same name as the samples analyzed by the other readers, so the maturity defined for the histological samples is assigned as mode to the other samples of the same FishID
-# fishid <- sort(unique(ad$FishID))
-# for (i in 1:length(fishid))
-# {
-#   nohist <- ad[ad$FishID == fishid[i] & ad$TypeAnnotation != "eventOrganizer", ]
-#   #nohist <- ad[ad$DoesSampleHaveHistologyImage=="No", ]
-#   sampleid_nohist <- unique(nohist$SampleID)
-#   yeshist <- ad[ad$FishID == fishid[i] & ad$TypeAnnotation == "eventOrganizer", ]
-#   #yeshist <- ad[ad$DoesSampleHaveHistologyImage=="Yes",  ]
-#   if (dim(yeshist)[1] > 0) {
-#     yeshist <- yeshist[rep(row.names(yeshist), length(sampleid_nohist)), ]
-#     yeshist$SampleID <- sampleid_nohist
-#   }
-# 
-#   temp <- rbind(nohist, yeshist)
-# 
-#   if (i == 1) {
-#     result <- temp
-#   } else {
-#     result <- rbind(result, temp)
-#   }
-# }
-# 
-# ad <- result
-ad$reader[ad$reader==""]<-"EventOrganizer" ## to add a name to the Reader column from the Event Organizer
+fishid <- sort(unique(ad$FishID))
+for (i in 1:length(fishid))
+{
+  nohist <- ad[ad$FishID == fishid[i] & ad$TypeAnnotation != "eventOrganizer", ]
+  sampleid_nohist <- unique(nohist$SampleID)
+  yeshist <- ad[ad$FishID == fishid[i] & ad$TypeAnnotation == "eventOrganizer", ]
+  if (dim(yeshist)[1] > 0) {
+    yeshist <- yeshist[rep(row.names(yeshist), length(sampleid_nohist)), ]
+    yeshist$SampleID <- sampleid_nohist
+  }
+  
+  temp <- rbind(nohist, yeshist)
+  
+  if (i == 1) {
+    result <- temp
+  } else {
+    result <- rbind(result, temp)
+  }
+}
+
+ad <- result
+
+ad$TypeAnnotation[ad$TypeAnnotation=="Delegate"]<-"eventOrganizer"
+ad$TypeAnnotation[ad$TypeAnnotation=="Organizer"]<-"eventOrganizer"
+ad$reader[ad$reader==""]<-"eventOrganizer" ## to add a name to the Reader column from the Event Organizer
+ad$Sex[is.na(ad$Sex) | ad$Sex==""]<-"NI"
+ad<-ad[ad$Sex!="NI",]
+ad$Maturity[is.na(ad$Maturity) | ad$Maturity==""]<-"NI"
+ad<-ad[ad$Maturity!="NI",]
 
 # Calculate modal maturity stage and coefficient of unalikability of maturity stage
 ad_long <- ad %>%
@@ -105,7 +115,7 @@ ad_long <- ad %>%
   add_modal_linearweight(varmod = "Maturity", config$ma_method) %>%
   add_modal_negexpweight(varmod = "Maturity", config$ma_method)
 
-ad_long_adv <- ad[ad$expertise == "Advanced", ] %>%
+ad_long_adv <- ad[ad$expertise == "Advanced", ] %>% 
   add_modal_trad(varmod = "Maturity", config$ma_method) %>%
   add_modal_linearweight(varmod = "Maturity", config$ma_method) %>%
   add_modal_negexpweight(varmod = "Maturity", config$ma_method)
