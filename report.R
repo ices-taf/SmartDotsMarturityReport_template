@@ -8,7 +8,7 @@ library(icesTAF)
 library(rmarkdown)
 library(jsonlite)
 library(knitr)
-# 
+#
 library(pander)
 library(ggplot2)
 library(scales)
@@ -24,11 +24,12 @@ source("utilities.R")
 source("utilities_report.R")
 
 # load configuration data
-config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
+#config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
+config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
 
 # load data for report
 ad_long_all <- read.taf("data/ad_long.csv")
-ad_long_ex <- read.taf("data/ad_long_ex.csv")
+ad_long_adv <- read.taf("data/ad_long_adv.csv")
 
 # # set strata to NULL is all are NA
 # if (all(is.na(ad_long_all[[config$strata]]))) config$strata <- NULL
