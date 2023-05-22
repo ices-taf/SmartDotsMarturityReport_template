@@ -92,7 +92,7 @@ for (i in 1:length(fishid))
 }
 
 ad <- result
-
+ad$TypeAnnotation[ad$TypeAnnotation=="Reader"]<-"reader"
 ad$TypeAnnotation[ad$TypeAnnotation=="Delegate"]<-"eventOrganizer"
 ad$TypeAnnotation[ad$TypeAnnotation=="Organizer"]<-"eventOrganizer"
 ad$reader[ad$reader==""]<-"eventOrganizer" ## to add a name to the Reader column from the Event Organizer
