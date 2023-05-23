@@ -16,14 +16,15 @@ library(ggplot2)
 library(scales) # rescale_none
 
 # library ragree contains the function unalike, that is used to estimate the coefficient of unalikeability
-taf.library(ragree)
+#taf.library(ragree)
 #
 
 # make model directory
 mkdir("model")
 
 # # load configuration
-config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
+#config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
+config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
 
 # load utilities
 source("utilities.R")
@@ -31,16 +32,16 @@ source("utilities_model.R")
 
 # read input data
 ad_long_all <- read.taf("data/ad_long.csv")
-ad_long_ex <- read.taf("data/ad_long_ex.csv")
+ad_long_adv <- read.taf("data/ad_long_adv.csv")
 
 
 # model maturity range
 modal_matur_unique_all <-  sort(unique(ad_long_all$modal_maturity))
-modal_matur_unique_ex <-  sort(unique(ad_long_ex$modal_maturity))
+modal_matur_unique_adv <-  sort(unique(ad_long_adv$modal_maturity))
 
 # model sex range
 modal_sex_unique_all <-  sort(unique(ad_long_all$modal_sex))
-modal_sex_unique_ex <-  sort(unique(ad_long_ex$modal_sex))
+modal_sex_unique_adv <-  sort(unique(ad_long_adv$modal_sex))
 
 # set strata to NULL if all are NA
 # if(length(setdiff("strata", names(config)))==0) {if(all(is.na(ad_long_all[["strata"]]))) config$strata <- NULL}
@@ -53,15 +54,16 @@ write.taf(sample_data_overview, dir = "model")
 
 # Participants table
 stager_data <- reader_data_table(ad_long_all, strata=config$strata)
+stager_data <- slice(stager_data, 1:(n() - 1))
 write.taf(stager_data, dir = "model")
 
 # Results ##############################################
 
 # repeat for all and for experts only
 
-for (group in c("all", "ex")) {
+for (group in c("all", "adv")) {
  #group <- "all"
- #group <- "ex"
+ #group <- "adv"
 
   # get the appropriate dataset
   ad_long <- get(vname("ad_long"))
@@ -148,6 +150,23 @@ for (group in c("all", "ex")) {
   )
   write.taf(vname("cu_tab_maturity"), dir = "model")
 
+  # CU table (coefficient of unalikeability) - Females
+  assign(
+    vname("cu_tab_maturity_females"),
+    cu_table(ad_long[ad_long$Sex=="F",], "Maturity", by = "reader")
+  )
+  write.taf(vname("cu_tab_maturity_females"), dir = "model")
+  
+  
+  # CU table (coefficient of unalikeability) - Males
+  assign(
+    vname("cu_tab_maturity_males"),
+    cu_table(ad_long[ad_long$Sex=="M",], "Maturity", by = "reader")
+  )
+  write.taf(vname("cu_tab_maturity_males"), dir = "model")
+  
+  
+  # CU table (coefficient of unalikeability) - by Sex
   assign(
     vname("cu_tab_sex"),
     cu_table(ad_long, "Sex", by = "reader")
@@ -168,6 +187,22 @@ for (group in c("all", "ex")) {
     pa_table(ad_long, "Sex", by = "reader")
   )
   write.taf(vname("pa_tab_sex"), dir = "model")
+  
+  ##females
+  assign(
+    vname("pa_tab_maturity_females"),
+    pa_table(ad_long[ad_long$Sex=="F",], "Maturity", by = "reader")
+  )
+  write.taf(vname("pa_tab_maturity"), dir = "model")
+  
+  
+  ##males
+  assign(
+    vname("pa_tab_maturity_males"),
+    pa_table(ad_long[ad_long$Sex=="M",], "Maturity", by = "reader")
+  )
+  write.taf(vname("pa_tab_maturity_males"), dir = "model")
+  
 
   ##################################################################################################################################################
   #  Frequency table (Number for each maturity stage per modal_maturity for each ). This is the equivalent to the relative bias table in the ageing.
@@ -190,14 +225,31 @@ for (group in c("all", "ex")) {
     general_freq_table(ad_long, "Maturity")
   )
   write.taf(vname("general_bias_freq_tab_maturity"), dir = "model")
+  
+  ##females
+  assign(
+    vname("general_bias_freq_tab_maturity_females"),
+    general_freq_table(ad_long[ad_long$Sex=="F",], "Maturity")
+  )
+  write.taf(vname("general_bias_freq_tab_maturity_females"), dir = "model")
+  
+  
+  ##males
+  assign(
+    vname("general_bias_freq_tab_maturity_males"),
+    general_freq_table(ad_long[ad_long$Sex=="M",], "Maturity")
+  )
+  write.taf(vname("general_bias_freq_tab_maturity_males"), dir = "model")
 
+  
+  ### Sex
   assign(
     vname("general_bias_freq_tab_sex"),
     general_freq_table(ad_long, "Sex")
   )
   write.taf(vname("general_bias_freq_tab_sex"), dir = "model")
 
-
+  
 
   ##################################################################
   ## Annex tables###################################################
@@ -225,6 +277,9 @@ for (group in c("all", "ex")) {
     maturity_composition_table(ad_long, by = "reader")
   )
   write.taf(vname("maturity_composition_tab"), dir = "model")
+  
+
+  
 
   ####################
   # sex composition
@@ -242,6 +297,7 @@ for (group in c("all", "ex")) {
   )
 
   saveRDS(get(vname("msem")),  file = file.path("model", paste0(vname("msem"), ".rds")))
+
 
   #########################################################
   # sex category error matrix (SSEM) only for advanced s
@@ -298,6 +354,21 @@ for (group in c("all", "ex")) {
     )
     write.taf(vsname("cu_tab_sex_by"), dir = "model")
 
+    
+    # CU table (coefficient of unalikeability) - Males
+    assign(
+      vname("cu_tab_maturity_males"),
+      cu_table(ad_long[ad_long$Sex=="M",], "Maturity", by = "reader")
+    )
+    write.taf(vname("cu_tab_maturity_males"), dir = "model")
+    
+    
+    # CU table (coefficient of unalikeability) - by Sex
+    assign(
+      vname("cu_tab_sex"),
+      cu_table(ad_long, "Sex", by = "reader")
+    )
+    write.taf(vname("cu_tab_sex"), dir = "model")
 
     ##############################################################################################################################
     # Percent agreement between maturity stagings and modal maturity stage.
@@ -312,6 +383,21 @@ for (group in c("all", "ex")) {
       pa_table(ad_long, "Sex", by = stratum)
     )
     write.taf(vsname("pa_tab_sex_by"), dir = "model")
+    
+    ##females
+    assign(
+      vname("pa_tab_maturity_females"),
+      pa_table(ad_long[ad_long$Sex=="F",], "Maturity", by = "reader")
+    )
+    write.taf(vname("pa_tab_maturity"), dir = "model")
+    
+    
+    ##males
+    assign(
+      vname("pa_tab_maturity_males"),
+      pa_table(ad_long[ad_long$Sex=="M",], "Maturity", by = "reader")
+    )
+    write.taf(vname("pa_tab_maturity_males"), dir = "model")
 
     ##################################
     ## Annex tables  #################
@@ -333,7 +419,8 @@ for (group in c("all", "ex")) {
       mat_stage_error_matrix(ad_long, by = stratum)
     )
     saveRDS(get(vname("msem")), file = file.path("model", paste0(vname("msem"), ".rds")))
-
+    
+   
     #########################################################
     # sex category error matrix (MSEM) only for advanced s
     assign(
@@ -345,7 +432,3 @@ for (group in c("all", "ex")) {
   }
 
 }
-
-
-
-#config$strata=select_strata

@@ -12,20 +12,25 @@ library(lubridate)
 library(plyr)
 library(dplyr)
 library(tidyverse)
-taf.library(ragree)
+#taf.library(ragree)
+#devtools::install_github("raredd/ragree")
+library(ragree)
 
 # create data directory
-mkdir("data")
+#mkdir("data")
 
 # get utility functions
 source("utilities.R")
 source("utilities_data.R")
 
 # load configuration
-config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
+#config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
+config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
+
 
 # get data from bootstrap folder  -------------------------------
-ad <- read.taf("bootstrap/data/smartdots_db/ad.csv")
+#ad <- read.taf("bootstrap/data/smartdots_db/ad.csv")
+ad <- read.taf("bootstrap/ad.csv")
 
 # prepare data -------------------------------
 
@@ -35,19 +40,18 @@ if (config$onlyApproved) {
 }
 
 # add date columns
-ad <-
+ ad <-
   within(ad, {
-    year <- year(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
-    qtr <- quarter(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
-    month <- month(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
-  })
+     year <- year(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
+     qtr <- quarter(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
+     month <- month(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
+   })
 
-# if variables are missing add "-"
-ad$ices_area[is.na(ad$ices_area) | ad$ices_area == ""] <- "-"
-ad$stock[is.na(ad$stock) | ad$stock == ""] <- "-"
-ad$prep_method[is.na(ad$prep_method) | ad$prep_method == ""] <- "-"
-ad$Sex[is.na(ad$Sex) | ad$Sex==""]<-"NI"
-ad<-ad[ad$Sex!="NI",]
+
+# if variables are missing add "missing"
+ad$ices_area[is.na(ad$ices_area) | ad$ices_area == ""] <- "missing"
+ad$stock[is.na(ad$stock) | ad$stock == ""] <- "missing"
+ad$prep_method[is.na(ad$prep_method) | ad$prep_method == ""] <- "missing"
 
 # if no advanced readers! make them all advanced
 if (all(ad$expertise == 0)) {
@@ -89,6 +93,15 @@ for (i in 1:length(fishid))
 }
 
 ad <- result
+ad$TypeAnnotation[ad$TypeAnnotation=="Reader"]<-"reader"
+ad$TypeAnnotation[ad$TypeAnnotation=="Delegate"]<-"eventOrganizer"
+ad$TypeAnnotation[ad$TypeAnnotation=="Organizer"]<-"eventOrganizer"
+ad$reader[ad$reader==""]<-"eventOrganizer" ## to add a name to the Reader column from the Event Organizer
+ad$Sex[is.na(ad$Sex) | ad$Sex==""]<-"NI"
+ad<-ad[ad$Sex!="NI",]
+ad$Maturity[is.na(ad$Maturity) | ad$Maturity==""]<-"NI"
+ad<-ad[ad$Maturity!="NI",]
+
 
 # Calculate modal maturity stage and coefficient of unalikability of maturity stage
 ad_long <- ad %>%
@@ -96,7 +109,7 @@ ad_long <- ad %>%
   add_modal_linearweight(varmod = "Maturity", config$ma_method) %>%
   add_modal_negexpweight(varmod = "Maturity", config$ma_method)
 
-ad_long_ex <- ad[ad$expertise == "Advanced", ] %>%
+ad_long_adv <- ad[ad$expertise == "Advanced", ] %>% 
   add_modal_trad(varmod = "Maturity", config$ma_method) %>%
   add_modal_linearweight(varmod = "Maturity", config$ma_method) %>%
   add_modal_negexpweight(varmod = "Maturity", config$ma_method)
@@ -108,14 +121,14 @@ ad_long <- ad_long %>%
   add_modal_linearweight(varmod = "Sex", config$ma_method) %>%
   add_modal_negexpweight(varmod = "Sex", config$ma_method)
 
-ad_long_ex <- ad_long_ex %>%
+ad_long_adv <- ad_long_adv %>%
   add_modal_trad(varmod = "Sex", config$ma_method) %>%
   add_modal_linearweight(varmod = "Sex", config$ma_method) %>%
   add_modal_negexpweight(varmod = "Sex", config$ma_method)
 
 # Choose the final mode (traditional, readers linear weight or negative exponential linear weight) based in the existence of histological samples or not, and, in case there are no histological samples, depending if there is multimodality or not.
 ad_long <- select_mode(ad_long, config$ma_method, config$mode_definition)
-ad_long_ex <- select_mode(ad_long_ex, config$ma_method, config$mode_definition)
+ad_long_adv <- select_mode(ad_long_adv, config$ma_method, config$mode_definition)
 
 # prepare data in wbgr output format
 # IMAGE,1,2,3,4,5,6,7,8,9,10,11,12,13
@@ -152,6 +165,7 @@ head(webgr_sex)
 # write out input data tables for use later
 write.taf(ad4webgr, "data/data.csv", quote = TRUE)
 write.taf(ad_long, "data/ad_long.csv", quote = TRUE)
-write.taf(ad_long_ex, "data/ad_long_ex.csv", quote = TRUE)
+write.taf(ad_long_adv, "data/ad_long_adv.csv", quote = TRUE)
 write.taf(webgr_maturity, "data/WebGR_maturity_ages_all.csv", quote = TRUE)
 write.taf(webgr_sex, "data/WebGR_sex_ages_all.csv", quote = TRUE)
+

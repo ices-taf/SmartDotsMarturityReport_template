@@ -100,6 +100,8 @@ plot_general_freq_matur <- function(ad_long, strata=NULL){
     }
 
 
+
+
 # Here the sex categorization bias are plotted for all readers combined.
 
 plot_general_freq_sex <- function(ad_long, strata=NULL){
@@ -154,7 +156,7 @@ plot_general_freq_sex <- function(ad_long, strata=NULL){
 # Sex and maturity bias plots  #############################################################
 
 
-# The age bias plots are made per reader.
+# The maturity bias plots are made per reader.
 # For each reader is the mean age and 2 times standard deviation
 # (as error bars) plotted against the modal age.
 

@@ -4,7 +4,7 @@ output:
     fig_caption: true
     fig_height: 10
     fig_width: 10
-    reference_docx: bootstrap/data/summaryTemplate.docx
+    reference_docx: bootstrap/initial/data/summaryTemplate.docx
     toc: false
     keep_md: false
 params:
@@ -42,7 +42,7 @@ panderOptions('keep.trailing.zeros', TRUE)
 panderOptions('table.alignment.default', "center")
 panderOptions('knitr.auto.asis', FALSE)
 
-group <- "ex"
+group <- "adv"
 
 # from extrafont
 # font_import(pattern=c("Cali"))
@@ -110,7 +110,7 @@ If there were available histological samples for all the fish individuals in the
 <!-- Total number of samples (NSample), number (CountMM) and percentage of multimodal cases (PercMM) text -->
 ```{r summary_multiple_modes_sex}
 
-histN=ad_long_all %>% subset(TypeAnnotation=="eventOrganizer") %>% select(FishID) %>% unique() %>% dim()
+histN=ad %>% subset(DoesSampleHaveHistologyImage=="Yes") %>% select(FishID) %>% unique() %>% dim()
 allN=ad_long_all %>% select(FishID) %>% unique() %>% dim()
 perc_not_Hist=100-round(100*histN[1]/allN[1], 0)
 
@@ -140,7 +140,7 @@ If there were available histological samples for all the fish individuals in the
 
 if(!isTRUE(config$maturity_hist)){
 
-histN=ad_long_all %>% subset(TypeAnnotation=="eventOrganizer") %>% select(FishID) %>% unique() %>% dim()
+histN=ad %>% subset(DoesSampleHaveHistologyImage=="Yes") %>% select(FishID) %>% unique() %>% dim()
 allN=ad_long_all %>% select(FishID) %>% unique() %>% dim()
 perc_not_Hist=100-round(100*histN[1]/allN[1], 0)
 
@@ -166,7 +166,7 @@ pander(style_table0(summary_multiple_modes_maturity_all), missing="")
 
 **Sex categorization table**
 
-```{r num_read_sex_ex}
+```{r sex_composition_tab_adv}
 
 # Sex categorization TABLE - Advanced stagers #################################################
 
@@ -175,14 +175,14 @@ set.caption('**Table X:** Sex categorization table: presents the
              number of categorizations made per expert for each modal sex category.')
 
 # Output table
-pander(style_table0(sex_composition_tab_ex), missing = "-", style = "simple")
+pander(style_table0(sex_composition_tab_adv), missing = "-", style = "simple")
 
 ```
 
 
 **Maturity staging table**
 
-```{r num_read_maturity_ex}
+```{r num_read_maturity_adv}
 
 # maturity stagings TABLE - Advanced stagers #################################################
 
@@ -191,14 +191,14 @@ set.caption('**Table X:** Maturity staging table: presents the
              number of stagings made per expert stager for each modal maturity stage.')
 
 # Output table
-pander(style_table0(maturity_composition_tab_ex), missing = "-", style = "simple")
+pander(style_table0(maturity_composition_tab_adv), missing = "-", style = "simple")
 
 ```
 
 
 **Coefficient of Unalikeability (CU) table by modal sex category**
 
-```{r cv_sex_ex}
+```{r cv_sex_adv}
 
 # CU TABLE by modal sex category - Advanced stagers #################################################
 
@@ -209,14 +209,14 @@ set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal sex c
              per stager.')
 
 # Output table
-pander(style_table1(cu_tab_sex_ex), missing = "-")
+pander(style_table1(cu_tab_sex_adv), missing = "-")
 
 ```
 
 
 **Coefficient of Unalikeability (CU) table by modal maturity stage**
 
-```{r cv_maturity_ex}
+```{r cv_maturity_adv}
 
 # CU TABLE by modal maturity stage - Advanced stagers #################################################
 
@@ -227,14 +227,14 @@ set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal matur
              per stager.')
 
 # Output table
-pander(style_table1(cu_tab_maturity_ex), missing = "-")
+pander(style_table1(cu_tab_maturity_adv), missing = "-")
 
 ```
 
 
 **PA table by modal sex category**
 
-```{r percentage_agreement_sex_ex}
+```{r percentage_agreement_sex_adv}
 
 # PERCENTAGE AGREEMENT TABLE by modal sex category - Advanced stagers ###############################
 
@@ -244,14 +244,14 @@ set.caption('**Table X:** Percentage agreement (PA) table by modal sex category:
              combined and a weighted mean of the PA per stager.')
 
 # Output table
-pander(style_table1(pa_tab_sex_ex), missing = "-")
+pander(style_table1(pa_tab_sex_adv), missing = "-")
 
 ```
 
 
 **PA table by modal maturity stage**
 
-```{r percentage_agreement_maturity_ex}
+```{r percentage_agreement_maturity_adv}
 
 # PERCENTAGE AGREEMENT TABLE by modal maturity stage - Advanced stagers ###############################
 
@@ -261,7 +261,7 @@ set.caption('**Table X:** Percentage agreement (PA) table: presents the PA per
              combined and a weighted mean of the PA per stager.')
 
 # Output table
-pander(style_table1(pa_tab_maturity_ex), missing = "-")
+pander(style_table1(pa_tab_maturity_adv), missing = "-")
 
 ```
 
@@ -269,7 +269,7 @@ pander(style_table1(pa_tab_maturity_ex), missing = "-")
 
 **General frequency bias table by modal sex category **
 
-```{r rb_sex_ex,results='asis'}
+```{r rb_sex_adv,results='asis'}
 
 # Frequency bias table by modal sex category - Advanced stagers ######################################
 
@@ -278,14 +278,14 @@ set.caption('**Table X:** Frequency bias table by modal sex category: presents t
              modal maturity for all the advanced stager together.')
 
 # Output table
-pander(style_table0(general_bias_freq_tab_sex_ex), missing = "-")
+pander(style_table0(general_bias_freq_tab_sex_adv), missing = "-")
 
 ```
 
 
 **General frequency bias table by modal maturity stage**
 
-```{r rb_maturity_ex,results='asis'}
+```{r rb_maturity_adv,results='asis'}
 
 # Frequency bias table by modal maturity stage - Advanced stagers ######################################
 
@@ -294,7 +294,7 @@ set.caption('**Table X:** Frequency bias table by modal maturity stage: presents
              modal maturity stage for all the advanced stager together.')
 
 # Output table
-pander(style_table0(general_bias_freq_tab_maturity_ex), missing = "-")
+pander(style_table0(general_bias_freq_tab_maturity_adv), missing = "-")
 
 ```
 
@@ -310,7 +310,7 @@ cap_in <- '**Figure X:** Sex categorization bias plot by modal sex category for 
              modal  sex category and sex category for all the advanced stager together.  '
 
 # Output figure
-plot_general_freq_sex(ad_long_ex, strata=NULL)
+plot_general_freq_sex(ad_long_adv, strata=NULL)
 
 
 ```
@@ -327,7 +327,7 @@ cap_in <- '**Figure X:** Maturity staging bias plot by modal maturity stage for 
              modal maturity and maturity stage for all the advanced stager together.  '
 
 # Output figure
-plot_general_freq_matur(ad_long_ex, strata=NULL)
+plot_general_freq_matur(ad_long_adv, strata=NULL)
 
 ```
 
