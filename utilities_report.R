@@ -377,23 +377,6 @@ plot_stat_sex <- function(ad_long) {
                                            name = "Percentage of Agreement PA (%)"),
                        limits = c(0, cu_lim))
   print(p)
-  
-  # # Colors and labels
-  # p +
-  #   theme(axis.text.y = element_text(color = "#80B1D3"),
-  #         axis.text.y.right = element_text(color = "#FB8072")
-  #         #text = element_text(family="Calibri")
-  #   ) +
-  #   scale_colour_manual(name = "Measure",
-  #                       values = c("#80B1D3", "#FB8072"),
-  #                       labels = c("CU", "PA")) +
-  #   scale_shape_manual(name = "Measure", values = c(16, 8, 17),
-  #                      labels = c("CU", "PA")) +
-  #   labs(x = "Modal sex", colour = "")
-  # 
-  # print(p)
-  # Now, I load again plyr and dplyr in this order:
-  library(plyr); library(dplyr)
-  
+   
 }
 
