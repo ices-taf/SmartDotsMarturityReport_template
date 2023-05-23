@@ -380,3 +380,7 @@ plot_stat_sex <- function(ad_long) {
    
 }
 
+ # Now, I load again plyr and dplyr in this order:
+  library(plyr); library(dplyr)
+  
+}
