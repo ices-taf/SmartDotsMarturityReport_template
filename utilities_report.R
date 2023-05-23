@@ -100,6 +100,8 @@ plot_general_freq_matur <- function(ad_long, strata=NULL){
     }
 
 
+
+
 # Here the sex categorization bias are plotted for all readers combined.
 
 plot_general_freq_sex <- function(ad_long, strata=NULL){
@@ -154,7 +156,7 @@ plot_general_freq_sex <- function(ad_long, strata=NULL){
 # Sex and maturity bias plots  #############################################################
 
 
-# The age bias plots are made per reader.
+# The maturity bias plots are made per reader.
 # For each reader is the mean age and 2 times standard deviation
 # (as error bars) plotted against the modal age.
 
@@ -377,10 +379,23 @@ plot_stat_sex <- function(ad_long) {
                                            name = "Percentage of Agreement PA (%)"),
                        limits = c(0, cu_lim))
   print(p)
-   
-}
-
- # Now, I load again plyr and dplyr in this order:
+  
+  # # Colors and labels
+  # p +
+  #   theme(axis.text.y = element_text(color = "#80B1D3"),
+  #         axis.text.y.right = element_text(color = "#FB8072")
+  #         #text = element_text(family="Calibri")
+  #   ) +
+  #   scale_colour_manual(name = "Measure",
+  #                       values = c("#80B1D3", "#FB8072"),
+  #                       labels = c("CU", "PA")) +
+  #   scale_shape_manual(name = "Measure", values = c(16, 8, 17),
+  #                      labels = c("CU", "PA")) +
+  #   labs(x = "Modal sex", colour = "")
+  # 
+  # print(p)
+  # Now, I load again plyr and dplyr in this order:
   library(plyr); library(dplyr)
   
 }
+

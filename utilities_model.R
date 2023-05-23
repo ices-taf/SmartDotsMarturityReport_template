@@ -1,4 +1,3 @@
-
 format_table_modal_maturity <- function(tab, fmt = "%i", extra_rows = "Total", matur_unique = modal_matur_unique) {
   # tab[] <- lapply(tab, function(x) ifelse(is.na(x), "-", sprintf(fmt, x)))
   cbind(`Modal maturity` = c(matur_unique, extra_rows), tab)
@@ -22,7 +21,6 @@ format_table_sex_stage <- function(tab, fmt = "%i", extra_rows = "Total", sex_un
 
 
 sample_data_overview_table <- function(dat, strata) {
-
   #debug
   #dat<-ad_long_all
   #strata<-config$strata
@@ -236,7 +234,7 @@ pa_table <- function(ad_long, varmod, by = "reader") {
 reader_freq_table <- function(ad_long, varmod, by=NULL) {
 
   if(is.null(by)) {
-    reader_freq_tab <- 
+    reader_freq_tab <-
       ad_long %>%
       ddply(.(eval(parse(text=paste0("modal_", tolower(varmod)))), get(all_of(varmod)), reader), summarise, count=length(get(all_of(varmod))))
     colnames(reader_freq_tab) <- c(paste0("modal_", tolower(varmod)), tolower(varmod), "reader","count")
@@ -252,13 +250,13 @@ reader_freq_table <- function(ad_long, varmod, by=NULL) {
 
     reader_freq_tab <- reader_freq_tab %>% select(-count.x, -count.y)
 
-    reader_freq_tab <- 
+    reader_freq_tab <-
       reader_freq_tab %>%
       spread(key=reader, value=freqrelat)
 
     #temp <-
     #  expand.grid(
-    #    unique(ad_long[, paste0("modal_", tolower(varmod))]), 
+    #    unique(ad_long[, paste0("modal_", tolower(varmod))]),
     #    unique(ad_long[, varmod])
     #  )
     temp <- data.frame(expand.grid(unique(eval(parse(text=paste0("ad_long$modal_", tolower(all_of(varmod)))))), unique(eval(parse(text=paste0("ad_long$", all_of(varmod)))))))
@@ -271,10 +269,10 @@ reader_freq_table <- function(ad_long, varmod, by=NULL) {
     reader_freq_tab <- rbind(reader_freq_tab, c("all", "all", as.numeric(colMeans(reader_freq_tab[,3:dim(reader_freq_tab)[2]], na.rm=TRUE))))
 
     reader_freq_tab[is.na(reader_freq_tab)] <- 0
+
     reader_freq_tab$Total <- round(rowMeans(as.data.frame(lapply(reader_freq_tab[,3:dim(reader_freq_tab)[2]],as.numeric)), na.rm=TRUE), digits=3)
+
     reader_freq_tab[is.na(reader_freq_tab)] <- "-"
-    reader_freq_tab2 <- slice(reader_freq_tab, 1:(n() - 1)) 
-    
   } else {
 
     reader_freq_tab <-
@@ -306,15 +304,14 @@ reader_freq_table <- function(ad_long, varmod, by=NULL) {
 
     reader_freq_tab=rbind(reader_freq_tab, c("all", "all", as.numeric(colMeans(reader_freq_tab[,4:dim(reader_freq_tab)[2]], na.rm=TRUE))))
 
-    reader_freq_tab[is.na(reader_freq_tab)]<-0
+    reader_freq_tab[is.na(reader_freq_tab)]=0
 
     reader_freq_tab$Total=round(rowMeans(as.data.frame(lapply(reader_freq_tab[,4:dim(reader_freq_tab)[2]],as.numeric)), na.rm=TRUE), digits=3)
-    
-    reader_freq_tab[is.na(reader_freq_tab)]<-"-"
-    reader_freq_tab2 <- slice(reader_freq_tab, 1:(n() - 1)) 
+
+    reader_freq_tab[is.na(reader_freq_tab)]="-"
 
     }
-  return(reader_freq_tab2)
+  return(reader_freq_tab)
 
 }
 
@@ -338,8 +335,7 @@ general_freq_table <- function(ad_long, varmod, by=NULL) {
     general_freq_tab$modes=as.character(general_freq_tab$modes)
 
     general_freq_tab=general_freq_tab[with(general_freq_tab, order(modes)),]
-    general_freq_tab[is.na(general_freq_tab)]<-"-"
-    general_freq_tab2 <- slice(general_freq_tab, 1:(n() - 1)) 
+    general_freq_tab[is.na(general_freq_tab)]="-"
 
     colnames(general_freq_tab)=c(paste0("modal_", tolower(varmod), "/", tolower(varmod), "_stages"), colnames(general_freq_tab)[-1])
   } else {
@@ -350,20 +346,21 @@ general_freq_table <- function(ad_long, varmod, by=NULL) {
     general_freq_tab <-
       general_freq_tab %>%
       spread(key=get(all_of(varmod)), value=frequency)
-    general_freq_tab<-general_freq_tab[with(general_freq_tab, order(get(all_of(by)))),]
-    general_freq_tab[is.na(general_freq_tab)]<-"-"
-    general_freq_tab2 <- slice(general_freq_tab, 1:(n() - 1)) 
+    general_freq_tab=general_freq_tab[with(general_freq_tab, order(get(all_of(by)))),]
+    general_freq_tab[is.na(general_freq_tab)]="-"
   }
-  return(general_freq_tab2)
+  return(general_freq_tab)
 }
 
 
 
 data_overview_table <- function(dat, varmod, report_token) {
 
-  if (any(dat$TypeAnnotation == "eventOrganizer")) {
+  #if (any(dat$TypeAnnotation == "eventOrganizer")) {
+  if (any(dat$DoesSampleHaveHistologyImage == "Yes")) {
     hist <-
-      dat[dat$TypeAnnotation == "eventOrganizer", ] %>%
+      #dat[dat$TypeAnnotation == "eventOrganizer", ] %>%
+      dat[dat$DoesSampleHaveHistologyImage == "Yes", ] %>%
       ddply(.(SampleID), summarise, Histology = "yes") %>%
       select(., c("SampleID", "Histology"))
     dat <- merge(dat, hist, by.x = "SampleID", by.y = "SampleID", all.x = TRUE)
@@ -382,7 +379,7 @@ data_overview_table <- function(dat, varmod, report_token) {
   readings <-
     ad_wide %>%
     select(matches("R[0-9][0-9]*"))
-  
+
   complete <- complete.cases(readings)
 
   ad_wide[c("Mode", "PA %", "CU %")] <- NA
@@ -435,6 +432,7 @@ maturity_composition <- function(dat, by = "reader") {
     unclass %>%
     as.data.frame
 }
+
 
 sex_composition <- function(dat, by = "reader") {
   # Number of gonads staged per reader and maturity stage
