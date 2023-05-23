@@ -30,7 +30,7 @@ config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
 
 # get data from bootstrap folder  -------------------------------
 #ad <- read.taf("bootstrap/data/smartdots_db/ad.csv")
-ad <- read.taf("bootstrap/ad.csv",sep=";")
+ad <- read.taf("bootstrap/ad.csv")
 
 # prepare data -------------------------------
 
@@ -40,20 +40,12 @@ if (config$onlyApproved) {
 }
 
 # add date columns
-# ad <-
-#   within(ad, {
-#     year <- year(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
-#     qtr <- quarter(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
-#     month <- month(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
-#   })
-
-
-ad <-
+ ad <-
   within(ad, {
-    year <- year(parse_date_time(catch_date, "%d/%m/%Y %H:%M"))
-    qtr <- quarter(parse_date_time(catch_date, "%d/%m/%Y %H:%M"))
-    month <- month(parse_date_time(catch_date, "%d/%m/%Y %H:%M"))
-  })
+     year <- year(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
+     qtr <- quarter(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
+     month <- month(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
+   })
 
 
 # if variables are missing add "missing"
