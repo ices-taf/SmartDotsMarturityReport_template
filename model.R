@@ -16,7 +16,7 @@ library(ggplot2)
 library(scales) # rescale_none
 
 # library ragree contains the function unalike, that is used to estimate the coefficient of unalikeability
-taf.library(ragree)
+#taf.library(ragree)
 #
 
 # make model directory
@@ -225,14 +225,31 @@ for (group in c("all", "adv")) {
     general_freq_table(ad_long, "Maturity")
   )
   write.taf(vname("general_bias_freq_tab_maturity"), dir = "model")
+  
+  ##females
+  assign(
+    vname("general_bias_freq_tab_maturity_females"),
+    general_freq_table(ad_long[ad_long$Sex=="F",], "Maturity")
+  )
+  write.taf(vname("general_bias_freq_tab_maturity_females"), dir = "model")
+  
+  
+  ##males
+  assign(
+    vname("general_bias_freq_tab_maturity_males"),
+    general_freq_table(ad_long[ad_long$Sex=="M",], "Maturity")
+  )
+  write.taf(vname("general_bias_freq_tab_maturity_males"), dir = "model")
 
+  
+  ### Sex
   assign(
     vname("general_bias_freq_tab_sex"),
     general_freq_table(ad_long, "Sex")
   )
   write.taf(vname("general_bias_freq_tab_sex"), dir = "model")
 
-
+  
 
   ##################################################################
   ## Annex tables###################################################

@@ -40,12 +40,13 @@ if (config$onlyApproved) {
 }
 
 # add date columns
-ad <-
+ ad <-
   within(ad, {
-    year <- year(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
-    qtr <- quarter(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
-    month <- month(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
-  })
+     year <- year(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
+     qtr <- quarter(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
+     month <- month(parse_date_time(catch_date, "%d/%m/%Y %H:%M:%S"))
+   })
+
 
 # if variables are missing add "missing"
 ad$ices_area[is.na(ad$ices_area) | ad$ices_area == ""] <- "missing"
@@ -167,3 +168,4 @@ write.taf(ad_long, "data/ad_long.csv", quote = TRUE)
 write.taf(ad_long_adv, "data/ad_long_adv.csv", quote = TRUE)
 write.taf(webgr_maturity, "data/WebGR_maturity_ages_all.csv", quote = TRUE)
 write.taf(webgr_sex, "data/WebGR_sex_ages_all.csv", quote = TRUE)
+

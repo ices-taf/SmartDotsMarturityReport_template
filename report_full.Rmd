@@ -688,6 +688,77 @@ plot_general_freq_matur(ad_long_all, strata=NULL)
 ```
 
 
+**General frequency bias table by modal maturity stage (only females)**
+
+The frequency bias is shown by maturity stage for each modal maturity stage (only females) for all stagers together. This frequency distribution presented in the form of a table or a bubble plot may be used to explore the bias in the sex determination by the stagers participating in this event.
+
+```{r general_freq_maturity_females_all}
+
+# frequency bias TABLE by females category ###########################################
+
+set.caption('**Table X:** General frequency bias table (only females): represents the frequency per
+             modal maturity stage for all stagers combined.')
+
+
+pander(style_table0(general_bias_freq_tab_maturity_females_all), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+
+```
+
+**General Frequency Bias plot by modal maturity stage (only females)**
+
+Text?
+
+```{r bias_plots_maturity_females_all, fig.width = 5, fig.height = 4, fig.cap = cap_in}
+
+
+# BIAS PLOT by modal maturity stage (only females) - All stagers ################################################
+
+# Table caption
+cap_in <- '**Figure X:** Maturity staging bias plot by modal maturity (only females) stage for all stagers:  presents the frequency per
+             modal maturity and maturity stage for all the stagers together.  '
+
+# Output figure
+plot_general_freq_matur(ad_long_all[ad_long_all$Sex=="F",], strata=NULL)
+
+```
+
+
+**General frequency bias table by modal maturity stage (only males)**
+
+The frequency bias is shown by maturity stage for each modal maturity stage (only males) for all stagers together. This frequency distribution presented in the form of a table or a bubble plot may be used to explore the bias in the sex determination by the stagers participating in this event.
+
+```{r general_freq_maturity_males_all}
+
+# frequency bias TABLE by males category ###########################################
+
+set.caption('**Table X:** General frequency bias table (only males): represents the frequency per
+             modal maturity stage for all stagers combined.')
+
+
+pander(style_table0(general_bias_freq_tab_maturity_males_all), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+
+```
+
+**General Frequency Bias plot by modal maturity stage (only males)**
+
+Text?
+
+```{r bias_plots_maturity_males_all, fig.width = 5, fig.height = 4, fig.cap = cap_in}
+
+
+# BIAS PLOT by modal maturity stage (only males) - All stagers ################################################
+
+# Table caption
+cap_in <- '**Figure X:** Maturity staging bias plot by modal maturity (only males) stage for all stagers:  presents the frequency per
+             modal maturity and maturity stage for all the stagers together.  '
+
+# Output figure
+plot_general_freq_matur(ad_long_all[ad_long_all$Sex=="M",], strata=NULL)
+
+```
+
+
+
 **Stager frequency bias table by modal sex category**
 
 <!-- Frequency bias text -->
@@ -1175,7 +1246,7 @@ nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=ncol(data)-1
+z=8
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
 
@@ -1746,6 +1817,70 @@ cap_in <- '**Figure X:** Maturity staging bias plot by modal maturity stage for 
 
 # Output figure
 plot_general_freq_matur(ad_long_adv, strata=NULL)
+
+```
+
+**General frequency bias table by modal maturity stage (only females)**
+
+
+The frequency bias is shown by sex category for each modal maturity stage  (only females) for all the advanced stagers together. This frequency distribution presented in the form of a table or a bubble plot may be used to explore the bias in the maturity staging by the advanced stagers participating in this event.
+```{r general_freq_maturity_females_adv}
+
+# frequency bias TABLE by females category ###########################################
+
+set.caption('**Table X:** General frequency bias table: represents the frequency per
+             modal maturity stage (only females) for advanced stagers combined.')
+
+
+pander(style_table0(general_bias_freq_tab_maturity_females_adv), missing = "-")
+
+```
+
+
+***General Frequency Bias plot by modal maturity stage (only females)***
+
+```{r bias_plots_maturity_females_adv, fig.width = 5, fig.height = 4, fig.cap = cap_in}
+
+# BIAS PLOT by modal maturity stage (only females) - Expert stagers #
+
+# Table caption
+cap_in <- '**Figure X:** Maturity staging bias plot by modal maturity stage (only females) for advanced stagers:  presents the frequency per
+             modal maturity and maturity stage for all the advanced stager together.  '
+
+# Output figure
+plot_general_freq_matur(ad_long_adv[ad_long_adv$Sex=="F",], strata=NULL)
+
+```
+
+**General frequency bias table by modal maturity stage (only males)**
+
+
+The frequency bias is shown by sex category for each modal maturity stage  (only males) for all the advanced stagers together. This frequency distribution presented in the form of a table or a bubble plot may be used to explore the bias in the maturity staging by the advanced stagers participating in this event.
+```{r general_freq_maturity_males_adv}
+
+# frequency bias TABLE by males category ###########################################
+
+set.caption('**Table X:** General frequency bias table: represents the frequency per
+             modal maturity stage (only males) for advanced stagers combined.')
+
+
+pander(style_table0(general_bias_freq_tab_maturity_males_adv), missing = "-")
+
+```
+
+
+***General Frequency Bias plot by modal maturity stage (only males)***
+
+```{r bias_plots_maturity_males_adv, fig.width = 5, fig.height = 4, fig.cap = cap_in}
+
+# BIAS PLOT by modal maturity stage (only males) - Expert stagers #
+
+# Table caption
+cap_in <- '**Figure X:** Maturity staging bias plot by modal maturity stage (only males) for advanced stagers:  presents the frequency per
+             modal maturity and maturity stage for all the advanced stager together.  '
+
+# Output figure
+plot_general_freq_matur(ad_long_adv[ad_long_adv$Sex=="M",], strata=NULL)
 
 ```
 
