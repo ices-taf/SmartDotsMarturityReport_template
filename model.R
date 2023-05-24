@@ -23,8 +23,8 @@ library(scales) # rescale_none
 mkdir("model")
 
 # # load configuration
-#config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
-config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
+config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
+#config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
 
 # load utilities
 source("utilities.R")
