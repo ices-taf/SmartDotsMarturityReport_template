@@ -166,7 +166,6 @@ head(webgr_sex)
 
 
 # write out input data tables for use later
-write.taf(dist, dir = "data", quote = TRUE)
 write.taf(ad, file = "data.csv", dir = "data", quote = TRUE)
 write.taf(ad_long, dir = "data", quote = TRUE)
 write.taf(ad_long_adv, dir = "data", quote = TRUE)
