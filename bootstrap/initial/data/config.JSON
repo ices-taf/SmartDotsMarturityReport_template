@@ -7,6 +7,6 @@
   "report_name": "SmartDots_Report_Event_398",
   "report_title": "SmartDots Report for event 398",
   "report_tokens": "tokens goes here",
-  "mode_definition": "standard",
+  "mode_definition": "multistage",
   "strata": ["strata"]
 }
