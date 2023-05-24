@@ -30,7 +30,7 @@ config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
 
 # get data from bootstrap folder  -------------------------------
 #ad <- read.taf("bootstrap/data/smartdots_db/ad.csv")
-ad <- read.taf("bootstrap/ad.csv")
+ad <- read.taf("bootstrap/data/ad.csv")
 
 # prepare data -------------------------------
 
