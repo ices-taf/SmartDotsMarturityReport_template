@@ -97,6 +97,7 @@ ad$TypeAnnotation[ad$TypeAnnotation=="Reader"]<-"reader"
 ad$TypeAnnotation[ad$TypeAnnotation=="Delegate"]<-"eventOrganizer"
 ad$TypeAnnotation[ad$TypeAnnotation=="Organizer"]<-"eventOrganizer"
 ad$reader[ad$reader==""]<-"eventOrganizer" ## to add a name to the Reader column from the Event Organizer
+ad$reader[ad$TypeAnnotation=="eventOrganizer"]<-""
 ad$Sex[is.na(ad$Sex) | ad$Sex==""]<-"NI"
 ad<-ad[ad$Sex!="NI",]
 ad$Maturity[is.na(ad$Maturity) | ad$Maturity==""]<-"NI"
