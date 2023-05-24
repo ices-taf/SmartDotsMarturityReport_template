@@ -164,10 +164,11 @@ webgr_sex <-
 names(webgr_sex) <- c("IMAGE", 1:length(readers))
 head(webgr_sex)
 
-# write out input data tables for use later
-write.taf(ad4webgr, "data/data.csv", quote = TRUE)
-write.taf(ad_long, "data/ad_long.csv", quote = TRUE)
-write.taf(ad_long_adv, "data/ad_long_adv.csv", quote = TRUE)
-write.taf(webgr_maturity, "data/WebGR_maturity_ages_all.csv", quote = TRUE)
-write.taf(webgr_sex, "data/WebGR_sex_ages_all.csv", quote = TRUE)
 
+# write out input data tables for use later
+write.taf(dist, dir = "data", quote = TRUE)
+write.taf(ad, file = "data.csv", dir = "data", quote = TRUE)
+write.taf(ad_long, dir = "data", quote = TRUE)
+write.taf(ad_long_adv, dir = "data", quote = TRUE)
+write.taf(webgr_maturity, file = "WebGR_maturity_all.csv", dir = "data", quote = TRUE)
+write.taf(webgr_sex, file = "WebGR_sex_all.csv", dir = "data", quote = TRUE)
