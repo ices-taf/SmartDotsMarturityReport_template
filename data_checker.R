@@ -10,9 +10,9 @@ library(tidyr)
 config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
 
 # get data from bootstrap folder  -------------------------------
-ad <- read.taf("bootstrap/smartdots_db/ad.csv")
+#ad <- read.taf("bootstrap/smartdots_db/ad.csv")
 #ad <- read.taf("bootstrap/data/smartdots_db/ad.csv")
-#ad <- read.taf("bootstrap/ad.csv")
+ad <- read.taf("bootstrap/ad.csv")
 
 # tag some feilds as missing?
 
