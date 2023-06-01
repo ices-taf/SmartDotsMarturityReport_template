@@ -1,14 +1,18 @@
 ## perform some sanity checks on the data
 
+
 library(icesTAF)
 library(jsonlite)
 library(tidyr)
 
 # # load configuration
-config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
+#config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
+config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
 
 # get data from bootstrap folder  -------------------------------
+#ad <- read.taf("bootstrap/smartdots_db/ad.csv")
 ad <- read.taf("bootstrap/data/smartdots_db/ad.csv")
+#ad <- read.taf("bootstrap/ad.csv")
 
 # tag some feilds as missing?
 
@@ -95,3 +99,4 @@ check_ad(ad, "approved annotations (sets of dots)")
 
 
 # done
+
