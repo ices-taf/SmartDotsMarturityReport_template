@@ -36,7 +36,7 @@ unlink(zipfile)
 ad <- ad[,names(ad) != "Comment"]
 
 # set experise of event organiser to 1
-if (all(is.na(ad$expertise[ad$TypeAnnotation == "Organizer"|ad$TypeAnnotation == "eventDelegate" |ad$TypeAnnotation == "eventOrganizer"|ad$TypeAnnotation == "Delegate"]))) {
+if (all(is.na(ad$expertise[ad$TypeAnnotation == "Organizer" |ad$TypeAnnotation == "eventDelegate" |ad$TypeAnnotation == "eventOrganizer"|ad$TypeAnnotation == "Delegate"]))) {
   message("setting eventOrganiser expertise to 'expert' as none was provided.")
   ad$expertise[ad$TypeAnnotation == "Organizer"|ad$TypeAnnotation == "eventDelegate" |ad$TypeAnnotation == "eventOrganizer"|ad$TypeAnnotation == "Delegate"] <- 1
 }
