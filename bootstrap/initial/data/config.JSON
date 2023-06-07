@@ -1,12 +1,12 @@
 {
-  "event_id": 398,
+  "event_id": 573,
   "ma_method": "Mode",
   "onlyApproved": true,
-  "summary_name": "SmartDots_Summary_Event_398",
-  "summary_title": "SmartDots Summary for event 398",
-  "report_name": "SmartDots_Report_Event_398",
-  "report_title": "SmartDots Report for event 398",
+  "summary_name": "SmartDots_Summary_Event_573",
+  "summary_title": "SmartDots Summary for event 573",
+  "report_name": "SmartDots_Report_Event_573",
+  "report_title": "SmartDots Report for event 573",
   "report_tokens": "tokens goes here",
-  "mode_definition": "multistage",
+  "mode_definition": "standard",
   "strata": ["strata"]
 }
