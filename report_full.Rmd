@@ -264,7 +264,8 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+#z=8
+z=ncol(data)-2
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -305,7 +306,8 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+#z=8
+z=ncol(data)-2
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -346,7 +348,8 @@ ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
 
-z=8
+#z=8
+z=ncol(data)-2
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -1199,8 +1202,8 @@ nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
-#z=ncol(data)-2
+#z=8
+z=ncol(data)-2
 nfig=ceiling((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 if(nfig==0){
