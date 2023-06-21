@@ -44,7 +44,7 @@ modal_sex_unique_all <-  sort(unique(ad_long_all$modal_sex))
 modal_sex_unique_adv <-  sort(unique(ad_long_adv$modal_sex))
 
 # set strata to NULL if all are NA
-# if(length(setdiff("strata", names(config)))==0) {if(all(is.na(ad_long_all[["strata"]]))) config$strata <- NULL}
+if(length(setdiff("strata", names(config)))==0) {if(all(is.na(ad_long_all[["strata"]]))) config$strata <- NULL}
 
 # Overview of samples and stagers ##############################################
 
