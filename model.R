@@ -16,7 +16,7 @@ library(ggplot2)
 library(scales) # rescale_none
 
 # library ragree contains the function unalike, that is used to estimate the coefficient of unalikeability
-#taf.library(ragree)
+taf.library(ragree)
 #
 
 # make model directory
