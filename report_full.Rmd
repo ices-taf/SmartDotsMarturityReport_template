@@ -366,10 +366,10 @@ for(i in 1:nfig)
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table0(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -410,10 +410,10 @@ for(i in 1:nfig)
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+     pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -441,13 +441,13 @@ for(i in 1:nfig)
     # Table caption
     set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage (only for females): presents the CU per modal maturity stage and stager, the CU of all stagers combined per maturity stage and a weighted mean of the CU per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+     pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -473,13 +473,13 @@ for(i in 1:nfig)
     # Table caption
     set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage (only for males): presents the CU per modal maturity stage and stager, the CU of all stagers combined per maturity stage and a weighted mean of the CU per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+     pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -512,13 +512,13 @@ for(i in 1:nfig)
     # Table caption
     set.caption('**Table X:** Percentage agreement (PA) table: shows the PA per modal sex category and stager, the PA for all stagers combined and the weighted mean of the PA per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -551,13 +551,13 @@ for(i in 1:nfig)
     # Table caption
     set.caption('**Table X:** Percentage agreement (PA) table: shows the PA per modal maturity and stager, the PA for all stagers combined and the weighted mean of the PA per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+     pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -587,13 +587,16 @@ for(i in 1:nfig)
     # Table caption
     set.caption('**Table X:** Percentage agreement (PA) table: shows the PA per modal maturity and stager (only females), the PA for all stagers combined and the weighted mean of the PA per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    #pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    #pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      #pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -623,13 +626,16 @@ for(i in 1:nfig)
     # Table caption
     set.caption('**Table X:** Percentage agreement (PA) table: shows the PA per modal maturity and stager (only males), the PA for all stagers combined and the weighted mean of the PA per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    #pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    #pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      #pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-") 
     }
   }
 }
