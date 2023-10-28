@@ -24,8 +24,8 @@ source("utilities.R")
 source("utilities_report.R")
 
 # load configuration data
-config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
-#config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
+#config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
+config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
 
 # load data for report
 ad_long_all <- read.taf("data/ad_long.csv")
