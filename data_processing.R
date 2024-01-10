@@ -16,7 +16,6 @@ taf.library(ragree)
 #devtools::install_github("raredd/ragree")
 #library(ragree)
 library(tidyr)
-library(tibble) # bias_test
 
 library(ggplot2)
 
