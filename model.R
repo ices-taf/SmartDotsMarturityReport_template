@@ -13,7 +13,7 @@ library(tidyr)
 library(tibble) # bias_test
 
 library(ggplot2)
-library(scales) # rescale_none
+#library(scales) # rescale_none
 
 # library ragree contains the function unalike, that is used to estimate the coefficient of unalikeability
 taf.library(ragree)
