@@ -166,10 +166,23 @@ webgr_sex <-
 names(webgr_sex) <- c("IMAGE", 1:length(readers))
 head(webgr_sex)
 
+##Summary number of modes by FishID - all readers
+ad_long_summary_modes<- ad_long[,c(2,4,8,37,45,52,56,61,65,66,67)]
+ad_long_summary_modes<- ad_long_summary_modes %>% distinct(FishID, .keep_all=TRUE)
+ad_long_summary_modes<- ad_long_summary_modes[order(ad_long_summary_modes$FishID),]
+
+##Summary number of modes by FishID - advanced readers
+ad_long_summary_modes_adv<- ad_long_adv[,c(2,4,8,37,45,52,56,61,65,66,67)]
+ad_long_summary_modes_adv<- ad_long_summary_modes_adv %>% distinct(FishID, .keep_all=TRUE)
+ad_long_summary_modes_adv<- ad_long_summary_modes_adv[order(ad_long_summary_modes_adv$FishID),]
+
+
 
 # write out input data tables for use later
 write.taf(ad, file = "data.csv", dir = "data", quote = TRUE)
 write.taf(ad_long, dir = "data", quote = TRUE)
 write.taf(ad_long_adv, dir = "data", quote = TRUE)
+write.taf(ad_long_summary_modes, dir = "data", quote = TRUE)
+write.taf(ad_long_summary_modes_adv, dir = "data", quote = TRUE)
 write.taf(webgr_maturity, file = "WebGR_maturity_all.csv", dir = "data", quote = TRUE)
 write.taf(webgr_sex, file = "WebGR_sex_all.csv", dir = "data", quote = TRUE)
