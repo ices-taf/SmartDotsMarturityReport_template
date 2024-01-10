@@ -84,28 +84,27 @@ ad<-ad[ad$Maturity!="NI",]
 ad4webgr <- ad
 
 # Before calculating the mode, give to the sampleID of readings by eventOrganizer (histological sample) the same name as the samples analyzed by the other readers, so the maturity defined for the histological samples is assigned as mode to the other samples of the same FishID
-fishid <- sort(unique(ad$FishID))
-for (i in 1:length(fishid))
-{
-  nohist <- ad[ad$FishID == fishid[i] & ad$TypeAnnotation != "eventOrganizer", ]
-  sampleid_nohist <- unique(nohist$SampleID)
-  yeshist <- ad[ad$FishID == fishid[i] & ad$TypeAnnotation == "eventOrganizer", ]
-  if (dim(yeshist)[1] > 0) {
-    yeshist <- yeshist[rep(row.names(yeshist), length(sampleid_nohist)), ]
-    yeshist$SampleID <- sampleid_nohist
-  }
+#fishid <- sort(unique(ad$FishID))
+#for (i in 1:length(fishid))
+# {
+#   nohist <- ad[ad$FishID == fishid[i] & ad$TypeAnnotation != "eventOrganizer", ]
+#   sampleid_nohist <- unique(nohist$SampleID)
+#   yeshist <- ad[ad$FishID == fishid[i] & ad$TypeAnnotation == "eventOrganizer", ]
+#   if (dim(yeshist)[1] > 0) {
+#     yeshist <- yeshist[rep(row.names(yeshist), length(sampleid_nohist)), ]
+#     yeshist$SampleID <- sampleid_nohist
+#   }
+#
+#   temp <- rbind(nohist, yeshist)
+#
+#   if (i == 1) {
+#     result <- temp
+#   } else {
+#     result <- rbind(result, temp)
+#   }
+# }
 
-  temp <- rbind(nohist, yeshist)
-
-  if (i == 1) {
-    result <- temp
-  } else {
-    result <- rbind(result, temp)
-  }
-}
-
-ad <- result
-
+#ad <- result
 
 # Calculate modal maturity stage and coefficient of unalikability of maturity stage
 ad_long <- ad %>%
@@ -113,7 +112,7 @@ ad_long <- ad %>%
   add_modal_linearweight(varmod = "Maturity", config$ma_method) %>%
   add_modal_negexpweight(varmod = "Maturity", config$ma_method)
 
-ad_long_adv <- ad[ad$expertise == "Advanced", ] %>% 
+ad_long_adv <- ad[ad$expertise == "1", ] %>% 
   add_modal_trad(varmod = "Maturity", config$ma_method) %>%
   add_modal_linearweight(varmod = "Maturity", config$ma_method) %>%
   add_modal_negexpweight(varmod = "Maturity", config$ma_method)
