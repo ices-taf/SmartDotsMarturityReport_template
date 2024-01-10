@@ -26,7 +26,7 @@ library(ggplot2)
 #library(plyr)
 #library(dplyr)
 #library(tidyverse)
-#library(tidyselect) #function all_of
+library(tidyselect) #function all_of
 #taf.library(ragree)
 #devtools::install_github("raredd/ragree")
 #library(ragree)
