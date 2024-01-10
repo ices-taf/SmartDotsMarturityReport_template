@@ -7,9 +7,14 @@
 
 library(icesTAF)
 library(jsonlite)
-#unloadNamespace("dplyr")
-library(plyr) # age error matrix
+library(tidyr)
+library(lubridate)
+library(plyr)
 library(dplyr)
+library(tidyverse)
+taf.library(ragree)
+#devtools::install_github("raredd/ragree")
+#library(ragree)
 library(tidyr)
 library(tibble) # bias_test
 
