@@ -7,9 +7,9 @@
 
 library(icesTAF)
 library(jsonlite)
-library(tidyr)
+#library(tidyr)
 library(lubridate)
-library(plyr)
+#library(plyr)
 library(dplyr)
 library(tidyverse)
 taf.library(ragree)
