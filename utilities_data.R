@@ -52,11 +52,13 @@ add_modal_trad <- function(ad, varmod, ma_method) {
   # calculate CU (coefficient of unalikeability)
   out$cu <- apply(datsel, 1, cu_I)
   
-  colnames(out)=c(names(out)[-c((length(names(out))-2):length(names(out)))], paste0("modal_trad_", varmod), paste0("NModes_trad_", varmod), paste0("cu_", varmod))
+  #colnames(out)=c(names(out)[-c((length(names(out))-2):length(names(out)))], paste0("modal_trad_", varmod), paste0("NModes_trad_", varmod), paste0("cu_", varmod))
   # merge CV and modal age to data
-  right_join(ad, out, by = c("FishID", "SampleID"))
+  #right_join(ad, out, by = c("FishID", "SampleID"))
+#}
+out <- out %>% rename_with(.fn=~paste0(.,".neg"), .cols = -c(FishID, modal_negexpweight, NModes_negexp))
+right_join(ad, out, by = c("FishID"))
 }
-
 
 
 add_modal_linearweight <- function(ad, varmod, ma_method) {
