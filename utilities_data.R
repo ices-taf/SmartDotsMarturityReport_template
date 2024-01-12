@@ -141,7 +141,7 @@ add_modal_negexpweight <- function(ad, varmod, ma_method) {
     sel=out[e,]
     df=sel[,-c(1,2,dim(out)[2])]
     max=max(df)
-    countcases[e]=length(df[which(df==max)])
+    countcases[e]=length(df[which(df==max & df!=0)])
   }
   
   out$NModes_negexp=countcases
