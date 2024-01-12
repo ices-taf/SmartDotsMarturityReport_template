@@ -127,7 +127,7 @@ ad_long <- ad %>%
   add_modal_linearweight(varmod = "Maturity", config$ma_method) %>%
   add_modal_negexpweight(varmod = "Maturity", config$ma_method)
 
-ad_long_adv <- ad[ad$expertise == "1", ] %>% 
+ad_long_adv <- ad[ad$expertise == "Advanced", ] %>% 
   add_modal_trad(varmod = "Maturity", config$ma_method) %>%
   add_modal_linearweight(varmod = "Maturity", config$ma_method) %>%
   add_modal_negexpweight(varmod = "Maturity", config$ma_method)
