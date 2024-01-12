@@ -44,7 +44,7 @@ add_modal_trad <- function(ad, varmod, ma_method) {
     sel=out[e,]
     df=sel[,-c(1,2,dim(out)[2])]
     max=max(df)
-    countcases[e]=length(df[which(df==max)])
+    countcases[e]=length(df[which(df==max & df!=0)])
   }
   
   out$NModes_trad=countcases
@@ -94,7 +94,7 @@ add_modal_linearweight <- function(ad, varmod, ma_method) {
     sel=out[e,]
     df=sel[,-c(1, 2, dim(out)[2])]
     max=max(df)
-    countcases[e]=length(df[which(df==max)])
+    countcases[e]=length(df[which(df==max & df!=0)])
   }
   
   out$NModes_linear=countcases
