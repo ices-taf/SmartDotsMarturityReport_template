@@ -262,7 +262,7 @@ select_mode=function(ad, ma_method, mode_definition){
 
   dat=rbind(dat1, dat4)
   
-  ad=distinct(right_join(ad, dat, by = c("FishID", "SampleID")))
+ # ad=distinct(right_join(ad, dat, by = c("FishID", "SampleID")))
   ad=distinct(right_join(ad, dat, by ="FishID"))
   
   # ad=distinct(merge(ad, dat, by.x="FishID", by.y="FishID"))
