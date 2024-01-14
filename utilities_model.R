@@ -461,7 +461,7 @@ sex_composition_table <- function(ad_long, by = "reader") {
     #rbind(colSums(., na.rm = TRUE)) %>%
      rbind(colSums(., na.rm = FALSE)) %>%
     #format_table_sex_stage(sex_unique = sort(unique(ad_long$Sex)))
-    format_table_sex_stage(sex_unique = sort(unique(ad_long$Sex),na.last=TRUE))))
+    format_table_sex_stage(sex_unique = sort(unique(ad_long$Sex),na.last=TRUE))
 }
 
 
