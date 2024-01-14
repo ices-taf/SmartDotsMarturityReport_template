@@ -28,8 +28,7 @@ sample_data_overview_table <- function(dat, strata) {
   dat$MaturityTemp=dat$Maturity
 
   maturation_sample_data_overview <- dat %>%
-   # select_at(unique(c("FishID", "SampleID", "length", "modal_maturity", "year", "ices_area", "qtr", strata, "reader", "Maturity", "MaturityTemp"))) %>%
-  select_at(unique(c("FishID", "length", "modal_maturity", "year", "ices_area", "qtr", strata, "reader", "Maturity", "MaturityTemp"))) %>%  
+  select_at(unique(c("FishID", "SampleID", "length", "modal_maturity", "year", "ices_area", "qtr", strata, "reader", "Maturity", "MaturityTemp"))) %>%
   spread(key = reader, value = MaturityTemp) %>%
     group_by_at(unique(c("year", "ices_area", "qtr", strata))) %>%
     summarise(
@@ -44,9 +43,8 @@ sample_data_overview_table <- function(dat, strata) {
   dat$SexTemp=dat$Sex
 
   sex_sample_data_overview <- dat %>%
-#    select_at(unique(c("FishID", "SampleID", "length", "modal_sex", "year", "ices_area", "qtr", strata, "reader", "Sex", "SexTemp"))) %>%
-   select_at(unique(c("FishID", "length", "modal_sex", "year", "ices_area", "qtr", strata, "reader", "Sex", "SexTemp"))) %>%
-    spread(key = reader, value = SexTemp) %>%
+   select_at(unique(c("FishID", "SampleID", "length", "modal_sex", "year", "ices_area", "qtr", strata, "reader", "Sex", "SexTemp"))) %>%
+   spread(key = reader, value = SexTemp) %>%
     group_by_at(unique(c("year", "ices_area", "qtr", strata))) %>%
     summarise(
       min_len = 5*round(min(length, na.rm = TRUE)/5),
