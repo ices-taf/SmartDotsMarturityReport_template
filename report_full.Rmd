@@ -2459,7 +2459,7 @@ pander(style_table0(datos), missing="-", style = "simple")
 ***Multiple mode in the sex category***
 
 ```{r multiple mode cases sex advanced stagers}
-datos=ad_long_adv[ad_long_adv$NModes_trad_Sex>1,], c(1, 4, 5, 9, 11, 12, 13, 16:26, 56, 57)]
+datos=ad_long_adv[ad_long_adv$NModes_trad_Sex>1, c(1, 4, 5, 9, 11, 12, 13, 16:26, 56, 57)]
 
 # Output table
 pander(style_table0(datos), missing="-", style = "simple")
