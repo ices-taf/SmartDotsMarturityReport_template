@@ -2299,11 +2299,11 @@ group <- "all"
 # Table caption
 set.caption('**Table X:** Data overview including modal
              maturity and statistics per sample.')
-data_mat_all<-data_overview_tab_maturity_all[,c(-4,-6,-7,-8)]
+#data_mat_all<-data_overview_tab_maturity_all[,c(-4,-6,-7,-8)]
 
 # Output table
-#pander(style_table0(get(vname("data_overview_tab_maturity"))), missing="-", style = "simple")
-pander(style_table0(get(vname("data_mat_all"))), missing="-", style = "simple")
+pander(style_table0(get(vname("data_overview_tab_maturity"))), missing="-", style = "simple")
+#pander(style_table0(get(vname("data_mat_all"))), missing="-", style = "simple")
 ```
 
 
@@ -2313,9 +2313,9 @@ pander(style_table0(get(vname("data_mat_all"))), missing="-", style = "simple")
 # Table caption
 set.caption('**Table X:** Data overview including modal
              sex and statistics per sample.')
-data_sex_all<-data_overview_tab_sex_all[,c(-4,-6,-7,-8)]
+
 # Output table
-#pander(style_table0(get(vname("data_sex_all"))), missing="-", style = "simple")
+pander(style_table0(get(vname("data_overview_tab_sex"))), missing="-", style = "simple")
 
 ```
 
