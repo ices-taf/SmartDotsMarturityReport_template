@@ -130,7 +130,8 @@ num_read_table_modal_sex <- function(dat, by = "reader") {
 # Prepare the table with the number of cases with multiple modes depending if the methodology used to define the mode is the traditional mode (no weighting of the readers), using a linear weighting for the readers, a negative exponential weighting or a multistage approach, where a combination of the different approaches is used.
 multimode_cases_table_traditional<- function(dat, varmod) {
 
-  MM_tab=tapply(eval(parse(text=paste0("dat$NModes_trad_", varmod))),dat$SampleID,max) %>% unclass %>% as.data.frame
+ # MM_tab=tapply(eval(parse(text=paste0("dat$NModes_trad_", varmod))),dat$SampleID,max) %>% unclass %>% as.data.frame
+  MM_tab=tapply(eval(parse(text=paste0("dat$NModes_trad_", varmod))),dat$FishID,max) %>% unclass %>% as.data.frame
   colnames(MM_tab)=c("NModes_trad")
   MM_tab$FishID=rownames(MM_tab)
 
@@ -152,7 +153,8 @@ multimode_cases_table_linear <- function(dat, varmod) {
 
 multimode_cases_table_negexp <- function(dat, varmod) {
 
-  MM_tab=tapply(eval(parse(text=paste0("dat$NModes_negexpweight_", varmod))),dat$SampleID,max) %>% unclass %>% as.data.frame
+  #MM_tab=tapply(eval(parse(text=paste0("dat$NModes_negexpweight_", varmod))),dat$SampleID,max) %>% unclass %>% as.data.frame
+  MM_tab=tapply(eval(parse(text=paste0("dat$NModes_negexpweight_", varmod))),dat$FishID,max) %>% unclass %>% as.data.frame
   colnames(MM_tab)=c("NModes_negexp")
   MM_tab$FishID=rownames(MM_tab)
 
@@ -164,7 +166,8 @@ multimode_cases_table_negexp <- function(dat, varmod) {
 # in the case of the multistage approach, the number of multiple mode cases will be the same than the negative exponential weighting approach.
 multimode_cases_table_multistage <- function(dat, varmod) {
 
-  MM_tab=tapply(eval(parse(text=paste0("dat$NModes_negexpweight_", varmod))),dat$SampleID,max) %>% unclass %>% as.data.frame
+  #MM_tab=tapply(eval(parse(text=paste0("dat$NModes_negexpweight_", varmod))),dat$SampleID,max) %>% unclass %>% as.data.frame
+  MM_tab=tapply(eval(parse(text=paste0("dat$NModes_negexpweight_", varmod))),dat$FishID,max) %>% unclass %>% as.data.frame
   colnames(MM_tab)=c("NModes_multistage")
   MM_tab$FishID=rownames(MM_tab)
 
@@ -448,7 +451,8 @@ maturity_composition_table <- function(ad_long, by = "reader") {
   ad_long %>%
     maturity_composition(by = by)  %>%
     rbind(colSums(., na.rm = TRUE)) %>%
-   format_table_matur_stage(matur_unique = sort(unique(ad_long$Maturity)))
+ #  format_table_matur_stage(matur_unique = sort(unique(ad_long$Maturity)))
+  format_table_matur_stage(matur_unique = sort(ad_long$Maturity))
 }
 
 sex_composition_table <- function(ad_long, by = "reader") {
@@ -457,7 +461,8 @@ sex_composition_table <- function(ad_long, by = "reader") {
   ad_long %>%
     sex_composition(by = by)  %>%
     rbind(colSums(., na.rm = TRUE)) %>%
-    format_table_sex_stage(sex_unique = sort(unique(ad_long$Sex)))
+ #   format_table_sex_stage(sex_unique = sort(unique(ad_long$Sex)))
+  format_table_sex_stage(sex_unique = sort(ad_long$Sex))
 }
 
 
