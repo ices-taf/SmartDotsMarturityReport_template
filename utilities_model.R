@@ -447,8 +447,7 @@ maturity_composition_table <- function(ad_long, by = "reader") {
   # Number of gonads staged per reader and maturity state
   ad_long %>%
     maturity_composition(by = by)  %>%
-    #rbind(colSums(., na.rm = TRUE)) %>%
-   rbind(colSums(., na.rm = FALSE)) %>%
+    rbind(colSums(., na.rm = TRUE)) %>%
    format_table_matur_stage(matur_unique = sort(unique(ad_long$Maturity)))
 }
 
@@ -457,8 +456,7 @@ sex_composition_table <- function(ad_long, by = "reader") {
   # Number of gonads staged per reader and sex category
   ad_long %>%
     sex_composition(by = by)  %>%
-  # rbind(colSums(., na.rm = TRUE)) %>%
-    rbind(colSums(., na.rm = FALSE)) %>%
+    rbind(colSums(., na.rm = TRUE)) %>%
     format_table_sex_stage(sex_unique = sort(unique(ad_long$Sex)))
 }
 
