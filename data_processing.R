@@ -8,7 +8,7 @@
 library(icesTAF)
 library(jsonlite)
 #library(tidyr)
-library(lubridate)
+#library(lubridate)
 library(plyr)
 library(dplyr)
 library(tidyverse)
@@ -86,6 +86,7 @@ reader <- data.frame(reader_number = reader_number, weight_I = weight, weight_II
 ad <- merge(ad, reader, by.x = "reader_number", by.y = "reader_number", all.x = TRUE)
 
 ad$TypeAnnotation[ad$TypeAnnotation=="Reader"]<-"reader"
+ad$TypeAnnotation[ad$expertise=="1"]<-"Advanced"
 ad$TypeAnnotation[ad$TypeAnnotation=="Delegate"]<-"eventOrganizer"
 ad$TypeAnnotation[ad$TypeAnnotation=="eventDelegate"]<-"eventOrganizer"
 ad$TypeAnnotation[ad$TypeAnnotation=="Organizer"]<-"eventOrganizer"
