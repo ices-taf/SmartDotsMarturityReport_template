@@ -2299,9 +2299,11 @@ group <- "all"
 # Table caption
 set.caption('**Table X:** Data overview including modal
              maturity and statistics per sample.')
+data_mat<-data_overview_tab_maturity[,c(-4,-6,-7,-8)]
 
 # Output table
-pander(style_table0(get(vname("data_overview_tab_maturity"))), missing="-", style = "simple")
+#pander(style_table0(get(vname("data_overview_tab_maturity"))), missing="-", style = "simple")
+pander(style_table0(get(vname("data_mat"))), missing="-", style = "simple")
 ```
 
 
@@ -2311,9 +2313,10 @@ pander(style_table0(get(vname("data_overview_tab_maturity"))), missing="-", styl
 # Table caption
 set.caption('**Table X:** Data overview including modal
              sex and statistics per sample.')
-
+data_sex<-data_overview_tab_sex[,c(-4,-6,-7,-8)]
 # Output table
-pander(style_table0(get(vname("data_overview_tab_sex"))), missing="-", style = "simple")
+#pander(style_table0(get(vname("data_sex"))), missing="-", style = "simple")
+
 ```
 
 
@@ -2421,7 +2424,7 @@ group <- "adv"
 ***Multiple mode in the maturity stage***
 
 ```{r multiple mode cases maturity all stagers}
-datos=ad_long_all[ad_long_all$NModes_trad_Maturity>1, c(1, 2, 4, 5, 8, 9, 10, 11, 12, 13, 16:26, 35, 36)]
+datos=ad_long_all[ad_long_all$NModes_trad_Maturity>1, c(1,4, 5, 9, 11, 12, 13, 16:26, 35, 36)]
 
 # Output table
 pander(style_table0(datos), missing="-", style = "simple")
@@ -2432,7 +2435,7 @@ pander(style_table0(datos), missing="-", style = "simple")
 ***Multiple mode in the sex category***
 
 ```{r multiple mode cases sex all stagers}
-datos=ad_long_all[ad_long_all$NModes_trad_Sex>1, c(1, 2, 4, 5, 8, 9, 10, 11, 12, 13, 16:26, 56, 57)]
+datos=ad_long_all[ad_long_all$NModes_trad_Sex>1, c(1, 4, 5, 9, 11, 12, 13, 16:26, 56, 57)]
 
 # Output table
 pander(style_table0(datos), missing="-", style = "simple")
@@ -2445,7 +2448,7 @@ pander(style_table0(datos), missing="-", style = "simple")
 ***Multiple mode in the maturity stage***
 
 ```{r multiple mode cases maturity advanced stagers}
-datos=ad_long_adv[ad_long_adv$NModes_trad_Maturity>1, c(1, 2, 4, 5, 8, 9, 10, 11, 12, 13, 16:26, 35, 36)]
+datos=ad_long_adv[ad_long_adv$NModes_trad_Maturity>1, c(1, 4, 5, 9, 11, 12, 13, 16:26, 35, 36)]
 
 # Output table
 pander(style_table0(datos), missing="-", style = "simple")
@@ -2456,7 +2459,7 @@ pander(style_table0(datos), missing="-", style = "simple")
 ***Multiple mode in the sex category***
 
 ```{r multiple mode cases sex advanced stagers}
-datos=ad_long_adv[ad_long_adv$NModes_trad_Sex>1,], c(1, 2, 4, 5, 8, 9, 10, 11, 12, 13, 16:26, 56, 57)]
+datos=ad_long_adv[ad_long_adv$NModes_trad_Sex>1,], c(1, 4, 5, 9, 11, 12, 13, 16:26, 56, 57)]
 
 # Output table
 pander(style_table0(datos), missing="-", style = "simple")
