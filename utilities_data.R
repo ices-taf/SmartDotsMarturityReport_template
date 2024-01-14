@@ -158,7 +158,8 @@ select_mode=function(ad, ma_method, mode_definition){
 
   dat1=ad[ad$TypeAnnotation=="eventOrganizer"& ad$DoesSampleHaveHistologyImage=="Yes",] %>%
     mutate(modal_maturity=Maturity, modal_sex=Sex) %>%
-    select(FishID, SampleID, modal_maturity, modal_sex) %>%
+    #select(FishID, SampleID, modal_maturity, modal_sex) %>%
+    select(FishID, modal_maturity, modal_sex) %>%
     distinct()
   
   #selad=ad[ad$SampleID %in% setdiff(ad$SampleID, dat1$SampleID), ]
@@ -167,8 +168,9 @@ select_mode=function(ad, ma_method, mode_definition){
   if(mode_definition=="multistage")
     {
   dat2=selad[selad$TypeAnnotation=="reader",] %>%
-      select(FishID, SampleID, modal_trad_Maturity, NModes_trad_Maturity, modal_linearweight_Maturity, NModes_linearweight_Maturity, modal_negexpweight_Maturity, NModes_negexpweight_Maturity) %>%
-      distinct()
+     # select(FishID, SampleID, modal_trad_Maturity, NModes_trad_Maturity, modal_linearweight_Maturity, NModes_linearweight_Maturity, modal_negexpweight_Maturity, NModes_negexpweight_Maturity) %>%
+    select(FishID, modal_trad_Maturity, NModes_trad_Maturity, modal_linearweight_Maturity, NModes_linearweight_Maturity, modal_negexpweight_Maturity, NModes_negexpweight_Maturity) %>%  
+    distinct()
   dat2$modal_maturity <-
       if (ma_method == "Mean") {
         stop ("mean not implemented yet")
@@ -183,10 +185,11 @@ select_mode=function(ad, ma_method, mode_definition){
               })
       }
   dat2=dat2 %>%
-    select(FishID, SampleID, modal_maturity)
+    select(FishID, modal_maturity)
   
   dat3=selad[selad$TypeAnnotation=="reader",] %>%
-    select(FishID, SampleID, modal_trad_Sex, NModes_trad_Sex, modal_linearweight_Sex, NModes_linearweight_Sex, modal_negexpweight_Sex, NModes_negexpweight_Sex) %>%
+   # select(FishID, SampleID, modal_trad_Sex, NModes_trad_Sex, modal_linearweight_Sex, NModes_linearweight_Sex, modal_negexpweight_Sex, NModes_negexpweight_Sex) %>%
+    select(FishID, modal_trad_Sex, NModes_trad_Sex, modal_linearweight_Sex, NModes_linearweight_Sex, modal_negexpweight_Sex, NModes_negexpweight_Sex) %>%
     distinct()
   dat3$modal_sex <-
     if (ma_method == "Mean") {
@@ -202,14 +205,17 @@ select_mode=function(ad, ma_method, mode_definition){
             })
     }
   dat3=dat3 %>%
-  select(FishID, SampleID, modal_sex)
+    #select(FishID, SampleID, modal_sex)
+    select(FishID, modal_sex)
 
-  dat4=merge(dat2, dat3, by.x=c("FishID", "SampleID"), by.y=c("FishID", "SampleID"))
+  #dat4=merge(dat2, dat3, by.x=c("FishID", "SampleID"), by.y=c("FishID", "SampleID"))
+  dat4=merge(dat2, dat3, by.x="FishID", by.y="FishID")
   
   } else {
     
     dat2=selad[selad$TypeAnnotation=="reader",] %>%
-      select(FishID, SampleID, modal_trad_Maturity, NModes_trad_Maturity) %>%
+      #select(FishID, SampleID, modal_trad_Maturity, NModes_trad_Maturity) %>%
+      select(FishID, modal_trad_Maturity, NModes_trad_Maturity) %>%
       distinct()
     dat2$modal_maturity <-
       if (ma_method == "Mean") {
@@ -225,12 +231,14 @@ select_mode=function(ad, ma_method, mode_definition){
               })
       }
     dat2=dat2 %>%
-      select(FishID, SampleID, modal_maturity)
+      #select(FishID, SampleID, modal_maturity)
+      select(FishID, modal_maturity)
     
     
     
     dat3=selad[selad$TypeAnnotation=="reader",] %>%
-      select(FishID, SampleID, modal_trad_Sex, NModes_trad_Sex) %>%
+      #select(FishID, SampleID, modal_trad_Sex, NModes_trad_Sex) %>%
+      select(FishID, modal_trad_Sex, NModes_trad_Sex) %>%
       distinct()
     dat3$modal_sex <-
       if (ma_method == "Mean") {
@@ -246,14 +254,16 @@ select_mode=function(ad, ma_method, mode_definition){
               })
       }
     dat3=dat3 %>%
-      select(FishID, SampleID, modal_sex)
-    
-    dat4=merge(dat2, dat3, by.x=c("FishID", "SampleID"), by.y=c("FishID", "SampleID"))
+      #select(FishID, SampleID, modal_sex)
+       select(FishID, modal_sex)
+    #dat4=merge(dat2, dat3, by.x=c("FishID", "SampleID"), by.y=c("FishID", "SampleID"))
+    dat4=merge(dat2, dat3, by.x="FishID", by.y="FishID")
   }
 
   dat=rbind(dat1, dat4)
   
   ad=distinct(right_join(ad, dat, by = c("FishID", "SampleID")))
+  ad=distinct(right_join(ad, dat, by ="FishID"))
   
   # ad=distinct(merge(ad, dat, by.x="FishID", by.y="FishID"))
 
