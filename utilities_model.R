@@ -448,8 +448,7 @@ maturity_composition_table <- function(ad_long, by = "reader") {
   ad_long %>%
     maturity_composition(by = by)  %>%
     rbind(colSums(., na.rm = TRUE)) %>%
- #  format_table_matur_stage(matur_unique = sort(unique(ad_long$Maturity)))
-  format_table_matur_stage(matur_unique = sort(ad_long$Maturity))
+  format_table_matur_stage(matur_unique = sort(unique(ad_long$Maturity)))
 }
 
 sex_composition_table <- function(ad_long, by = "reader") {
@@ -458,8 +457,7 @@ sex_composition_table <- function(ad_long, by = "reader") {
   ad_long %>%
     sex_composition(by = by)  %>%
     rbind(colSums(., na.rm = TRUE)) %>%
- #   format_table_sex_stage(sex_unique = sort(unique(ad_long$Sex)))
-  format_table_sex_stage(sex_unique = sort(ad_long$Sex))
+  format_table_sex_stage(sex_unique = sort(unique(ad_long$Sex)))
 }
 
 
