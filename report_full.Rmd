@@ -150,7 +150,7 @@ pander(style_table0(sample_data_overview), style = "simple")
 # PARTICIPATANTS OVERVIEW #####################################################
 
 # Table caption
-set.caption('**Table X:** Overview of stagers participating in the event, with their overall expertise (Expertise), and their ranking position based in their experience (only valid if the experience weighting protocol has been applied).')
+set.caption('**Table X:** Overview of stagers participating in the event, with their overall expertise (Expertise), and their ranking position based in their experience (only valid if the experience weighting protocol has been applied). R01 EO is the Event Organizer.')
 
 # Output table
 pander(style_table0(filter(stager_data)))
