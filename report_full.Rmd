@@ -1232,10 +1232,10 @@ ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
 x<-max(ncol(data)-2, 1, na.rm = TRUE)
-z=min(x,8)
+#z=min(x,8)
 
 #z=8
-#z=ncol(data)-2
+z=ncol(data)-2
 nfig=ceiling((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 if(nfig==0){
