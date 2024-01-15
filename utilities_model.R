@@ -372,8 +372,7 @@ data_overview_table <- function(dat, varmod, report_token) {
   # Select only columns of maturity staging
   ad_wide <-
     dat %>%
-    #select(FishID, SampleID, length, ices_area, stock, prep_method, reader, all_of(varmod), Histology) %>%
-    select(FishID, length, reader, all_of(varmod), Histology) %>%
+    select(FishID, SampleID, length, ices_area, stock, prep_method, reader, all_of(varmod), Histology) %>%
     spread(key = reader, value = all_of(varmod))
 
   # Calculate, modal maturity, percentage agreement and cu
@@ -416,10 +415,9 @@ data_overview_table <- function(dat, varmod, report_token) {
           unique %>%
           paste(collapse = "-")
       ) %>%
-     # right_join(ad_wide, by = c("FishID", "SampleID")) %>%
-     right_join(ad_wide, by = "FishID") %>%
+     right_join(ad_wide, by = c("FishID", "SampleID")) %>%
       rename(
-      #  `Sample ID` = SampleID,
+        `Sample ID` = SampleID,
         `Fish ID` = FishID,
         `Event ID` = EventID
       ) %>%
