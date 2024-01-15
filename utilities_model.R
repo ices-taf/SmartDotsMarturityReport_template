@@ -429,7 +429,6 @@ data_overview_table <- function(dat, varmod, report_token) {
       ) %>%
       as.data.frame
     }
-  dat<- dat %>% select(-SampleID, -ices_area, -stock, -prep_method)
 }
 
 
