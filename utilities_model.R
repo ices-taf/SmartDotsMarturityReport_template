@@ -361,9 +361,12 @@ data_overview_table <- function(dat, varmod, report_token) {
     hist <-
       #dat[dat$TypeAnnotation == "eventOrganizer", ] %>%
       dat[dat$DoesSampleHaveHistologyImage == "Yes", ] %>%
-      ddply(.(SampleID), summarise, Histology = "yes") %>%
-      select(., c("SampleID", "Histology"))
-    dat <- merge(dat, hist, by.x = "SampleID", by.y = "SampleID", all.x = TRUE)
+    #  ddply(.(SampleID), summarise, Histology = "yes") %>%
+      ddply(.(FishID), summarise, Histology = "yes") %>%
+      #select(., c("SampleID", "Histology"))
+      select(., c("FishID", "Histology"))
+   # dat <- merge(dat, hist, by.x = "SampleID", by.y = "SampleID", all.x = TRUE)
+    dat <- merge(dat, hist, by.x = "FishID", by.y = "FishID", all.x = TRUE)
     dat$Histology[is.na(dat$Histology)] <- "no"
   } else {
     dat$Histology <- "no"
@@ -372,7 +375,8 @@ data_overview_table <- function(dat, varmod, report_token) {
   # Select only columns of maturity staging
   ad_wide <-
     dat %>%
-   select(FishID, SampleID, length, ices_area, stock, prep_method, reader, all_of(varmod), Histology) %>%
+  # select(FishID, SampleID, length, ices_area, stock, prep_method, reader, all_of(varmod), Histology) %>%
+   select(FishID, length, ices_area, stock, prep_method, reader, all_of(varmod), Histology) %>%
    spread(key = reader, value = all_of(varmod))
 
   # Calculate, modal maturity, percentage agreement and cu
@@ -392,7 +396,8 @@ data_overview_table <- function(dat, varmod, report_token) {
   ad_wide[is.na(ad_wide)] <- "-"
 
   # add hyper link for tables
-  if(is.null(dat$SampleID)) {
+ # if(is.null(dat$SampleID)) {
+   if(is.null(dat$FishID)) {
     dat %>%
       group_by(FishID, EventID) %>%
       summarise(
@@ -414,9 +419,10 @@ data_overview_table <- function(dat, varmod, report_token) {
           unique %>%
           paste(collapse = "-")
       ) %>%
-      right_join(ad_wide, by = c("FishID", "SampleID")) %>%
+     # right_join(ad_wide, by = c("FishID", "SampleID")) %>%
+     right_join(ad_wide, by = "FishID") %>%
       rename(
-        `Sample ID` = SampleID,
+       # `Sample ID` = SampleID,
         `Fish ID` = FishID,
         `Event ID` = EventID
       ) %>%
