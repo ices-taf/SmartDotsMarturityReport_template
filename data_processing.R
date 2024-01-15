@@ -86,6 +86,7 @@ reader <- data.frame(reader_number = reader_number, weight_I = weight, weight_II
 ad <- merge(ad, reader, by.x = "reader_number", by.y = "reader_number", all.x = TRUE)
 
 ad$TypeAnnotation[ad$TypeAnnotation=="Reader"]<-"reader"
+ad$TypeAnnotation[ad$TypeAnnotation=="Country coordinator"]<-"reader"
 ad$expertise[ad$expertise=="1"]<-"Advanced"
 ad$TypeAnnotation[ad$TypeAnnotation=="Delegate"]<-"eventOrganizer"
 ad$TypeAnnotation[ad$TypeAnnotation=="eventDelegate"]<-"eventOrganizer"
@@ -93,7 +94,6 @@ ad$TypeAnnotation[ad$TypeAnnotation=="Organizer"]<-"eventOrganizer"
 ad$reader[ad$reader==""]<-"eventOrganizer" ## to add a name to the Reader column from the Event Organizer
 ad$reader[ad$TypeAnnotation=="eventOrganizer"]<-"eventOrganizer"
 ad$expertise[ad$TypeAnnotation=="eventOrganizer"]<-"Advanced"
-ad$expertise[ad$TypeAnnotation=="Country coordinator"]<-"Advanced" ##
 ad$Sex[is.na(ad$Sex) | ad$Sex==""]<-"NI"
 ad<-ad[ad$Sex!="NI",]
 ad$Maturity[is.na(ad$Maturity) | ad$Maturity==""]<-"NI"
