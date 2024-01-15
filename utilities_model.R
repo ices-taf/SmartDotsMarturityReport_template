@@ -413,7 +413,8 @@ data_overview_table <- function(dat, varmod, report_token) {
       as.data.frame
   } else {
     dat %>%
-     group_by(SampleID, FishID, EventID) %>%
+  #   group_by(SampleID, FishID, EventID) %>%
+     group_by(FishID, EventID) %>%
       summarise(
         `Image ID` = sprintf("[%s](http://smartdots.ices.dk/viewImage?tblEventID=%i&SmartImageID=%s&token=%s)", SampleID, EventID, SampleID, report_token) %>%
           unique %>%
@@ -428,6 +429,7 @@ data_overview_table <- function(dat, varmod, report_token) {
       ) %>%
       as.data.frame
     }
+  dat<- dat %>% select(-SampleID, -ices_area, -stock, -prep_method)
 }
 
 
