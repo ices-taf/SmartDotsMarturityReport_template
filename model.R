@@ -279,8 +279,6 @@ for (group in c("all", "adv")) {
   write.taf(vname("maturity_composition_tab"), dir = "model")
   
 
-  
-
   ####################
   # sex composition
   assign(
