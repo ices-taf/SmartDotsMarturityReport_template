@@ -408,23 +408,20 @@ data_overview_table <- function(dat, varmod, report_token) {
       as.data.frame
   } else {
     dat %>%
-     # group_by(SampleID, FishID, EventID) %>%
-      group_by(FishID, EventID) %>%
+     group_by(SampleID, FishID, EventID) %>%
       summarise(
         `Image ID` = sprintf("[%s](http://smartdots.ices.dk/viewImage?tblEventID=%i&SmartImageID=%s&token=%s)", SampleID, EventID, SampleID, report_token) %>%
           unique %>%
           paste(collapse = "-")
       ) %>%
-     # right_join(ad_wide, by = c("FishID", "SampleID")) %>%
-     right_join(ad_wide, by = "FishID") %>%
+      right_join(ad_wide, by = c("FishID", "SampleID")) %>%
       rename(
-      #  `Sample ID` = SampleID,
+        `Sample ID` = SampleID,
         `Fish ID` = FishID,
         `Event ID` = EventID
       ) %>%
       as.data.frame
     }
-dat<-dat[,c(-1,-4,-6,-7,-8)]
 }
 
 
