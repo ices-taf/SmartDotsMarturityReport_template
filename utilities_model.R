@@ -450,7 +450,7 @@ sex_composition <- function(dat, by = "reader") {
 }
 
 maturity_composition_table <- function(ad_long, by = "reader") {
-#  if (nrow(ad_long) == 0) return(data.frame("Maturity stage" = numeric(0)))
+  if (nrow(ad_long) == 0) return(data.frame("Maturity stage" = numeric(0)))
   # Number of gonads staged per reader and maturity state
   ad_long %>%
     maturity_composition(by = by)  %>%
@@ -459,7 +459,7 @@ maturity_composition_table <- function(ad_long, by = "reader") {
 }
 
 sex_composition_table <- function(ad_long, by = "reader") {
-# if (nrow(ad_long) == 0) return(data.frame("Sex category" = numeric(0)))
+ if (nrow(ad_long) == 0) return(data.frame("Sex category" = numeric(0)))
   # Number of gonads staged per reader and sex category
   ad_long %>%
     sex_composition(by = by)  %>%
