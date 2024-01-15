@@ -1588,8 +1588,8 @@ nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 x<-max(ncol(data)-2, 1, na.rm = TRUE)
-z=max(x,8)
-
+#z=max(x,8)
+z=ncol(data)-2
 #z=8
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
@@ -1632,8 +1632,8 @@ ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
 x=max(ncol(data)-2, 1, na.rm = TRUE)
-z=max(x,8)
-
+#z=max(x,8)
+z=ncol(data)-2
 #z=8
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
@@ -1675,8 +1675,8 @@ ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
 x=max(ncol(data)-2, 1, na.rm = TRUE)
-z=max(x,8)
-
+#z=max(x,8)
+z=ncol(data)-2
 #z=8
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
