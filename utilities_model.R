@@ -428,6 +428,7 @@ data_overview_table <- function(dat, varmod, report_token) {
 
 }
 
+
 maturity_composition <- function(dat, by = "reader") {
   # Number of gonads staged per reader and maturity stage
   dat %>%
