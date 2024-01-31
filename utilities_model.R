@@ -357,10 +357,12 @@ general_freq_table <- function(ad_long, varmod, by=NULL) {
 data_overview_table <- function(dat, varmod, report_token) {
 
   #if (any(dat$TypeAnnotation == "eventOrganizer")) {
-  if (any(dat$TypeAnnotation == "eventOrganizer" & dat$DoesSampleHaveHistologyImage == "Yes")) {
+ # if (any(dat$TypeAnnotation == "eventOrganizer" & dat$DoesSampleHaveHistologyImage == "Yes")) {
+  if (any(dat$DoesSampleHaveHistologyImage == "Yes")) { ##new -31jan2024
     hist <-
       #dat[dat$TypeAnnotation == "eventOrganizer", ] %>%
-      dat[dat$TypeAnnotation == "eventOrganizer" & dat$DoesSampleHaveHistologyImage == "Yes", ] %>%
+      #dat[dat$TypeAnnotation == "eventOrganizer" & dat$DoesSampleHaveHistologyImage == "Yes", ] %>%
+     dat[dat$DoesSampleHaveHistologyImage == "Yes", ] %>% ##new -31jan2024
     #  ddply(.(SampleID), summarise, Histology = "yes") %>%
       ddply(.(FishID), summarise, Histology = "yes") %>%
       #select(., c("SampleID", "Histology"))
