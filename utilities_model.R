@@ -371,7 +371,7 @@ data_overview_table <- function(dat, varmod, report_token) {
   ad_wide <-
     dat %>%
   # select(FishID, SampleID, length, ices_area, stock, prep_method, reader, all_of(varmod), Histology) %>%
-   select(FishID, length, ices_area, stock, prep_method, reader, all_of(varmod), Histology) %>%
+   select(FishID, length, stock, prep_method, reader, all_of(varmod), Histology) %>% ##removed ICES area
    spread(key = reader, value = all_of(varmod))
 
   # Calculate, modal maturity, percentage agreement and cu
