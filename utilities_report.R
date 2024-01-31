@@ -61,11 +61,11 @@ plot_general_freq_matur <- function(ad_long, strata=NULL){
 
     freq_tab <-
     ad_long %>%
-    ddply(.(modal_maturity, Maturity), summarize, count=length(Maturity))
+    ddply(.(modal_maturity, Maturity), summarize, count=length(Maturity, na.rm=TRUE)) ##
 
     total_tab <-
       ad_long %>%
-      ddply(.(modal_maturity), summarize, count=length(Maturity))
+      ddply(.(modal_maturity), summarize, count=length(Maturity, na.rm=TRUE)) ##
     
     freq_tab=merge(freq_tab, total_tab, by.x="modal_maturity", by.y="modal_maturity")
     freq_tab$count=round(freq_tab$count.x/freq_tab$count.y, digits=3)
@@ -84,7 +84,7 @@ plot_general_freq_matur <- function(ad_long, strata=NULL){
       geom_point(shape = 21, fill = "white") +
       scale_size(range = c(2, 15), guide = "legend") +
       geom_text(aes(label=as.character(count),hjust=0.5,vjust=-1), size=3) +
-      geom_abline(mapping = NULL, data = freq_tab, slope=1, 0, na.rm = TRUE, show.legend = NA) +
+      geom_abline(mapping = NULL, data = freq_tab, slope=1, 0, na.rm = FALSE, show.legend = NA) +
       ggtitle("Relative frequency plot") +
       xlab("Modal maturity") + ylab("Maturity stage") +
       theme(
@@ -112,11 +112,11 @@ plot_general_freq_sex <- function(ad_long, strata=NULL){
   
   freq_tab <-
     ad_long %>%
-    ddply(.(modal_sex, Sex), summarize, count=length(Sex))
+    ddply(.(modal_sex, Sex), summarize, count=length(Sex, na.rm=TRUE)) ##
   
   total_tab <-
     ad_long %>%
-    ddply(.(modal_sex), summarize, count=length(Sex))
+    ddply(.(modal_sex), summarize, count=length(Sex, na.rm=TRUE)) ##
   
   freq_tab=merge(freq_tab, total_tab, by.x="modal_sex", by.y="modal_sex")
   freq_tab$count=round(freq_tab$count.x/freq_tab$count.y, digits=3)
@@ -135,7 +135,7 @@ plot_general_freq_sex <- function(ad_long, strata=NULL){
     geom_point(shape = 21, fill = "white") +
     scale_size(range = c(2, 25), guide = "legend") +
     geom_text(aes(label=as.character(count),hjust=0.5,vjust=-1), size=3) +
-    geom_abline(mapping = NULL, data = freq_tab, slope=1, 0, na.rm = TRUE, show.legend = NA) +
+    geom_abline(mapping = NULL, data = freq_tab, slope=1, 0, na.rm = FALSE, show.legend = NA) +
     ggtitle("Relative frequency plot") +
     xlab("Modal sex") + ylab("Sex category") +
     theme(
@@ -173,7 +173,7 @@ plot_bias_matur <- function(ad_long) {
     freq_tab <-
       ad_long %>%
       filter(reader == ireader) %>%
-      ddply(.(modal_maturity, Maturity, reader), summarize, count=length(Maturity))
+      ddply(.(modal_maturity, Maturity, reader), summarize, count=length(Maturity, na.rm=TRUE)) ##
     
     diffmodal=setdiff(sort(unique(ad_long$Maturity)), sort(unique(freq_tab$modal_maturity)))
     mat=sort(unique(ad_long$Maturity))
@@ -198,7 +198,7 @@ plot_bias_matur <- function(ad_long) {
       geom_point(shape = 21, fill = "white") +
       geom_text(aes(label=as.character(count),hjust=0.5,vjust=-1), size=3) +
       scale_size(range = c(2, 15), guide = "legend") +
-      geom_abline(mapping = NULL, data = freq_tab, slope=1, 0, na.rm = TRUE, show.legend = NA) +
+      geom_abline(mapping = NULL, data = freq_tab, slope=1, 0, na.rm = FALSE, show.legend = NA) +
       facet_wrap(~ reader, ncol = 2) +
       theme(strip.text.x=element_text(size=25, hjust=0.5, vjust=0.5)) +
       xlab("Modal maturity") + ylab("Maturity stage") +
@@ -229,7 +229,7 @@ plot_bias_sex <- function(ad_long) {
     freq_tab <-
       ad_long %>%
       filter(reader == ireader) %>%
-      ddply(.(modal_sex, Sex, reader), summarize, count=length(Sex))
+      ddply(.(modal_sex, Sex, reader), summarize, count=length(Sex, na.rm=TRUE)) ##
     
     diffmodal=setdiff(sort(unique(ad_long$Sex)), sort(unique(freq_tab$modal_sex)))
     mat=sort(unique(ad_long$Sex))
@@ -254,7 +254,7 @@ plot_bias_sex <- function(ad_long) {
       geom_point(shape = 21, fill = "white") +
       geom_text(aes(label=as.character(count),hjust=0.5,vjust=-1), size=3) +
       scale_size(range = c(2, 15), guide = "legend") +
-      geom_abline(mapping = NULL, data = freq_tab, slope=1, 0, na.rm = TRUE, show.legend = NA) +
+      geom_abline(mapping = NULL, data = freq_tab, slope=1, 0, na.rm = FALSE, show.legend = NA) +
       facet_wrap(~ reader, ncol = 2) +
       theme(strip.text.x=element_text(size=25, hjust=0.5, vjust=0.5)) +
       xlab("Modal sex") + ylab("Sex stage") +
