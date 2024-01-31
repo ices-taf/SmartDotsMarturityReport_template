@@ -85,23 +85,25 @@ reader_number <- sort(unique(ad$reader_number))
 reader <- data.frame(reader_number = reader_number, weight_I = weight, weight_II = 1 / (1 + log(sort(weight, decreasing = FALSE) + 0.0000000001)))
 ad <- merge(ad, reader, by.x = "reader_number", by.y = "reader_number", all.x = TRUE)
 
-ad$TypeAnnotation[ad$TypeAnnotation=="Reader"]<-"reader"
-ad$TypeAnnotation[ad$TypeAnnotation=="Country coordinator"]<-"reader"
-ad$expertise[ad$expertise=="1"]<-"Advanced"
-ad$TypeAnnotation[ad$TypeAnnotation=="Delegate"]<-"eventOrganizer"
-ad$TypeAnnotation[ad$TypeAnnotation=="eventDelegate"]<-"eventOrganizer"
-ad$TypeAnnotation[ad$TypeAnnotation=="Organizer"]<-"eventOrganizer"
-ad$reader[ad$reader==""]<-"eventOrganizer" ## to add a name to the Reader column from the Event Organizer
-#ad$reader[ad$TypeAnnotation=="eventOrganizer"]<-"eventOrganizer"
-ad$reader_number[ad$TypeAnnotation=="eventOrganizer"]<-"01"
-ad$reader[ad$TypeAnnotation=="eventOrganizer"]<-"R01 EO"
-ad$expertise[ad$TypeAnnotation=="eventOrganizer"]<-"Advanced"
-ad$Sex[is.na(ad$Sex) | ad$Sex==""]<-"NI"
-ad<-ad[ad$Sex!="NI",]
-ad$Maturity[is.na(ad$Maturity) | ad$Maturity==""]<-"NI"
-ad<-ad[ad$Maturity!="NI",]
 
-ad4webgr <- ad
+
+ ad$TypeAnnotation[ad$TypeAnnotation=="Reader"]<-"reader"
+ ad$TypeAnnotation[ad$TypeAnnotation=="Country coordinator"]<-"reader"
+ ad$expertise[ad$expertise=="1"]<-"Advanced"
+ ad$TypeAnnotation[ad$TypeAnnotation=="Delegate"]<-"eventOrganizer"
+ ad$TypeAnnotation[ad$TypeAnnotation=="eventDelegate"]<-"eventOrganizer"
+ ad$TypeAnnotation[ad$TypeAnnotation=="Organizer"]<-"eventOrganizer"
+ ad$reader[ad$reader==""]<-"eventOrganizer" ## to add a name to the Reader column from the Event Organizer
+ #ad$reader[ad$TypeAnnotation=="eventOrganizer"]<-"eventOrganizer"
+# ad$reader_number[ad$TypeAnnotation=="eventOrganizer"]<-1
+ ad$reader[ad$TypeAnnotation=="eventOrganizer"]<-"R01 EO"
+ ad$expertise[ad$TypeAnnotation=="eventOrganizer"]<-"Advanced"
+ ad$Sex[is.na(ad$Sex) | ad$Sex==""]<-"NI"
+ ad<-ad[ad$Sex!="NI",]
+ ad$Maturity[is.na(ad$Maturity) | ad$Maturity==""]<-"NI"
+ ad<-ad[ad$Maturity!="NI",]
+ 
+ ad4webgr <- ad
 
 # Before calculating the mode, give to the sampleID of readings by eventOrganizer (histological sample) the same name as the samples analyzed by the other readers, so the maturity defined for the histological samples is assigned as mode to the other samples of the same FishID
 #fishid <- sort(unique(ad$FishID))
