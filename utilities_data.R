@@ -14,13 +14,13 @@ add_modal_trad <- function(ad, varmod, ma_method) {
   # ages by fish
   out <-
     ad %>%
-    select(FishID, SampleID, reader, all_of(varmod)) %>%
-    ddply(.(FishID, SampleID, get(all_of(varmod))), summarise, count=length(reader)) %>%
+    select(FishID, reader, all_of(varmod)) %>%
+    ddply(.(FishID, get(all_of(varmod))), summarise, count=length(reader)) %>%
     spread(key = "get(all_of(varmod))", value = count)
   
   out[is.na(out)]=0
   
-  datsel <- out %>% select(-c(FishID, SampleID))
+  datsel <- out %>% select(-c(FishID))
   
   # Determine modal maturity stage depending on ma_method
   out$modal_trad <-
@@ -54,7 +54,7 @@ add_modal_trad <- function(ad, varmod, ma_method) {
   
   colnames(out)=c(names(out)[-c((length(names(out))-2):length(names(out)))], paste0("modal_trad_", varmod), paste0("NModes_trad_", varmod), paste0("cu_", varmod))
   # merge CV and modal age to data
-  right_join(ad, out, by = c("FishID", "SampleID"))
+  right_join(ad, out, by = "FishID")
 }
 
 
@@ -64,13 +64,13 @@ add_modal_linearweight <- function(ad, varmod, ma_method) {
   # ages by fish
   out <-
     ad %>%
-    select(FishID, SampleID, weight_I, all_of(varmod)) %>%
-    ddply(.(FishID, SampleID, get(all_of(varmod))), summarise, readerweight=sum(weight_I)) %>%
+    select(FishID, weight_I, all_of(varmod)) %>%
+    ddply(.(FishID, get(all_of(varmod))), summarise, readerweight=sum(weight_I)) %>%
     spread(key = "get(all_of(varmod))", value = readerweight)
   
   out[is.na(out)]=0
   
-  datsel <- out %>% select(-c(FishID, SampleID))
+  datsel <- out %>% select(-c(FishID))
   
   # Determine modal maturity stage depending on ma_method
   out$modal_linearweight <-
@@ -101,7 +101,7 @@ add_modal_linearweight <- function(ad, varmod, ma_method) {
   
   colnames(out)=c(names(out)[-c((length(names(out))-1):length(names(out)))], paste0("modal_linearweight_", varmod), paste0("NModes_linearweight_", varmod))
   # merge CV and modal age to data
-  right_join(ad, out, by = c("FishID", "SampleID"))
+  right_join(ad, out, by = "FishID")
 }
 
 
@@ -111,13 +111,13 @@ add_modal_negexpweight <- function(ad, varmod, ma_method) {
   # ages by fish
   out <-
     ad %>%
-    select(FishID, SampleID, weight_II, all_of(varmod)) %>%
-    ddply(.(FishID, SampleID, get(all_of(varmod))), summarise, readerweight=sum(weight_II)) %>%
+    select(FishID,  weight_II, all_of(varmod)) %>%
+    ddply(.(FishID,  get(all_of(varmod))), summarise, readerweight=sum(weight_II)) %>%
     spread(key = "get(all_of(varmod))", value = readerweight)
   
   out[is.na(out)]=0
   
-  datsel <- out %>% select(-c(FishID, SampleID))
+  datsel <- out %>% select(-c(FishID))
   
   # Determine modal maturity stage depending on ma_method
   out$modal_negexpweight <-
@@ -148,7 +148,7 @@ add_modal_negexpweight <- function(ad, varmod, ma_method) {
   
   colnames(out)=c(names(out)[-c((length(names(out))-1):length(names(out)))], paste0("modal_negexpweight_", varmod), paste0("NModes_negexpweight_", varmod))
   # merge CV and modal age to data
-  right_join(ad, out, by = c("FishID", "SampleID"))
+  right_join(ad, out, by = "FishID")
 }
 
 
@@ -263,9 +263,9 @@ select_mode=function(ad, ma_method, mode_definition){
   dat=rbind(dat1, dat4)
   
  # ad=distinct(right_join(ad, dat, by = c("FishID", "SampleID")))
-  ad=distinct(right_join(ad, dat, by ="FishID"))
+#  ad=distinct(right_join(ad, dat, by ="FishID"))
   
-  # ad=distinct(merge(ad, dat, by.x="FishID", by.y="FishID"))
+   ad=distinct(merge(ad, dat, by.x="FishID", by.y="FishID"))
 
   return(ad)
 
