@@ -356,29 +356,23 @@ general_freq_table <- function(ad_long, varmod, by=NULL) {
 
 data_overview_table <- function(dat, varmod, report_token) {
 
-  #if (any(dat$TypeAnnotation == "eventOrganizer")) {
- # if (any(dat$TypeAnnotation == "eventOrganizer" & dat$DoesSampleHaveHistologyImage == "Yes")) {
-  if (any(dat$DoesSampleHaveHistologyImage == "Yes")) { ##new -31jan2024
-    hist <-
-      #dat[dat$TypeAnnotation == "eventOrganizer", ] %>%
-      #dat[dat$TypeAnnotation == "eventOrganizer" & dat$DoesSampleHaveHistologyImage == "Yes", ] %>%
-     dat[dat$DoesSampleHaveHistologyImage == "Yes", ] %>% ##new -31jan2024
-    #  ddply(.(SampleID), summarise, Histology = "yes") %>%
-      ddply(.(FishID), summarise, Histology = "yes") %>%
-      #select(., c("SampleID", "Histology"))
-      select(., c("FishID", "Histology"))
-   # dat <- merge(dat, hist, by.x = "SampleID", by.y = "SampleID", all.x = TRUE)
-    dat <- merge(dat, hist, by.x = "FishID", by.y = "FishID", all.x = TRUE)
-    dat$Histology[is.na(dat$Histology)] <- "no"
-  } else {
-    dat$Histology <- "no"
-  }
+  # if (any(dat$TypeAnnotation == "eventOrganizer" & dat$DoesSampleHaveHistologyImage == "Yes")) {
+  #  hist <-
+  #  dat[dat$TypeAnnotation == "eventOrganizer" & dat$DoesSampleHaveHistologyImage == "Yes", ] %>%
+  #  ddply(.(FishID), summarise, Histology = "yes") %>%
+  #  select(., c("FishID", "Histology"))
+  #  dat <- merge(dat, hist, by.x = "FishID", by.y = "FishID", all.x = TRUE)
+  #  dat$Histology[is.na(dat$Histology)] <- "no"
+  #} else {
+  #  dat$Histology <- "no"
+  #}
 
   # Select only columns of maturity staging
   ad_wide <-
     dat %>%
   # select(FishID, SampleID, length, ices_area, stock, prep_method, reader, all_of(varmod), Histology) %>%
-   select(FishID, length, ices_area, stock, prep_method, reader, all_of(varmod), Histology) %>%
+  # select(FishID, length, ices_area, stock, prep_method, reader, all_of(varmod), Histology) %>%
+  select(FishID, length, stock, prep_method, reader, all_of(varmod), Histology) %>%
    spread(key = reader, value = all_of(varmod))
 
   # Calculate, modal maturity, percentage agreement and cu
