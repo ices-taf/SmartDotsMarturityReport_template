@@ -229,7 +229,7 @@ plot_bias_sex <- function(ad_long) {
     freq_tab <-
       ad_long %>%
       filter(reader == ireader) %>%
-      ddply(.(modal_sex, Sex, reader), summarize, count=length(Sex, na.rm=TRUE)) ##
+      ddply(.(modal_sex, Sex, reader), summarize, count=length(Sex))
     
     diffmodal=setdiff(sort(unique(ad_long$Sex)), sort(unique(freq_tab$modal_sex)))
     mat=sort(unique(ad_long$Sex))
