@@ -153,6 +153,34 @@ ad_long_adv <- ad_long_adv %>%
 ad_long <- select_mode(ad_long, config$ma_method, config$mode_definition)
 ad_long_adv <- select_mode(ad_long_adv, config$ma_method, config$mode_definition)
 
+
+# Calculate modal maturity stage and coefficient of unalikability of maturity stage
+ad_long <- ad %>%
+  add_modal_trad(varmod = "Maturity", config$ma_method) %>%
+  add_modal_linearweight(varmod = "Maturity", config$ma_method) %>%
+  add_modal_negexpweight(varmod = "Maturity", config$ma_method)
+
+ad_long_adv <- ad[ad$expertise == "Advanced", ] %>% 
+  add_modal_trad(varmod = "Maturity", config$ma_method) %>%
+  add_modal_linearweight(varmod = "Maturity", config$ma_method) %>%
+  add_modal_negexpweight(varmod = "Maturity", config$ma_method)
+
+
+# Calculate modal maturity stage and coefficient of unalikability of sex category
+ad_long <- ad_long %>%
+  add_modal_trad(varmod = "Sex", config$ma_method) %>%
+  add_modal_linearweight(varmod = "Sex", config$ma_method) %>%
+  add_modal_negexpweight(varmod = "Sex", config$ma_method)
+
+ad_long_adv <- ad_long_adv %>%
+  add_modal_trad(varmod = "Sex", config$ma_method) %>%
+  add_modal_linearweight(varmod = "Sex", config$ma_method) %>%
+  add_modal_negexpweight(varmod = "Sex", config$ma_method)
+
+# Choose the final mode (traditional, readers linear weight or negative exponential linear weight) based in the existence of histological samples or not, and, in case there are no histological samples, depending if there is multimodality or not.
+ad_long <- select_mode(ad_long, config$ma_method, config$mode_definition)
+ad_long_adv <- select_mode(ad_long_adv, config$ma_method, config$mode_definition)
+
 # prepare data in wbgr output format
 # IMAGE,1,2,3,4,5,6,7,8,9,10,11,12,13
 # Expertise level,-,-,-,-,-,-,-,-,-,-,-,-,-
