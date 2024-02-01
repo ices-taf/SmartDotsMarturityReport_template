@@ -387,7 +387,7 @@ data_overview_table <- function(dat, varmod, report_token) {
   ad_wide$`PA %`[complete] <- round(rowMeans(readings[complete, ] == ad_wide$Mode[complete], na.rm = TRUE) * 100)
   ad_wide$`CU %`[complete] <- round(apply(readings[complete,], 1, cu_II), 3)
   ad_wide$`CU %`[is.nan(ad_wide$`CU %`)] <- NA
-  ad_wide <- dplyr::rename(ad_wide, `ICES area` = ices_area)
+  #ad_wide <- dplyr::rename(ad_wide, `ICES area` = ices_area)
   ad_wide[is.na(ad_wide)] <- "-"
 
   # add hyper link for tables
