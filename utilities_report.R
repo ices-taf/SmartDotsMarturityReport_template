@@ -173,7 +173,7 @@ plot_bias_matur <- function(ad_long) {
     freq_tab <-
       ad_long %>%
       filter(reader == ireader) %>%
-      ddply(.(modal_maturity, Maturity, reader), summarize, count=length(Maturity, na.rm=TRUE)) ##
+      ddply(.(modal_maturity, Maturity, reader), summarize, count=length(Maturity)) ##
     
     diffmodal=setdiff(sort(unique(ad_long$Maturity)), sort(unique(freq_tab$modal_maturity)))
     mat=sort(unique(ad_long$Maturity))
