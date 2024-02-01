@@ -411,7 +411,7 @@ data_overview_table <- function(dat, varmod, report_token) {
   #   group_by(SampleID, FishID, EventID) %>%
      group_by(FishID, EventID) %>%
       summarise(
-        `Image ID` = sprintf("[%s](http://smartdots.ices.dk/viewImage?tblEventID=%i&SmartImageID=%s&token=%s)", SampleID, EventID, SampleID, report_token) %>%
+        `Image ID` = sprintf("[%s](http://smartdots.ices.dk/viewImage?tblEventID=%i&SmartImageID=%s&token=%s)", FishID, EventID, FishID, report_token) %>%
           unique %>%
           paste(collapse = "-")
       ) %>%
