@@ -61,11 +61,11 @@ plot_general_freq_matur <- function(ad_long, strata=NULL){
 
     freq_tab <-
     ad_long %>%
-    ddply(.(modal_maturity, Maturity), summarize, count=length(Maturity, na.rm=TRUE)) ##
+    ddply(.(modal_maturity, Maturity), summarize, count=length(Maturity)) ##
 
     total_tab <-
       ad_long %>%
-      ddply(.(modal_maturity), summarize, count=length(Maturity, na.rm=TRUE)) ##
+      ddply(.(modal_maturity), summarize, count=length(Maturity)) ##
     
     freq_tab=merge(freq_tab, total_tab, by.x="modal_maturity", by.y="modal_maturity")
     freq_tab$count=round(freq_tab$count.x/freq_tab$count.y, digits=3)
@@ -112,11 +112,11 @@ plot_general_freq_sex <- function(ad_long, strata=NULL){
   
   freq_tab <-
     ad_long %>%
-    ddply(.(modal_sex, Sex), summarize, count=length(Sex, na.rm=TRUE)) ##
+    ddply(.(modal_sex, Sex), summarize, count=length(Sex)) ##
   
   total_tab <-
     ad_long %>%
-    ddply(.(modal_sex), summarize, count=length(Sex, na.rm=TRUE)) ##
+    ddply(.(modal_sex), summarize, count=length(Sex)) ##
   
   freq_tab=merge(freq_tab, total_tab, by.x="modal_sex", by.y="modal_sex")
   freq_tab$count=round(freq_tab$count.x/freq_tab$count.y, digits=3)
