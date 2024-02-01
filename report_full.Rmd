@@ -457,7 +457,7 @@ for(i in 1:nfig)
 ```{r cu_tab_maturity_males_all}
 # CU TABLE by modal maturity stages (Males) - All stagers #################################################
 
-data=cu_tab_maturity_females_all
+data=cu_tab_maturity_males_all
 nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
