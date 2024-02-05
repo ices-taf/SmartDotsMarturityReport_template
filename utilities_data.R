@@ -166,7 +166,7 @@ select_mode=function(ad, ma_method, mode_definition){
 
   if(mode_definition=="multistage")
     {
-  dat2=selad[selad$TypeAnnotation=="reader",] %>%
+  dat2=selad[selad$TypeAnnotation=="reader" & ad$TypeAnnotation=="eventOrganizer",] %>%
       select(FishID, SampleID, modal_trad_Maturity, NModes_trad_Maturity, modal_linearweight_Maturity, NModes_linearweight_Maturity,
       modal_negexpweight_Maturity, NModes_negexpweight_Maturity) %>%
       distinct()
