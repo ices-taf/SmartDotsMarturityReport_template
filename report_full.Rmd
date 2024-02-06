@@ -212,7 +212,7 @@ If there were available histological samples for all the fish individuals in the
 <!-- Total number of samples (NSample), number (CountMM) and percentage of multimodal cases (PercMM) text -->
 ```{r summary_multiple_modes_maturity_all}
 
-histN=ad %>% subset(DoesSampleHaveHistologyImage=="Yes") %>% select(FishID) %>% unique() %>% dim()
+histN=ad %>% subset(toupper(DoesSampleHaveHistologyImage)=="Yes") %>% select(FishID) %>% unique() %>% dim()
 allN=ad_long_all %>% select(FishID) %>% unique() %>% dim()
 perc_not_Hist=100-round(100*histN[1]/allN[1], 0)
 
