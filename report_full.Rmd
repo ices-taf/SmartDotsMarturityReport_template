@@ -182,7 +182,7 @@ If there were available histological samples for all the fish individuals in the
 
 #histN=ad_long_all %>% subset(TypeAnnotation=="eventOrganizer") %>% select(FishID) %>% unique() %>% dim()
 #allN=ad_long_all %>% select(FishID) %>% unique() %>% dim()
-#perc_not_Hist=100-round(100*histN[1]/allN[1], 0)
+#perc_not_Hist=round(100*histN[1]/allN[1], 0)
 
 histN=ad %>% subset(DoesSampleHaveHistologyImage=="Yes") %>% select(FishID) %>% unique() %>% dim()
 allN=ad_long_all %>% select(FishID) %>% unique() %>% dim()
@@ -214,7 +214,7 @@ If there were available histological samples for all the fish individuals in the
 
 histN=ad %>% subset(DoesSampleHaveHistologyImage=="Yes") %>% select(FishID) %>% unique() %>% dim()
 allN=ad_long_all %>% select(FishID) %>% unique() %>% dim()
-perc_not_Hist=100-round(100*histN[1]/allN[1], 0)
+perc_not_Hist=round(100*histN[1]/allN[1], 0)
 
 summary_multiple_modes_maturity_all <-
   c(NSample  = length(unique(ad_long_all$FishID)),
