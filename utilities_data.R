@@ -44,7 +44,9 @@ add_modal_trad <- function(ad, varmod, ma_method) {
     sel=out[e,]
     df=sel[,-c(1,2,dim(out)[2])]
     max=max(df)
-    countcases[e]=length(df[which(df==max)])
+    if(max==0) countcases[e]=0 ### Categorical variable 
+    else countcases[e]=length(df[which(df==max)]) ### Categorical variable 
+    #countcases[e]=length(df[which(df==max)])
   }
 
   out$NModes_trad=countcases
@@ -94,7 +96,9 @@ add_modal_linearweight <- function(ad, varmod, ma_method) {
     sel=out[e,]
     df=sel[,-c(1, 2, dim(out)[2])]
     max=max(df)
-    countcases[e]=length(df[which(df==max)])
+    if(max==0) countcases[e]=0 ### Categorical variable 
+    else countcases[e]=length(df[which(df==max)]) ### Categorical variable 
+    #countcases[e]=length(df[which(df==max)])
   }
 
   out$NModes_linear=countcases
@@ -142,7 +146,9 @@ add_modal_negexpweight <- function(ad, varmod, ma_method) {
     sel=out[e,]
     df=sel[,-c(1,2,dim(out)[2])]
     max=max(df)
-    countcases[e]=length(df[which(df==max)])
+    if(max==0) countcases[e]=0 ### Categorical variable 
+    else countcases[e]=length(df[which(df==max)]) ### Categorical variable 
+   #countcases[e]=length(df[which(df==max)])
   }
 
   out$NModes_negexp=countcases
