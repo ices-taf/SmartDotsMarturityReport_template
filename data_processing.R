@@ -101,6 +101,7 @@ ad$Sex[is.na(ad$Sex) | ad$Sex==""]<-"NI"
 ad<-ad[ad$Sex!="NI",]
 ad$Maturity[is.na(ad$Maturity) | ad$Maturity==""]<-"NI"
 ad<-ad[ad$Maturity!="NI",]
+ad$SampleID<- ad$FishID 
 
 ad4webgr <- ad
 
