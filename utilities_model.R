@@ -357,13 +357,13 @@ general_freq_table <- function(ad_long, varmod, by=NULL) {
 data_overview_table <- function(dat, varmod, report_token) {
 
    #if (any(dat$TypeAnnotation == "eventOrganizer" & toupper(dat$DoesSampleHaveHistologyImage) == "Yes")) {
-    if (any(dat$TypeAnnotation == "eventOrganizer")) {
+    if (any(dat$TypeAnnotation == "eventOrganizer"  & dat$DoesSampleHaveHistologyImage == "Yes")) {
     hist <-
      dat[dat$TypeAnnotation == "eventOrganizer" & dat$DoesSampleHaveHistologyImage == "Yes", ] %>%
      ddply(.(FishID), summarise, Histology = "yes") %>%
      select(., c("FishID", "Histology"))
      dat <- merge(dat, hist, by.x = "FishID", by.y = "FishID", all.x = TRUE)
-     dat$Histology[is.na(dat$Histology)] <- "no"
+     #dat$Histology[is.na(dat$Histology)] <- "no"
    } else {
     dat$Histology <- "no"
   }
