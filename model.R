@@ -274,7 +274,7 @@ for (group in c("all", "adv")) {
   # maturity composition
   assign(
     vname("maturity_composition_tab"),
-    maturity_composition_table(ad_long, by = "reader")
+    maturity_composition_table(ad_long, "reader")
   )
   write.taf(vname("maturity_composition_tab"), dir = "model")
   
@@ -283,7 +283,7 @@ for (group in c("all", "adv")) {
   # sex composition
   assign(
     vname("sex_composition_tab"),
-    sex_composition_table(ad_long, by = "reader")
+    sex_composition_table(ad_long, "reader")
   )
   write.taf(vname("sex_composition_tab"), dir = "model")
 
