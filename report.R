@@ -11,7 +11,7 @@ library(knitr)
 #
 library(pander)
 library(ggplot2)
-#library(scales)
+library(scales)
 unloadNamespace("plyr")
 library(dplyr)
 library(Hmisc)
