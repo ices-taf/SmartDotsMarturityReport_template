@@ -86,8 +86,8 @@ reader <- data.frame(reader_number = reader_number, weight_I = weight, weight_II
 ad <- merge(ad, reader, by.x = "reader_number", by.y = "reader_number", all.x = TRUE)
 
 ad$TypeAnnotation[ad$TypeAnnotation=="Reader"]<-"reader"
-#ad$TypeAnnotation[ad$TypeAnnotation=="Country coordinator"]<-"reader"
-ad<-ad[ad$TypeAnnotation!="Country coordinator",] ###Correction 1 feb2024
+ad$TypeAnnotation[ad$TypeAnnotation=="Country coordinator"]<-"reader"
+#ad<-ad[ad$TypeAnnotation!="Country coordinator",] ###Correction 1 feb2024
 ad$expertise[ad$expertise=="1"]<-"Advanced"
 ad$TypeAnnotation[ad$TypeAnnotation=="Delegate"]<-"eventOrganizer"
 ad$TypeAnnotation[ad$TypeAnnotation=="eventDelegate"]<-"eventOrganizer"
