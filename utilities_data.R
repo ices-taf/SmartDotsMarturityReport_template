@@ -163,7 +163,7 @@ add_modal_negexpweight <- function(ad, varmod, ma_method) {
 
 select_mode=function(ad, ma_method, mode_definition){
 
-  dat1=ad[ad$TypeAnnotation=="eventOrganizer" & toupper(ad$DoesSampleHaveHistologyImage)=="YES",] %>%
+  dat1=ad[ad$TypeAnnotation=="eventOrganizer" & ad$DoesSampleHaveHistologyImage=="Yes",] %>%
     mutate(modal_maturity=Maturity, modal_sex=Sex) %>%
     select(FishID, SampleID, modal_maturity, modal_sex) %>%
     distinct()
