@@ -357,7 +357,7 @@ general_freq_table <- function(ad_long, varmod, by=NULL) {
 data_overview_table <- function(dat, varmod, report_token) {
 
    #if (any(dat$TypeAnnotation == "eventOrganizer" & toupper(dat$DoesSampleHaveHistologyImage) == "Yes")) {
-    if (any(dat$TypeAnnotation == "eventOrganizer"  & dat$DoesSampleHaveHistologyImage == "Yes")) {
+    if (any(dat$TypeAnnotation == "eventOrganizer")) {
     hist <-
      dat[dat$TypeAnnotation == "eventOrganizer" & dat$DoesSampleHaveHistologyImage == "Yes", ] %>%
      ddply(.(FishID), summarise, Histology = "yes") %>%
