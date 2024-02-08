@@ -359,7 +359,7 @@ data_overview_table <- function(dat, varmod, report_token) {
    #if (any(dat$TypeAnnotation == "eventOrganizer" & toupper(dat$DoesSampleHaveHistologyImage) == "Yes")) {
     if (any(dat$TypeAnnotation == "eventOrganizer"  & dat$DoesSampleHaveHistologyImage == "Yes")) {
     hist <-
-     dat[dat$TypeAnnotation == "eventOrganizer" & toupper(dat$DoesSampleHaveHistologyImage) == "Yes", ] %>%
+     dat[dat$TypeAnnotation == "eventOrganizer" & dat$DoesSampleHaveHistologyImage == "Yes", ] %>%
      ddply(.(FishID), summarise, Histology = "yes") %>%
      select(., c("FishID", "Histology"))
      dat <- merge(dat, hist, by.x = "FishID", by.y = "FishID", all.x = TRUE)
