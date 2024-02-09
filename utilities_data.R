@@ -170,7 +170,7 @@ select_mode=function(ad, ma_method, mode_definition){
 
   selad=ad[ad$SampleID %in% setdiff(ad$SampleID, dat1$SampleID), ]
 
-  if(mode_definition=="multistage")
+  if(mode_definition=="stadndard")
     {
   dat2=selad[selad$TypeAnnotation=="reader" & ad$TypeAnnotation=="eventOrganizer",] %>%
       select(FishID, SampleID, modal_trad_Maturity, NModes_trad_Maturity, modal_linearweight_Maturity, NModes_linearweight_Maturity,
