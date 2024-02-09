@@ -363,7 +363,7 @@ data_overview_table <- function(dat, varmod, report_token) {
      ddply(.(FishID), summarise, Histology = "yes") %>%
      select(., c("FishID", "Histology"))
      dat <- merge(dat, hist, by.x = "FishID", by.y = "FishID", all.x = TRUE)
-     #dat$Histology[is.na(dat$Histology)] <- "no"
+     dat$Histology[is.na(dat$Histology)] <- "no"
    } else {
     dat$Histology <- "no"
   }
