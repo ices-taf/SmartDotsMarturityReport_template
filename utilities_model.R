@@ -380,13 +380,18 @@ data_overview_table <- function(dat, varmod, report_token) {
     ad_wide %>%
     select(matches("R[0-9][0-9]*"))
 
-  complete <- complete.cases(readings)
-
+  #complete <- complete.cases(readings)
+  complete <- readings ## to get the mode, PA, CU even if not all the readers approved their annotation in a sample
+  
   ad_wide[c("Mode", "PA %", "CU %")] <- NA
 
-  ad_wide$Mode[complete] <- apply(readings[complete,], 1, Mode_II)
-  ad_wide$`PA %`[complete] <- round(rowMeans(readings[complete, ] == ad_wide$Mode[complete], na.rm = TRUE) * 100)
-  ad_wide$`CU %`[complete] <- round(apply(readings[complete,], 1, cu_II), 3)
+  #ad_wide$Mode[complete] <- apply(readings[complete,], 1, Mode_II)
+  #ad_wide$`PA %`[complete] <- round(rowMeans(readings[complete, ] == ad_wide$Mode[complete], na.rm = TRUE) * 100)
+  #ad_wide$`CU %`[complete] <- round(apply(readings[complete,], 1, cu_II), 3)
+  ad_wide$Mode <- apply(complete, 1, Mode_II)
+  ad_wide$`PA %` <- round(rowMeans(complete == ad_wide$Mode, na.rm = TRUE) * 100)
+  ad_wide$`CU %` <- round(apply(complete, 1, cu_II), 3)
+  
   ad_wide$`CU %`[is.nan(ad_wide$`CU %`)] <- NA
   #ad_wide <- dplyr::rename(ad_wide, `ICES area` = ices_area)
   ad_wide[is.na(ad_wide)] <- "-"
