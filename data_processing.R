@@ -90,7 +90,7 @@ if (config$onlyApproved) {
 
  ad$TypeAnnotation[ad$TypeAnnotation=="Reader"]<-"reader"
  ad$TypeAnnotation[ad$TypeAnnotation=="Country coordinator"]<-"reader"
- ad$expertise[ad$expertise=="1"]<-"Advanced"
+ #ad$expertise[ad$expertise=="1"]<-"Advanced"
  ad$TypeAnnotation[ad$TypeAnnotation=="Delegate"]<-"eventOrganizer"
  ad$TypeAnnotation[ad$TypeAnnotation=="eventDelegate"]<-"eventOrganizer"
  ad$TypeAnnotation[ad$TypeAnnotation=="Organizer"]<-"eventOrganizer"
