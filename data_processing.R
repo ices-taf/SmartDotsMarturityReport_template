@@ -47,7 +47,7 @@ config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
 ad <- read.taf("bootstrap/data/smartdots_db/ad.csv")
 #ad <- read.taf("bootstrap/smartdots_db/ad.csv")
 #ad <- read.taf("bootstrap/ad.csv")
-
+ad<- subset(ad, reader!="R28 NL") #remove that reader, testing event 1859 - 18 june 2024
 # prepare data -------------------------------
 
 # keep only approved annotations
@@ -96,6 +96,7 @@ if (config$onlyApproved) {
  ad$TypeAnnotation[ad$TypeAnnotation=="Organizer"]<-"eventOrganizer"
  ad$reader[ad$reader==""]<-"eventOrganizer" ## to add a name to the Reader column from the Event Organizer
  #ad$reader[ad$TypeAnnotation=="eventOrganizer"]<-"eventOrganizer"
+ ad$TypeAnnotation[ad$reader=="R00 delegate"]<-"eventOrganizer"
 # ad$reader_number[ad$TypeAnnotation=="eventOrganizer"]<-1
  ad$expertise[ad$TypeAnnotation=="eventOrganizer"]<-"Advanced"
  ad$reader[ad$TypeAnnotation=="eventOrganizer"]<-"R01 EO"
