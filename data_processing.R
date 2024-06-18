@@ -44,7 +44,7 @@ config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
 
 
 # get data from bootstrap folder  -------------------------------
-ad <- read.taf("bootstrap/initial/data/smartdots_db/ad.csv")
+ad <- read.taf("bootstrap/data/smartdots_db/ad.csv")
 #ad <- read.taf("bootstrap/smartdots_db/ad.csv")
 #ad <- read.taf("bootstrap/ad.csv")
 ad<- subset(ad, reader!="R28 NL") #remove that reader, testing event 1859 - 18 june 2024
