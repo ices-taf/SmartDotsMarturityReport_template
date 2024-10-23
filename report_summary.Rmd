@@ -61,8 +61,8 @@ Text?
 *Overview table*
 
 <!-- Stock, Total number of samples (NSample), Preparation method, PA (sex and maturity), CU (sex and maturity), Number of readers (basic and advanced) text -->
-```{r summary_statistics_all}
-summary_statistics_all <-
+```{r overview_statistics_all}
+overview_statistics_all <-
     c(Stock=unique(ad_long_all$stock),
     NSample  = length(unique(ad_long_all$SampleID)),
     CU_sex  = cu_tab_sex_all[nrow(cu_tab_sex_all), "Total"],
@@ -76,7 +76,7 @@ summary_statistics_all <-
 set.caption('**Table X:** Overview table: Stock; Total number of samples (NSample); coefficient of unalikeability (CU) for sex (CU_sex) and maturity (CU_maturity); percentage of agreement (PA) for sex (PA_sex) and for maturity (PA_maturity); number of basic readers (N_basic) and number of advanced readers (N_adv)')
 
 # Output table
-pander(style_table0(summary_statistics_all), missing="")
+pander(style_table0(overview_statistics_all), missing="")
 
 ```
 
