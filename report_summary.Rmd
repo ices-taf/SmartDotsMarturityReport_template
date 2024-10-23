@@ -58,6 +58,28 @@ title: `r config$summary_title`
 Text?
 
 
+*Overview table*
+
+<!-- Stock, Total number of samples (NSample), Preparation method, PA (sex and maturity), CU (sex and maturity), Number of readers (basic and advanced) text -->
+```{r overview_statistics_all}
+overview_statistics_all <-
+    c(Stock=unique(ad_long_all$stock),
+    NSample  = length(unique(ad_long_all$SampleID)),
+    CU_sex  = cu_tab_sex_all[nrow(cu_tab_sex_all), "Total"],
+    CU_mat  = cu_tab_maturity_all[nrow(cu_tab_maturity_all), "Total"],
+    PA_sex  = pa_tab_sex_all[nrow(pa_tab_sex_all), "Total"],
+    PA_mat  = pa_tab_maturity_all[nrow(pa_tab_maturity_all), "Total"],
+    N_basic=length(unique(ad_long_all$reader))-length(unique(ad_long_adv$reader)),
+    N_adv=length(unique(ad_long_adv$reader)))
+
+# Table caption
+set.caption('**Table X:** Overview table: Stock; Total number of samples (NSample); coefficient of unalikeability (CU) for sex (CU_sex) and maturity (CU_maturity); percentage of agreement (PA) for sex (PA_sex) and for maturity (PA_maturity); number of basic readers (N_basic) and number of advanced readers (N_adv).')
+
+# Output table
+pander(style_table0(overview_statistics_all), missing="")
+
+```
+
 # Overview of samples and advanced stagers
 
 Text?

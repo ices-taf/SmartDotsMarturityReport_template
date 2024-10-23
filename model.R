@@ -13,18 +13,18 @@ library(tidyr)
 library(tibble) # bias_test
 
 library(ggplot2)
-library(scales) # rescale_none
+#library(scales) # rescale_none
 
 # library ragree contains the function unalike, that is used to estimate the coefficient of unalikeability
-#taf.library(ragree)
+taf.library(ragree)
 #
 
 # make model directory
 mkdir("model")
 
 # # load configuration
-config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
-#config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
+#config <- read_json("bootstrap/data/config.json", simplifyVector = TRUE)
+config <- read_json("bootstrap/initial/data/config.json", simplifyVector = TRUE)
 
 # load utilities
 source("utilities.R")
@@ -44,7 +44,7 @@ modal_sex_unique_all <-  sort(unique(ad_long_all$modal_sex))
 modal_sex_unique_adv <-  sort(unique(ad_long_adv$modal_sex))
 
 # set strata to NULL if all are NA
-# if(length(setdiff("strata", names(config)))==0) {if(all(is.na(ad_long_all[["strata"]]))) config$strata <- NULL}
+#if(length(setdiff("strata", names(config)))==0) {if(all(is.na(ad_long_all[["strata"]]))) config$strata <- NULL}
 
 # Overview of samples and stagers ##############################################
 
@@ -274,18 +274,16 @@ for (group in c("all", "adv")) {
   # maturity composition
   assign(
     vname("maturity_composition_tab"),
-    maturity_composition_table(ad_long, by = "reader")
+    maturity_composition_table(ad_long, "reader")
   )
   write.taf(vname("maturity_composition_tab"), dir = "model")
-  
-
   
 
   ####################
   # sex composition
   assign(
     vname("sex_composition_tab"),
-    sex_composition_table(ad_long, by = "reader")
+    sex_composition_table(ad_long, "reader")
   )
   write.taf(vname("sex_composition_tab"), dir = "model")
 

@@ -28,8 +28,8 @@ sample_data_overview_table <- function(dat, strata) {
   dat$MaturityTemp=dat$Maturity
 
   maturation_sample_data_overview <- dat %>%
-    select_at(unique(c("FishID", "SampleID", "length", "modal_maturity", "year", "ices_area", "qtr", strata, "reader", "Maturity", "MaturityTemp"))) %>%
-    spread(key = reader, value = MaturityTemp) %>%
+  select_at(unique(c("FishID", "SampleID", "length", "modal_maturity", "year", "ices_area", "qtr", strata, "reader", "Maturity", "MaturityTemp"))) %>%
+  spread(key = reader, value = MaturityTemp) %>%
     group_by_at(unique(c("year", "ices_area", "qtr", strata))) %>%
     summarise(
       min_len = 5*round(min(length, na.rm = TRUE)/5),
@@ -43,8 +43,8 @@ sample_data_overview_table <- function(dat, strata) {
   dat$SexTemp=dat$Sex
 
   sex_sample_data_overview <- dat %>%
-    select_at(unique(c("FishID", "SampleID", "length", "modal_sex", "year", "ices_area", "qtr", strata, "reader", "Sex", "SexTemp"))) %>%
-    spread(key = reader, value = SexTemp) %>%
+   select_at(unique(c("FishID", "SampleID", "length", "modal_sex", "year", "ices_area", "qtr", strata, "reader", "Sex", "SexTemp"))) %>%
+   spread(key = reader, value = SexTemp) %>%
     group_by_at(unique(c("year", "ices_area", "qtr", strata))) %>%
     summarise(
       min_len = 5*round(min(length, na.rm = TRUE)/5),
@@ -356,47 +356,54 @@ general_freq_table <- function(ad_long, varmod, by=NULL) {
 
 data_overview_table <- function(dat, varmod, report_token) {
 
-  #if (any(dat$TypeAnnotation == "eventOrganizer")) {
-  if (any(dat$DoesSampleHaveHistologyImage == "Yes")) {
+   #if (any(dat$TypeAnnotation == "eventOrganizer" & toupper(dat$DoesSampleHaveHistologyImage) == "Yes")) {
+    if (any(dat$TypeAnnotation == "eventOrganizer")) {
     hist <-
-      #dat[dat$TypeAnnotation == "eventOrganizer", ] %>%
-      dat[dat$DoesSampleHaveHistologyImage == "Yes", ] %>%
-      ddply(.(SampleID), summarise, Histology = "yes") %>%
-      select(., c("SampleID", "Histology"))
-    dat <- merge(dat, hist, by.x = "SampleID", by.y = "SampleID", all.x = TRUE)
-    dat$Histology[is.na(dat$Histology)] <- "no"
-  } else {
+     dat[dat$TypeAnnotation == "eventOrganizer" & dat$DoesSampleHaveHistologyImage == "Yes", ] %>%
+     ddply(.(FishID), summarise, Histology = "yes") %>%
+     select(., c("FishID", "Histology"))
+     dat <- merge(dat, hist, by.x = "FishID", by.y = "FishID", all.x = TRUE)
+     dat$Histology[is.na(dat$Histology)] <- "no"
+   } else {
     dat$Histology <- "no"
   }
 
   # Select only columns of maturity staging
   ad_wide <-
     dat %>%
-    select(FishID, SampleID, length, ices_area, stock, prep_method, reader, all_of(varmod), Histology) %>%
-    spread(key = reader, value = all_of(varmod))
+  # select(FishID, SampleID, length, ices_area, stock, prep_method, reader, all_of(varmod), Histology) %>%
+   select(FishID, length, stock, prep_method, reader, all_of(varmod), Histology) %>% ##removed ICES area
+   spread(key = reader, value = all_of(varmod))
 
   # Calculate, modal maturity, percentage agreement and cu
   readings <-
     ad_wide %>%
     select(matches("R[0-9][0-9]*"))
 
-  complete <- complete.cases(readings)
-
+  #complete <- complete.cases(readings)
+  complete <- readings ## to get the mode, PA, CU even if not all the readers approved their annotation in a sample
+  
   ad_wide[c("Mode", "PA %", "CU %")] <- NA
 
-  ad_wide$Mode[complete] <- apply(readings[complete,], 1, Mode_II)
-  ad_wide$`PA %`[complete] <- round(rowMeans(readings[complete, ] == ad_wide$Mode[complete], na.rm = TRUE) * 100)
-  ad_wide$`CU %`[complete] <- round(apply(readings[complete,], 1, cu_II), 3)
+  #ad_wide$Mode[complete] <- apply(readings[complete,], 1, Mode_II)
+  #ad_wide$`PA %`[complete] <- round(rowMeans(readings[complete, ] == ad_wide$Mode[complete], na.rm = TRUE) * 100)
+  #ad_wide$`CU %`[complete] <- round(apply(readings[complete,], 1, cu_II), 3)
+  ad_wide$Mode <- apply(complete, 1, Mode_II)
+  ad_wide$`PA %` <- round(rowMeans(complete == ad_wide$Mode, na.rm = TRUE) * 100)
+  ad_wide$`CU %` <- round(apply(complete, 1, cu_II), 3)
+  
   ad_wide$`CU %`[is.nan(ad_wide$`CU %`)] <- NA
-  ad_wide <- dplyr::rename(ad_wide, `ICES area` = ices_area)
+  #ad_wide <- dplyr::rename(ad_wide, `ICES area` = ices_area)
   ad_wide[is.na(ad_wide)] <- "-"
 
   # add hyper link for tables
-  if(is.null(dat$SampleID)) {
+ # if(is.null(dat$SampleID)) {
+   if(is.null(dat$FishID)) {
     dat %>%
       group_by(FishID, EventID) %>%
       summarise(
-        `Image ID` = sprintf("[%s](http://smartdots.ices.dk/viewImage?tblEventID=%i&SmartImageID=%s&token=%s)",FishID, EventID, FishID, report_token) %>%
+        `Image ID` = sprintf(#"[%s](http://smartdots.ices.dk/viewImage?tblEventID=%i&SmartImageID=%s&token=%s)",
+          FishID, EventID, FishID, report_token) %>%
           unique %>%
           paste(collapse = "-")
       ) %>%
@@ -408,22 +415,23 @@ data_overview_table <- function(dat, varmod, report_token) {
       as.data.frame
   } else {
     dat %>%
-     # group_by(SampleID, FishID, EventID) %>%
-      group_by(FishID, EventID) %>%
+  #   group_by(SampleID, FishID, EventID) %>%
+     group_by(FishID, EventID) %>%
       summarise(
-        `Image ID` = sprintf("[%s](http://smartdots.ices.dk/viewImage?tblEventID=%i&SmartImageID=%s&token=%s)", SampleID, EventID, SampleID, report_token) %>%
+        `Image ID` = sprintf(#"[%s](http://smartdots.ices.dk/viewImage?tblEventID=%i&SmartImageID=%s&token=%s)", 
+          FishID, EventID, FishID, report_token) %>%
           unique %>%
           paste(collapse = "-")
       ) %>%
-     right_join(ad_wide, by = c("FishID", "SampleID")) %>%
+     # right_join(ad_wide, by = c("FishID", "SampleID")) %>%
+     right_join(ad_wide, by = "FishID") %>%
       rename(
-        `Sample ID` = SampleID,
+       # `Sample ID` = SampleID,
         `Fish ID` = FishID,
         `Event ID` = EventID
       ) %>%
       as.data.frame
     }
-
 }
 
 
@@ -450,16 +458,16 @@ maturity_composition_table <- function(ad_long, by = "reader") {
   ad_long %>%
     maturity_composition(by = by)  %>%
     rbind(colSums(., na.rm = TRUE)) %>%
-    format_table_matur_stage(matur_unique = sort(unique(ad_long$Maturity)))
+  format_table_matur_stage(matur_unique = sort(unique(ad_long$Maturity)))
 }
 
 sex_composition_table <- function(ad_long, by = "reader") {
-  if (nrow(ad_long) == 0) return(data.frame("Sex category" = numeric(0)))
+ if (nrow(ad_long) == 0) return(data.frame("Sex category" = numeric(0)))
   # Number of gonads staged per reader and sex category
   ad_long %>%
     sex_composition(by = by)  %>%
     rbind(colSums(., na.rm = TRUE)) %>%
-    format_table_sex_stage(sex_unique = sort(unique(ad_long$Sex)))
+  format_table_sex_stage(sex_unique = sort(unique(ad_long$Sex)))
 }
 
 

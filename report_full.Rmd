@@ -120,7 +120,27 @@ The frequency bias table represents the MSEM in the format proposed by WKSABCAL 
 
 # Analysis of maturity staging calibration exercise (ToR?)
 
+*Overview table*
 
+<!-- Stock, Total number of samples (NSample), Preparation method, PA (sex and maturity), CU (sex and maturity), Number of readers (basic and advanced) text -->
+```{r overview_statistics_all}
+overview_statistics_all <-
+    c(Stock=unique(ad_long_all$stock),
+    NSample  = length(unique(ad_long_all$SampleID)),
+    CU_sex  = cu_tab_sex_all[nrow(cu_tab_sex_all), "Total"],
+    CU_mat  = cu_tab_maturity_all[nrow(cu_tab_maturity_all), "Total"],
+    PA_sex  = pa_tab_sex_all[nrow(pa_tab_sex_all), "Total"],
+    PA_mat  = pa_tab_maturity_all[nrow(pa_tab_maturity_all), "Total"],
+    N_basic=length(unique(ad_long_all$reader))-length(unique(ad_long_adv$reader)),
+    N_adv=length(unique(ad_long_adv$reader)))
+
+# Table caption
+set.caption('**Table X:** Overview table: Stock; Total number of samples (NSample); coefficient of unalikeability (CU) for sex (CU_sex) and maturity (CU_maturity); percentage of agreement (PA) for sex (PA_sex) and for maturity (PA_maturity); number of basic readers (N_basic) and number of advanced readers (N_adv).')
+
+# Output table
+pander(style_table0(overview_statistics_all), missing="")
+
+```
 ## Overview of samples and stagers
 
 
@@ -150,7 +170,7 @@ pander(style_table0(sample_data_overview), style = "simple")
 # PARTICIPATANTS OVERVIEW #####################################################
 
 # Table caption
-set.caption('**Table X:** Overview of stagers participating in the event, with their overall expertise (Expertise), and their ranking position based in their experience (only valid if the experience weighting protocol has been applied).')
+set.caption('**Table X:** Overview of stagers participating in the event, with their overall expertise (Expertise), and their ranking position based in their experience (only valid if the experience weighting protocol has been applied). R01 EO is the Event Organizer.')
 
 # Output table
 pander(style_table0(filter(stager_data)))
@@ -264,7 +284,9 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+z=min(x,8)
+#z=8
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -305,7 +327,9 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+z=min(x,8)
+#z=8
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -345,8 +369,10 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+z=max(x,8)
 
-z=8
+#z=8
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -360,10 +386,10 @@ for(i in 1:nfig)
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table0(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -388,7 +414,9 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+z=max(x,8)
+#z=8
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -402,10 +430,10 @@ for(i in 1:nfig)
     pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+     pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -421,7 +449,10 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+z=max(x,8)
+
+#z=8
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -430,13 +461,13 @@ for(i in 1:nfig)
     # Table caption
     set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage (only for females): presents the CU per modal maturity stage and stager, the CU of all stagers combined per maturity stage and a weighted mean of the CU per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+     pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -451,7 +482,9 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+z=max(x,8)
+#z=8
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -460,13 +493,13 @@ for(i in 1:nfig)
     # Table caption
     set.caption('**Table X:** Coefficient of unlikeability (CU) table by modal maturity stage (only for males): presents the CU per modal maturity stage and stager, the CU of all stagers combined per maturity stage and a weighted mean of the CU per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+     pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -488,7 +521,9 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+z=max(x,8)
+#z=8
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -497,13 +532,13 @@ for(i in 1:nfig)
     # Table caption
     set.caption('**Table X:** Percentage agreement (PA) table: shows the PA per modal sex category and stager, the PA for all stagers combined and the weighted mean of the PA per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -524,8 +559,10 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+z=max(x,8)
 
-z=8
+#z=8
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -534,13 +571,13 @@ for(i in 1:nfig)
     # Table caption
     set.caption('**Table X:** Percentage agreement (PA) table: shows the PA per modal maturity and stager, the PA for all stagers combined and the weighted mean of the PA per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+     pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -558,8 +595,10 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+z=max(x,8)
 
-z=8
+#z=8
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -568,13 +607,16 @@ for(i in 1:nfig)
     # Table caption
     set.caption('**Table X:** Percentage agreement (PA) table: shows the PA per modal maturity and stager (only females), the PA for all stagers combined and the weighted mean of the PA per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    #pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    #pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      #pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -592,8 +634,10 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+z=max(x,8)
 
-z=8
+#z=8
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -602,13 +646,16 @@ for(i in 1:nfig)
     # Table caption
     set.caption('**Table X:** Percentage agreement (PA) table: shows the PA per modal maturity and stager (only males), the PA for all stagers combined and the weighted mean of the PA per stager.')
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    #pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
   } else { if(i<nfig){
     selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):((i+basicols+((N-1)*(i-1)))+(N-1)))]
-    pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    #pander(style_table0(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+    pander(style_table1(selec), missing = "-") 
     } else {
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      #pander(style_table1(selec), missing = "-", style = "simple") #changed here to not appear the last column in bolt
+      pander(style_table1(selec), missing = "-") 
     }
   }
 }
@@ -773,7 +820,9 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+z=min(x,8)
+#z=8
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -814,7 +863,10 @@ nstagers=length(unique(stager_data$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+z=min(x,8)
+
+#z=8
 nfig=round((dim(data)[2]-basicols)/z)
 N=min(z,ncols)
 for(i in 1:nfig)
@@ -1199,6 +1251,9 @@ nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+#z=min(x,8)
+
 #z=8
 z=ncol(data)-2
 nfig=ceiling((dim(data)[2]-basicols)/z)
@@ -1246,7 +1301,9 @@ nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=ncol(data)-2
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+z=min(x,8)
+#z=8
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
 
@@ -1293,6 +1350,9 @@ stagers=stager_data[stager_data$Expertise=="Advanced",]
 nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
+
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+#z=max(x,8)
 
 z=ncol(data)-2
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
@@ -1344,6 +1404,9 @@ nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+#z=max(x,8)
+
 z=ncol(data)-2
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
@@ -1392,6 +1455,8 @@ nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+#z=max(x,8)
 z=ncol(data)-2
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
@@ -1438,6 +1503,9 @@ stagers=stager_data[stager_data$Expertise=="Advanced",]
 nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
+
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+#z=max(x,8)
 
 z=ncol(data)-2
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
@@ -1492,7 +1560,10 @@ nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+#z=max(x,8)
+z=ncol(data)-2
+#z=8
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
 
@@ -1536,8 +1607,10 @@ stagers=stager_data[stager_data$Expertise=="Advanced",]
 nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
-
-z=8
+x<-max(ncol(data)-2, 1, na.rm = TRUE)
+#z=max(x,8)
+z=ncol(data)-2
+#z=8
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
 
@@ -1578,7 +1651,10 @@ nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+x=max(ncol(data)-2, 1, na.rm = TRUE)
+#z=max(x,8)
+z=ncol(data)-2
+#z=8
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
 
@@ -1618,7 +1694,10 @@ nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-z=8
+x=max(ncol(data)-2, 1, na.rm = TRUE)
+#z=max(x,8)
+z=ncol(data)-2
+#z=8
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
 
@@ -1664,8 +1743,11 @@ nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-#z=ncol(data)-2
-z=8
+x=max(ncol(data)-2, 1, na.rm = TRUE)
+#z=max(x,8)
+
+z=ncol(data)-2
+
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
 
@@ -1675,7 +1757,7 @@ if(nfig==0){
              modal sex category per stager and the frequency distribution of all stagers combined
              per modal sex category.')
       selec=data[,c(1:basicols, (i+basicols+((N-1)*(i-1))):dim(data)[2])]
-      pander(style_table1(selec), missing = "-")
+      pander(style_table1(selec), missing="-")
 } else {
 
 for(i in 1:nfig)
@@ -1716,8 +1798,11 @@ nstagers=length(unique(stagers$'Reader code'))
 ncols=dim(data[,!colnames(data) %in% c("Total")])[2]
 basicols=ncols-nstagers
 
-#z=ncol(data)-2
-z=8
+x=max(ncol(data)-2, 1, na.rm = TRUE)
+#z=max(x,8)
+
+z=ncol(data)-2
+#z=8
 nfig=round((dim(data)[2]-basicols)/z, digits=0)
 N=min(z,ncols)
 
@@ -2236,9 +2321,11 @@ group <- "all"
 # Table caption
 set.caption('**Table X:** Data overview including modal
              maturity and statistics per sample.')
+#data_mat_all<-data_overview_tab_maturity_all[,c(-4,-6,-7,-8)]
 
 # Output table
 pander(style_table0(get(vname("data_overview_tab_maturity"))), missing="-", style = "simple")
+#pander(style_table0(get(vname("data_mat_all"))), missing="-", style = "simple")
 ```
 
 
@@ -2251,6 +2338,7 @@ set.caption('**Table X:** Data overview including modal
 
 # Output table
 pander(style_table0(get(vname("data_overview_tab_sex"))), missing="-", style = "simple")
+
 ```
 
 
@@ -2358,7 +2446,7 @@ group <- "adv"
 ***Multiple mode in the maturity stage***
 
 ```{r multiple mode cases maturity all stagers}
-datos=ad_long_all[ad_long_all$NModes_trad_Maturity>1, c(1, 2, 4, 5, 8, 9, 10, 11, 12, 13, 16:26, 35, 36)]
+datos=ad_long_all[ad_long_all$NModes_trad_Maturity>1, c(1,4, 5, 9, 11, 12, 13, 16:26, 35, 36)]
 
 # Output table
 pander(style_table0(datos), missing="-", style = "simple")
@@ -2369,7 +2457,7 @@ pander(style_table0(datos), missing="-", style = "simple")
 ***Multiple mode in the sex category***
 
 ```{r multiple mode cases sex all stagers}
-datos=ad_long_all[ad_long_all$NModes_trad_Sex>1, c(1, 2, 4, 5, 8, 9, 10, 11, 12, 13, 16:26, 56, 57)]
+datos=ad_long_all[ad_long_all$NModes_trad_Sex>1, c(1, 4, 5, 9, 11, 12, 13, 16:26, 56, 57)]
 
 # Output table
 pander(style_table0(datos), missing="-", style = "simple")
@@ -2382,7 +2470,7 @@ pander(style_table0(datos), missing="-", style = "simple")
 ***Multiple mode in the maturity stage***
 
 ```{r multiple mode cases maturity advanced stagers}
-datos=ad_long_adv[ad_long_adv$NModes_trad_Maturity>1, c(1, 2, 4, 5, 8, 9, 10, 11, 12, 13, 16:26, 35, 36)]
+datos=ad_long_adv[ad_long_adv$NModes_trad_Maturity>1, c(1, 4, 5, 9, 11, 12, 13, 16:26, 35, 36)]
 
 # Output table
 pander(style_table0(datos), missing="-", style = "simple")
@@ -2393,7 +2481,7 @@ pander(style_table0(datos), missing="-", style = "simple")
 ***Multiple mode in the sex category***
 
 ```{r multiple mode cases sex advanced stagers}
-datos=ad_long_adv[ad_long_adv$NModes_trad_Sex>1, c(1, 2, 4, 5, 8, 9, 10, 11, 12, 13, 16:26, 56, 57)]
+datos=ad_long_adv[ad_long_adv$NModes_trad_Sex>1, c(1, 4, 5, 9, 11, 12, 13, 16:26, 56, 57)]
 
 # Output table
 pander(style_table0(datos), missing="-", style = "simple")
