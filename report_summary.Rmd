@@ -73,7 +73,7 @@ overview_statistics_all <-
     N_adv=length(unique(ad_long_adv$reader)))
 
 # Table caption
-set.caption('**Table X:** Overview table: Stock; Total number of samples (NSample); coefficient of unalikeability (CU) for sex (CU_sex) and maturity (CU_maturity); percentage of agreement (PA) for sex (PA_sex) and for maturity (PA_maturity); number of basic readers (N_basic) and number of advanced readers (N_adv)')
+set.caption('**Table X:** Overview table: Stock; Total number of samples (NSample); coefficient of unalikeability (CU) for sex (CU_sex) and maturity (CU_maturity); percentage of agreement (PA) for sex (PA_sex) and for maturity (PA_maturity); number of basic readers (N_basic) and number of advanced readers (N_adv).')
 
 # Output table
 pander(style_table0(overview_statistics_all), missing="")
